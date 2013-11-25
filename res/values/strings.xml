@@ -6,5 +6,7 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+    <string name="movies_list_empty">There are no movies in your movie list.</string>
+    <string name="movies_list_fail">Failed to retrieve movies list.</string>
 
 </resources>
