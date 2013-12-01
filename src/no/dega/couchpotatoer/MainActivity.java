@@ -1,27 +1,16 @@
 package no.dega.couchpotatoer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Locale;
 
-import org.apache.http.client.ClientProtocolException;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -50,7 +39,7 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//Temporarily allow on main thread
+		//Temporarily allow networking on main thread
 		//TODO: remove this
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().
 				permitAll().build();
@@ -94,80 +83,6 @@ public class MainActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
-		
-		//Temp until create new activity
-		//TODO: put me in the right place
-		String response = makeRequest();
-		if(response != null) {
-			parseWantedList(response);
-		}
-	}
-	//TODO: put me in the right activity
-	public String parseWantedList(String resp) {
-		try {
-			JSONObject response = new JSONObject(resp);
-
-			Log.d(this.toString(), "String Contents: " + response.toString());
-			
-			//Make sure our request is okay and there's movies to process
-			if(response.getBoolean("success") == false) {
-				return getResources().getString(R.string.movies_list_fail);
-			}
-			if(response.getBoolean("empty") == true) {
-				return getResources().getString(R.string.movies_list_empty);
-			}
-			
-			JSONArray moviesList = response.getJSONArray("movies");
-			
-			//Go through every movie and collect the useful info for them
-			//TODO: put them in a hashmap or something
-			for(int i = 0; i < moviesList.length(); i++) {
-				JSONObject info = moviesList.getJSONObject(i).getJSONObject("library").getJSONObject("info");
-				Log.d(this.toString(), "Contents: " + info.toString());
-				
-				String title = info.getJSONArray("titles").getString(0);
-				String tagline = info.getString("tagline");
-				int year = info.getInt("year");
-				JSONArray actors = info.getJSONArray("actors");
-				JSONArray directors = info.getJSONArray("directors");
-				
-				
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "Placeholder";
-	}
-	
-	private String makeRequest() {
-		StringBuilder builder = new StringBuilder();
-		System.out.println("Test");
-		try {
-			//TODO: make this generic
-			URL url = new URL("http://192.168.1.10:5050/api/79fc9813360d4f288305346b54baa7da/movie.list");
-	
-			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-			InputStream content = urlConnection.getInputStream();
-					
-			int statusCode = urlConnection.getResponseCode();
-			if(statusCode == 200) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-				String line;
-				while((line = reader.readLine()) != null) {
-					builder.append(line);
-				}
-			} else {
-				Log.e(this.toString(), "Status code not 200, is: " + statusCode);
-			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-			Log.e("makeRequest", "Could not connect to resource: API key may be missing");
-		}
-		
-		
-		return builder.toString();
 	}
 
 	@Override
@@ -210,9 +125,11 @@ public class MainActivity extends FragmentActivity implements
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
+		//	Fragment fragment = new DummySectionFragment();
+			Fragment fragment = (Fragment) new MovieListFragment();
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+//			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+			args.putInt("TestArg", position + 1);
 			fragment.setArguments(args);
 			return fragment;
 		}
@@ -238,6 +155,7 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
+	
 	/**
 	 * A dummy fragment representing a section of the app, but that simply
 	 * displays dummy text.
