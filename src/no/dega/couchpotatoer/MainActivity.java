@@ -3,12 +3,13 @@ package no.dega.couchpotatoer;
 import java.util.Locale;
 
 import android.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class MainActivity extends FragmentActivity implements
 		
 		setContentView(R.layout.activity_main);
 
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

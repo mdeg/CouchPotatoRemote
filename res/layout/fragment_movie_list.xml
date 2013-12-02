@@ -2,14 +2,14 @@
          android:orientation="vertical"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
-         android:paddingLeft="8dp"
-         android:paddingRight="8dp">
+         android:paddingLeft="2dp"
+         android:paddingRight="2dp">
 
      <ListView
          android:id="@android:id/list"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:background="#0FFFFF"
+         android:background="?android:attr/colorBackground"
          android:drawSelectorOnTop="false" />
 
      <!--DEFAULT WHEN EMPTY TextView android:id="@id/android:empty"
