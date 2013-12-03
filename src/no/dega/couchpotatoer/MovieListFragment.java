@@ -44,7 +44,7 @@ public class MovieListFragment extends ListFragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
 		this.isWanted = getArguments().getBoolean("isWanted");
-		this.movies = APIUtilities.parseMovieList(this.isWanted);
+		this.movies = APIUtilities.parseMovieList(this.isWanted, getActivity());
 		return rootView;
 	}
 	//If a user clicks on a movie, take them to the appropriate movie display

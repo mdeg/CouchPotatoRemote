@@ -6,9 +6,9 @@
     <string name="movies_list_empty">There are no movies in your movie list.</string>
     <string name="movies_list_fail">Failed to retrieve movies list.</string>
     <string name="movie_view">No movie</string>
-    <string name="api_key_pref">API Key:</string>
-    <string name="ip_address_pref">IP Address:</string>
-    <string name="port_pref">Port:</string>
+    <string name="api_key_pref">API Key</string>
+    <string name="ip_address_pref">IP Address</string>
+    <string name="port_pref">Port</string>
     <string name="title_wanted">Wanted</string>
     <string name="title_manage">Manage</string>
 

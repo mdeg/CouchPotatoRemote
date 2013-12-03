@@ -8,7 +8,8 @@ import org.json.JSONObject;
 public class APIUtilitiesTest extends TestCase {
 
 	public void testMakeRequest() {
-		String response = APIUtilities.makeRequest("app.available");
+		//TODO: this will fail - need to get proper context for this
+		String response = APIUtilities.makeRequest("app.available", null);
 		assertNotNull("Response string is null", response);
 		assertFalse("Response is 0-length", response.length() <= 0);
 		

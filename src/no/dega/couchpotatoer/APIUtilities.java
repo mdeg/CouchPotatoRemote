@@ -11,6 +11,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -18,15 +21,23 @@ public class APIUtilities {
 	
 	//Make a request to the API
 	//Returns String of result (which will probably be a JSON string)
-	public static String makeRequest(String request) {
+	public static String makeRequest(String request, Context context) {
 		if((request == null) || (request.length() <= 0)) {
 			Log.e("APIUtilities.makeRequest", "Invalid string passed to makeRequest.");
 			return null;
 		}
 		StringBuilder builder = new StringBuilder();
 		try {
-			//TODO: un-hardcode this
-			URL url = new URL("http://192.168.1.10:5050/api/79fc9813360d4f288305346b54baa7da/" + request);
+			//Construct URI based on user settings
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+			String ipPref = sharedPref.getString("pref_key_ip", "IP_FIND_FAIL");
+			String apiPref = sharedPref.getString("pref_key_api", "API_FIND_FAIL");
+			String portPref = sharedPref.getString("pref_key_port", "PORT_FIND_FAIL");
+			StringBuilder uri = new StringBuilder();
+			uri = uri.append("http://").append(ipPref).append(":").append(portPref).append("/api/")
+					.append(apiPref).append("/").append(request);
+			
+			URL url = new URL(uri.toString());
 	
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 			InputStream content = urlConnection.getInputStream();
@@ -55,7 +66,8 @@ public class APIUtilities {
 	//Status: active = true = on Wanted list
 	//					false = on Manage list
 	//Returns a SparseArray of Movie's built from the list (which can be empty)
-	public static SparseArray<Movie> parseMovieList(boolean isWanted) {
+	//TODO: is there a way to do this without having to pass a context?
+	public static SparseArray<Movie> parseMovieList(boolean isWanted, Context context) {
 		//Construct the right query for the type of movie we're looking for
 		String query = "movie.list?status=";
 		if(isWanted) {
@@ -63,7 +75,7 @@ public class APIUtilities {
 		} else {
 			query = query + "done";
 		}
-		String resp = APIUtilities.makeRequest(query);
+		String resp = APIUtilities.makeRequest(query, context);
 		
 		if((resp == null) || (resp.length() <= 0)) {
 			return null;
@@ -109,18 +121,13 @@ public class APIUtilities {
 				}
 				Log.d("posterFileName", posterFileName);
 				
-				/*TODO: fix this to actually work for the settings
-				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+				//Construct full URI for the poster based on user preferences
+				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 				String ipPref = sharedPref.getString("pref_key_ip", "IP_FIND_FAIL");
 				String apiPref = sharedPref.getString("pref_key_api", "API_FIND_FAIL");
 				String portPref = sharedPref.getString("pref_key_port", "PORT_FIND_FAIL");
-				*/
-				String ipPref = "192.168.1.10";
-				String portPref = "5050";
-				String apiPref = "79fc9813360d4f288305346b54baa7da";
-						
-				//Construct the full URI for the poster
-				//TODO: this would rely on home connections' upload speed - grab from internet instead?
+					//TODO: this would rely on home connections' upload speed - grab from internet instead?
 				StringBuilder posterUri = new StringBuilder();
 				posterUri = posterUri.append("http://").append(ipPref).append(":").append(portPref).append("/api/")
 						.append(apiPref).append("/file.cache/").append(posterFileName);
