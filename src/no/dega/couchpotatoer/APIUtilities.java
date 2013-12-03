@@ -9,7 +9,6 @@ import java.net.URL;
 
 import org.apache.http.client.ClientProtocolException;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 public class APIUtilities {
@@ -46,6 +45,7 @@ public class APIUtilities {
 		} 
 		return builder.toString();
 	}
+	/*
 	//Load image from network into a Drawable
 	public static Drawable loadImageFromNetwork(String url) {
 		if((url == null) || (url.length() <= 0)) {
@@ -58,6 +58,6 @@ public class APIUtilities {
 		} catch (Exception e) {
 			return null;
 		}
-	}
+	}*/
 
 }

@@ -35,8 +35,7 @@ public class MovieViewActivity extends Activity {
 			moviePlot.setText(movie.getPlot());
 			movieTagline.setText(movie.getTagline());
 			movieYear.setText(String.valueOf(movie.getYear()));
-			//TODO: get actual movie poster from cache
-	//		poster.setImageResource(R.drawable.ic_launcher);
+			//Grab from cache, or network if not cached
 			ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
 			
 		} else {

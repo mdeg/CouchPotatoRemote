@@ -116,8 +116,6 @@ public class MovieListFragment extends ListFragment {
 				String apiPref = "79fc9813360d4f288305346b54baa7da";
 						
 				//Construct the full URI for the poster
-				//TODO: cache, check if already cached
-				//TODO: backup grab from internet
 				//TODO: this would rely on home connections' upload speed - grab from internet instead?
 				StringBuilder posterUri = new StringBuilder();
 				posterUri = posterUri.append("http://").append(ipPref).append(":").append(portPref).append("/api/")
@@ -127,7 +125,7 @@ public class MovieListFragment extends ListFragment {
 				//Bitmap poster = imageLoader.loadImage(posterUri.toString());
 				//				Drawable poster = APIUtilities.loadImageFromNetwork(temp.toString());
 				
-				//TODO: handle multiple titles
+				//TODO: handle multiple titles?
 		
 				JSONArray jsonActors = info.getJSONArray("actors");
 				String[] actors = new String[jsonActors.length()];

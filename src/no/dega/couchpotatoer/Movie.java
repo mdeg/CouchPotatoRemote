@@ -7,6 +7,7 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 	private int libraryId;
+	//TODO: experiment with final on these
 	private String title;
 	private String tagline;
 	private String plot;
@@ -15,15 +16,10 @@ public class Movie implements Parcelable {
 	private int year;
 	private String[] actors;
 	private String[] directors;
-	
+	//TODO: can I remove this?
 	public Movie() {
 	}
-	
-	//Minimal constructor for movie
-	public Movie(int libraryId, String title) {
-		this.libraryId = libraryId;
-		this.title = title;
-	}
+
 	//Full constructor used when parsing from JSON
 	public Movie(int libraryId, String title, String tagline, String posterUri,
 			String plot, int year, String[] actors, String[] directors) {
@@ -55,6 +51,7 @@ public class Movie implements Parcelable {
 	public String toString() {
 		return this.title + " " + this.tagline + " (" + this.year + ")";
 	}
+	
 	//Need to read these back in the same order we write them
 	private void readFromParcel(Parcel par) {
 		this.libraryId = par.readInt();
@@ -66,6 +63,7 @@ public class Movie implements Parcelable {
 		this.actors = par.createStringArray();
 		this.directors = par.createStringArray();
 	}
+	
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(this.libraryId);
@@ -77,6 +75,7 @@ public class Movie implements Parcelable {
 		dest.writeStringArray(this.actors);
 		dest.writeStringArray(this.directors);
 	}
+	
 	public int describeContents() {
 		return 0;
 	}

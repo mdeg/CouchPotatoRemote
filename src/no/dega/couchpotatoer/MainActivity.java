@@ -45,13 +45,15 @@ public class MainActivity extends FragmentActivity implements
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().
 				permitAll().build();
 		StrictMode.setThreadPolicy(policy);
+		
 		//TODO: add showImageOnFail, showImageOnLoading
+		//Create settings for and initialise nostra13's ImageLoader
+		//See: https://github.com/nostra13/Android-Universal-Image-Loader
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
 				cacheInMemory(true).cacheOnDisc(true).build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
         	.defaultDisplayImageOptions(defaultOptions).build();
         ImageLoader.getInstance().init(config);
-		
 		
 		setContentView(R.layout.activity_main);
 
