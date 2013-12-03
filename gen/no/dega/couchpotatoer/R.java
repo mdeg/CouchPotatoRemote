@@ -48,16 +48,15 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
-        public static final int api_key_pref=0x7f060008;
+        public static final int api_key_pref=0x7f060005;
         public static final int app_name=0x7f060000;
-        public static final int ip_address_pref=0x7f060009;
-        public static final int movie_view=0x7f060007;
-        public static final int movies_list_empty=0x7f060005;
-        public static final int movies_list_fail=0x7f060006;
-        public static final int port_pref=0x7f06000a;
-        public static final int title_section1=0x7f060002;
-        public static final int title_section2=0x7f060003;
-        public static final int title_section3=0x7f060004;
+        public static final int ip_address_pref=0x7f060006;
+        public static final int movie_view=0x7f060004;
+        public static final int movies_list_empty=0x7f060002;
+        public static final int movies_list_fail=0x7f060003;
+        public static final int port_pref=0x7f060007;
+        public static final int title_manage=0x7f060009;
+        public static final int title_wanted=0x7f060008;
     }
     public static final class style {
         /** 

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">CouchPotatoer</string>
+    <string name="app_name">CouchPotato Remote</string>
     <string name="action_settings">Settings</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
     <string name="movies_list_empty">There are no movies in your movie list.</string>
     <string name="movies_list_fail">Failed to retrieve movies list.</string>
-    <string name="movie_view">Default movie view test</string>
+    <string name="movie_view">No movie</string>
     <string name="api_key_pref">API Key:</string>
     <string name="ip_address_pref">IP Address:</string>
     <string name="port_pref">Port:</string>
+    <string name="title_wanted">Wanted</string>
+    <string name="title_manage">Manage</string>
 
 </resources>

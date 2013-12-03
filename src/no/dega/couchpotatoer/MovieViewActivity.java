@@ -30,6 +30,8 @@ public class MovieViewActivity extends Activity {
 			//TODO: change me when project name changes
 			Movie movie = bun.getParcelable("no.dega.couchpotatoer.Movie");
 			Log.d("AfterParcel", movie.toString());
+			
+			this.setTitle(movie.getTitle());
 
 			movieTitle.setText(movie.getTitle());
 			moviePlot.setText(movie.getPlot());

@@ -41,7 +41,7 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		
 		//Temporarily allow networking on main thread
-		//TODO: remove this
+		//TODO: remove this and work out threading
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().
 				permitAll().build();
 		StrictMode.setThreadPolicy(policy);
@@ -131,24 +131,24 @@ public class MainActivity extends FragmentActivity implements
 			super(fm);
 		}
 
+		//Instantiate fragment for the given page
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-		//	Fragment fragment = new DummySectionFragment();
 			Fragment fragment = (Fragment) new MovieListFragment();
 			Bundle args = new Bundle();
-//			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			args.putInt("TestArg", position + 1);
+			//Pos 0 = wanted. Pos 1 = manage
+			if(position == 0) {
+				args.putBoolean("isWanted", true);
+			} else {
+				args.putBoolean("isWanted", false);
+			}
 			fragment.setArguments(args);
 			return fragment;
 		}
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
-			return 3;
+			return 2;
 		}
 
 		@Override
@@ -156,11 +156,10 @@ public class MainActivity extends FragmentActivity implements
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
+				return getString(R.string.title_wanted).toUpperCase(l);
 			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
+				return getString(R.string.title_manage).toUpperCase(l);
+
 			}
 			return null;
 		}
