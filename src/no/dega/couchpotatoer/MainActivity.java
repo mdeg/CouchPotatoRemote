@@ -5,7 +5,6 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -60,8 +59,13 @@ public class MainActivity extends FragmentActivity implements
 		
 		setContentView(R.layout.activity_main);
 
-		//TODO: check if this is working right
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		
+		
+		
+		APIUtilities.searchForMovie("Barakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkka", this);
+		
+		
 		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -170,11 +174,10 @@ public class MainActivity extends FragmentActivity implements
 		public CharSequence getPageTitle(int position) {
 			Locale l = Locale.getDefault();
 			switch (position) {
-			case 0:
-				return getString(R.string.title_wanted).toUpperCase(l);
-			case 1:
-				return getString(R.string.title_manage).toUpperCase(l);
-
+				case 0:
+					return getString(R.string.title_wanted).toUpperCase(l);
+				case 1:
+					return getString(R.string.title_manage).toUpperCase(l);
 			}
 			return null;
 		}

@@ -37,7 +37,6 @@ public class MovieListFragment extends ListFragment {
 				getActivity(), R.layout.adapter_movielist, movieList);
 		setListAdapter(adapter);
 	}
-	//	Bundle bun = getIntent().getExtras();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

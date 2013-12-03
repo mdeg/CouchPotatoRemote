@@ -25,6 +25,7 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 		this.movies = movies;
 	}
 	
+	//Custom view for each movie element on the list
 	public View getView(int position, View convertView, ViewGroup parent) {
 	    View v = convertView;
 	    if(v == null) {

@@ -9,6 +9,7 @@ import java.net.URL;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -18,6 +19,42 @@ import android.util.Log;
 import android.util.SparseArray;
 
 public class APIUtilities {
+	
+/*
+
+addApiView('search', self.search, docs = {
+'desc': 'Search the info in providers for a movie',
+'q': {'desc': 'The (partial) movie name you want to search for'},
+'type': {'desc': 'Search for a specific media type. Leave empty to search all.'},
+*/
+	public static void searchForMovie(String name, Context context) {
+		String query = "movie.search?q=" + name;
+		try {
+			JSONObject response = new JSONObject(APIUtilities.makeRequest(query, context));
+			JSONArray movies = response.getJSONArray("movies");
+			//TODO: handle when search fails
+			if(movies.length() <= 0) {
+				//TODO: do something
+			}
+			for(int i = 0; i < movies.length(); i++) {
+				JSONObject movie = movies.getJSONObject(i);
+				
+				String title = movie.getJSONArray("titles").getString(0);
+				String poster = movie.getJSONObject("images").getJSONArray("poster").getString(0);
+				String year = movie.getString("year");
+				//TODO: do something here (create movie? just display directly?
+				//Subclass movie? Create new object entirely? Make them both inherit from an interface?
+				//Abstract? Both inherit from common object?
+
+				
+			}
+		} catch(JSONException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	
 	
 	//Make a request to the API
 	//Returns String of result (which will probably be a JSON string)
