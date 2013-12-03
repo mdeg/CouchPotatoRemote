@@ -1,21 +1,20 @@
 package no.dega.couchpotatoer;
 
-import android.graphics.drawable.Drawable;
+//import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 
 public class Movie implements Parcelable {
-	//TODO: add poster to this
-
 	private int libraryId;
 	private String title;
 	private String tagline;
 	private String plot;
+	private String posterUri;
+
 	private int year;
 	private String[] actors;
 	private String[] directors;
-	private Drawable poster;
 	
 	public Movie() {
 	}
@@ -26,8 +25,8 @@ public class Movie implements Parcelable {
 		this.title = title;
 	}
 	//Full constructor used when parsing from JSON
-	public Movie(int libraryId, String title, String tagline, int year,
-			String plot, String[] actors, String[] directors, Drawable poster) {
+	public Movie(int libraryId, String title, String tagline, String posterUri,
+			String plot, int year, String[] actors, String[] directors) {
 		this.libraryId = libraryId;
 		this.title = title;
 		this.tagline = tagline;
@@ -35,9 +34,9 @@ public class Movie implements Parcelable {
 		this.plot = plot;
 		this.actors = actors;
 		this.directors = directors;
-		this.poster = poster;
-		}
-
+		this.posterUri = posterUri;
+	}
+	//Reconstitute from parcel
 	public Movie(Parcel par) {
 		readFromParcel(par);
 	}
@@ -61,8 +60,9 @@ public class Movie implements Parcelable {
 		this.libraryId = par.readInt();
 		this.title = par.readString();
 		this.tagline = par.readString();
-		this.year = par.readInt();
 		this.plot = par.readString();
+		this.posterUri = par.readString();
+		this.year = par.readInt();
 		this.actors = par.createStringArray();
 		this.directors = par.createStringArray();
 	}
@@ -71,29 +71,30 @@ public class Movie implements Parcelable {
 		dest.writeInt(this.libraryId);
 		dest.writeString(this.title);
 		dest.writeString(this.tagline);
-		dest.writeInt(this.year);
 		dest.writeString(this.plot);
+		dest.writeString(this.posterUri);
+		dest.writeInt(this.year);
 		dest.writeStringArray(this.actors);
 		dest.writeStringArray(this.directors);
-	//	this.actors = dest.createStringArray();
-	//	this.directors = dest.createStringArray();
 	}
 	public int describeContents() {
 		return 0;
 	}
 	
 	//Getters and setters
-	public Drawable getPoster() {
-		return poster;
-	}
 
-	public void setPoster(Drawable poster) {
-		this.poster = poster;
-	}
 
 	public String getPlot() {
 		return plot;
 	}
+	public String getPosterUri() {
+		return posterUri;
+	}
+
+	public void setPosterUri(String posterUri) {
+		this.posterUri = posterUri;
+	}
+
 	public void setPlot(String plot) {
 		this.plot = plot;
 	}

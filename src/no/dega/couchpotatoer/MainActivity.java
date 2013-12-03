@@ -12,11 +12,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -45,12 +45,19 @@ public class MainActivity extends FragmentActivity implements
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().
 				permitAll().build();
 		StrictMode.setThreadPolicy(policy);
-		
+		//TODO: add showImageOnFail, showImageOnLoading
+		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
+				cacheInMemory(true).cacheOnDisc(true).build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+        	.defaultDisplayImageOptions(defaultOptions).build();
+        ImageLoader.getInstance().init(config);
 		
 		
 		setContentView(R.layout.activity_main);
 
+		//TODO: check if this is working right
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -154,34 +161,6 @@ public class MainActivity extends FragmentActivity implements
 				return getString(R.string.title_section3).toUpperCase(l);
 			}
 			return null;
-		}
-	}
-
-	
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
-					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
-			return rootView;
 		}
 	}
 

@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 
 	private List<Movie> movies;
@@ -36,15 +38,10 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 	        TextView title = (TextView) v.findViewById(R.id.adapter_title);
 	        TextView year = (TextView) v.findViewById(R.id.adapter_year);
 	        ImageView poster = (ImageView) v.findViewById(R.id.adapter_poster);
-	        if(title != null) {
-	            title.setText(movie.getTitle());
-	        }
-	        if(year != null) {
-	           year.setText(String.valueOf(movie.getYear()));
-	        }
-	        if(poster != null) {
-	        	poster.setImageDrawable(movie.getPoster());
-	        }
+	        
+	        title.setText(movie.getTitle());
+            year.setText(String.valueOf(movie.getYear()));
+            ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
 	    }
 	    return v;
 	}

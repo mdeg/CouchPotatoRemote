@@ -5,12 +5,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.SparseArray;
@@ -23,7 +19,7 @@ import android.widget.ListView;
 public class MovieListFragment extends ListFragment {
 	//Indexed by CouchPotato's own libraryId
 	SparseArray<Movie> movies;
-	//TODO: change this to not re-request on recreation
+
 	public MovieListFragment() {
 
 	}
@@ -55,21 +51,19 @@ public class MovieListFragment extends ListFragment {
 		intent.putExtra("no.dega.couchpotatoer.Movie", movie);
 		startActivity(intent);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
 		this.movies = new SparseArray<Movie>();
-		//TODO: move this to oncreateview
-		parseWantedList(APIUtilities.makeRequest("DUD"));
+		parseWantedList(APIUtilities.makeRequest("movie.list"));
 
 		return rootView;
 	}
 
-	//TODO: put me in the right activity
-	//TODO: work out what this should return (null?)
-	public String parseWantedList(String resp) {
+	//TODO: work out what this should return (void?)
+	private String parseWantedList(String resp) {
 		if((resp == null) || (resp.length() <= 0)) {
 			return null;
 		}
@@ -101,10 +95,7 @@ public class MovieListFragment extends ListFragment {
 				int year = info.getInt("year");
 				String fullPath = jsonMoviesList.getJSONObject(i).getJSONObject("library").getJSONArray("files").getJSONObject(0).getString("path");
 				String posterFileName = "";
-				
-				//TODO: cache, check if already cached
-				//TODO: backup grab from internet
-				
+
 				//Grab the file name from the string
 				for(int k = fullPath.length() - 1; k > 0; k--) {
 					if(fullPath.charAt(k) == '\\' ) {
@@ -116,21 +107,25 @@ public class MovieListFragment extends ListFragment {
 				
 				/*TODO: fix this to actually work for the settings
 				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-				final String ipPref = sharedPref.getString("pref_key_ip", "IP_FIND_FAIL");
-				final String apiPref = sharedPref.getString("pref_key_api", "API_FIND_FAIL");
-				final String portPref = sharedPref.getString("pref_key_port", "PORT_FIND_FAIL");
+				String ipPref = sharedPref.getString("pref_key_ip", "IP_FIND_FAIL");
+				String apiPref = sharedPref.getString("pref_key_api", "API_FIND_FAIL");
+				String portPref = sharedPref.getString("pref_key_port", "PORT_FIND_FAIL");
 				*/
 				String ipPref = "192.168.1.10";
 				String portPref = "5050";
 				String apiPref = "79fc9813360d4f288305346b54baa7da";
 						
-				StringBuilder temp = new StringBuilder();
-				temp = temp.append("http://").append(ipPref).append(":").append(portPref).append("/api/")
+				//Construct the full URI for the poster
+				//TODO: cache, check if already cached
+				//TODO: backup grab from internet
+				//TODO: this would rely on home connections' upload speed - grab from internet instead?
+				StringBuilder posterUri = new StringBuilder();
+				posterUri = posterUri.append("http://").append(ipPref).append(":").append(portPref).append("/api/")
 						.append(apiPref).append("/file.cache/").append(posterFileName);
 				
-				Log.d("loadImageFromNetwork", temp.toString());
-				Drawable poster = APIUtilities.loadImageFromNetwork(temp.toString());
-//				Drawable poster = APIUtilities.loadImageFromNetwork("http://192.168.1.10:5050/api/79fc9813360d4f288305346b54baa7da/file.cache/5c2304c7aacf59d2df05c62e5a07d4ea.jpg");
+				//Log.d("loadImageFromNetwork", posterUri.toString());
+				//Bitmap poster = imageLoader.loadImage(posterUri.toString());
+				//				Drawable poster = APIUtilities.loadImageFromNetwork(temp.toString());
 				
 				//TODO: handle multiple titles
 		
@@ -149,9 +144,9 @@ public class MovieListFragment extends ListFragment {
 						directors[j] = jsonDirectors.get(j).toString();
 					}
 				}
-				
-				Movie newMovie = new Movie(libraryId, title, tagline, year,
-						plot, actors, directors, poster);
+	
+				Movie newMovie = new Movie(libraryId, title, tagline, posterUri.toString(),
+						plot, year, actors, directors);
 				this.movies.put(libraryId, newMovie);
 			}
 		} catch (Exception e) {

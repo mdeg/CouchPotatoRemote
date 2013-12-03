@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 public class MovieViewActivity extends Activity {
 	
 	public MovieViewActivity() {
@@ -17,8 +19,6 @@ public class MovieViewActivity extends Activity {
 
 		setContentView(R.layout.activity_movie_view);
 
-		//Bundle bun = getIntent().getExtras();
-		//TODO: change me when project name changes
 		Bundle bun = getIntent().getExtras();
 		TextView movieTitle = (TextView) findViewById(R.id.movieview_title);
 		TextView moviePlot = (TextView) findViewById(R.id.movieview_plot);
@@ -27,26 +27,20 @@ public class MovieViewActivity extends Activity {
 		ImageView poster = (ImageView) findViewById(R.id.movieview_poster);
 		
 		if(bun != null) {
+			//TODO: change me when project name changes
 			Movie movie = bun.getParcelable("no.dega.couchpotatoer.Movie");
 			Log.d("AfterParcel", movie.toString());
-			if(movieTitle != null) {
-				movieTitle.setText(movie.getTitle());
-			}
-			if(moviePlot != null) {
-				moviePlot.setText(movie.getPlot());
-			}
-			if(movieTagline != null) {
-				movieTagline.setText(movie.getTagline());
-			}
-			if(movieYear != null) {
-				movieYear.setText(String.valueOf(movie.getYear()));
-			}
-			if(poster != null) {
-				poster.setImageResource(R.drawable.ic_launcher);
-			}
+
+			movieTitle.setText(movie.getTitle());
+			moviePlot.setText(movie.getPlot());
+			movieTagline.setText(movie.getTagline());
+			movieYear.setText(String.valueOf(movie.getYear()));
+			//TODO: get actual movie poster from cache
+	//		poster.setImageResource(R.drawable.ic_launcher);
+			ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
+			
 		} else {
 			Log.e("MovieViewActivity", "Null bundle passed to movieview");
-			//TODO: do some kind of user-oriented recovery here
 		}
 	}
 }
