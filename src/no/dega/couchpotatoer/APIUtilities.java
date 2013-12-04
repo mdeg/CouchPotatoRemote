@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
@@ -27,31 +28,35 @@ addApiView('search', self.search, docs = {
 'q': {'desc': 'The (partial) movie name you want to search for'},
 'type': {'desc': 'Search for a specific media type. Leave empty to search all.'},
 */
-	public static void searchForMovie(String name, Context context) {
+	
+	//TODO: wait for result
+	public static ArrayList<Movie> searchForMovie(String name, Context context) {
 		String query = "movie.search?q=" + name;
+		ArrayList<Movie> searchResults = new ArrayList<Movie>();
 		try {
 			JSONObject response = new JSONObject(APIUtilities.makeRequest(query, context));
-			JSONArray movies = response.getJSONArray("movies");
-			//TODO: handle when search fails
-			if(movies.length() <= 0) {
-				//TODO: do something
+
+			//If it fails just return an empty list
+			if(!response.getBoolean("success")) {
+				Log.e("searchForMovie", "Search for " + name + " failed.");
 			}
+			JSONArray movies = response.getJSONArray("movies");
+			
 			for(int i = 0; i < movies.length(); i++) {
 				JSONObject movie = movies.getJSONObject(i);
 				
 				String title = movie.getJSONArray("titles").getString(0);
-				String poster = movie.getJSONObject("images").getJSONArray("poster").getString(0);
+				//String poster = movie.getJSONObject("images").getJSONArray("poster").getString(0);
 				String year = movie.getString("year");
-				//TODO: do something here (create movie? just display directly?
-				//Subclass movie? Create new object entirely? Make them both inherit from an interface?
-				//Abstract? Both inherit from common object?
 
-				
+				Movie result = new Movie(title, year);
+				searchResults.add(result);
 			}
 		} catch(JSONException e) {
 			e.printStackTrace();
 		}
-		
+		return searchResults;
+
 	}
 
 	
@@ -107,6 +112,7 @@ addApiView('search', self.search, docs = {
 	public static SparseArray<Movie> parseMovieList(boolean isWanted, Context context) {
 		//Construct the right query for the type of movie we're looking for
 		String query = "movie.list?status=";
+				
 		if(isWanted) {
 			query = query + "active";
 		} else {
@@ -145,7 +151,7 @@ addApiView('search', self.search, docs = {
 				String title = info.getJSONArray("titles").getString(0);
 				String tagline = info.getString("tagline");
 				String plot = info.getString("plot");
-				int year = info.getInt("year");
+				String year = info.getString("year");
 				String fullPath = jsonMoviesList.getJSONObject(i).getJSONObject("library").getJSONArray("files").getJSONObject(0).getString("path");
 				String posterFileName = "";
 

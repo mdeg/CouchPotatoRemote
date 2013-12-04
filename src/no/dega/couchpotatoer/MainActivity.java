@@ -53,19 +53,14 @@ public class MainActivity extends FragmentActivity implements
 		//See: https://github.com/nostra13/Android-Universal-Image-Loader
 		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
 				cacheInMemory(true).cacheOnDisc(true).build();
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
         	.defaultDisplayImageOptions(defaultOptions).build();
-        ImageLoader.getInstance().init(config);
+		ImageLoader.getInstance().init(config);
 		
 		setContentView(R.layout.activity_main);
 
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-		
-		
-		
-		APIUtilities.searchForMovie("Barakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkka", this);
-		
-		
+
 		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -108,14 +103,22 @@ public class MainActivity extends FragmentActivity implements
 		// Inflate the menu; this adds items to the action bar if it is present.
 		//This is where settings appear from 
 		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.main_activity_actions, menu);
 		return true;
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
+		//Settings
 		case R.id.action_settings:
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
+			Intent settings = new Intent(this, SettingsActivity.class);
+			startActivity(settings);
+			return true;
+		//Add movie
+		case R.id.action_addmovie:
+			Intent addMovie = new Intent(this, AddMovieActivity.class);
+			startActivity(addMovie);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

@@ -13,16 +13,17 @@ public class Movie implements Parcelable {
 	private String plot;
 	private String posterUri;
 
-	private int year;
+	private String year;
 	private String[] actors;
 	private String[] directors;
+	
 	//TODO: can I remove this?
 	public Movie() {
 	}
 
 	//Full constructor used when parsing from JSON
 	public Movie(int libraryId, String title, String tagline, String posterUri,
-			String plot, int year, String[] actors, String[] directors) {
+			String plot, String year, String[] actors, String[] directors) {
 		this.libraryId = libraryId;
 		this.title = title;
 		this.tagline = tagline;
@@ -32,6 +33,13 @@ public class Movie implements Parcelable {
 		this.directors = directors;
 		this.posterUri = posterUri;
 	}
+	//Constructor for search results
+	public Movie(String title, String year) {
+		this.title = title;
+		this.year = year;
+	}
+	
+	
 	//Reconstitute from parcel
 	public Movie(Parcel par) {
 		readFromParcel(par);
@@ -59,7 +67,7 @@ public class Movie implements Parcelable {
 		this.tagline = par.readString();
 		this.plot = par.readString();
 		this.posterUri = par.readString();
-		this.year = par.readInt();
+		this.year = par.readString();
 		this.actors = par.createStringArray();
 		this.directors = par.createStringArray();
 	}
@@ -71,7 +79,7 @@ public class Movie implements Parcelable {
 		dest.writeString(this.tagline);
 		dest.writeString(this.plot);
 		dest.writeString(this.posterUri);
-		dest.writeInt(this.year);
+		dest.writeString(this.year);
 		dest.writeStringArray(this.actors);
 		dest.writeStringArray(this.directors);
 	}
@@ -109,10 +117,10 @@ public class Movie implements Parcelable {
 	public void setTagline(String tagline) {
 		this.tagline = tagline;
 	}
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 	public String[] getActors() {

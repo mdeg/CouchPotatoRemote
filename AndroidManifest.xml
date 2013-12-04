@@ -41,6 +41,10 @@
             android:name="no.dega.couchpotatoer.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name="no.dega.couchpotatoer.AddMovieActivity"
+            android:label="@string/title_activity_add_movie" >
+        </activity>
     </application>
 
 </manifest>
