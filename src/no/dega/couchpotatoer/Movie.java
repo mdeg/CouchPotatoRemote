@@ -4,11 +4,12 @@ package no.dega.couchpotatoer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
 public class Movie implements Parcelable {
 	private int libraryId;
-	//TODO: experiment with final on these
+	private String imdbId;
+
 	private String title;
+
 	private String tagline;
 	private String plot;
 	private String posterUri;
@@ -17,10 +18,6 @@ public class Movie implements Parcelable {
 	private String[] actors;
 	private String[] directors;
 	
-	//TODO: can I remove this?
-	public Movie() {
-	}
-
 	//Full constructor used when parsing from JSON
 	public Movie(int libraryId, String title, String tagline, String posterUri,
 			String plot, String year, String[] actors, String[] directors) {
@@ -34,15 +31,11 @@ public class Movie implements Parcelable {
 		this.posterUri = posterUri;
 	}
 	//Constructor for search results
-	public Movie(String title, String year) {
+	public Movie(String title, String year, String imdbId) {
+		this.imdbId = imdbId;
 		this.title = title;
-		if(year == null) {
-			this.year = "No Year";
-		} else {
-			this.year = year;
-		}
+		this.year = year;
 	}
-	
 	
 	//Reconstitute from parcel
 	public Movie(Parcel par) {
@@ -93,7 +86,9 @@ public class Movie implements Parcelable {
 	}
 	
 	//Getters and setters
-
+	public String getImdbId() {
+		return imdbId;
+	}
 
 	public String getPlot() {
 		return plot;

@@ -25,16 +25,16 @@ public class SearchResultsFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
+	
+		this.searchResults = APIUtilities.searchForMovie(getArguments().getString("NameToSearch"), getActivity());
 
-		this.searchResults = APIUtilities.searchForMovie("Baraka", getActivity());
-		
 		return rootView;
 	}
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
 		Movie movie = (Movie) getListAdapter().getItem(position);
-		
-		//TODO: what to do when movie is added
+		//TODO: some kinda slide out thing for adding movies
+		APIUtilities.addMovie(movie, getActivity());
 	}
 }

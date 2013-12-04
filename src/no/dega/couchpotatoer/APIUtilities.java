@@ -21,13 +21,34 @@ import android.util.SparseArray;
 
 public class APIUtilities {
 	
-/*
+	/*
+	 *	Add movie by request "movie.add?title=X&identifier=Y"
+	 *	success=false means an invalid title was given.
+	 *	Unfortunately, the API gives no feedback if the title is valid but identifier is invalid.
+	 *	These will just fail silently.
+	 */
+	public static boolean addMovie(Movie movie, Context context) {		
+		StringBuilder uri = new StringBuilder("movie.add");
+		uri = uri.append("?title=").append(movie.getTitle()).append("&identifier=").
+				append(movie.getImdbId());
+		try {
+			JSONObject response = new JSONObject(APIUtilities.makeRequest(uri.toString(), context));
+			if(!response.getBoolean("success")) {
+				return false;
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
-addApiView('search', self.search, docs = {
-'desc': 'Search the info in providers for a movie',
-'q': {'desc': 'The (partial) movie name you want to search for'},
-'type': {'desc': 'Search for a specific media type. Leave empty to search all.'},
-*/
+		return true;
+	}
+	
+	/*	Search for a movie using CouchPotato's search - format "movie.search?q=NAME"
+	 *	Returns a list of movies that match or loosely match the given name.
+	 *	This is used when adding a new movie.
+	 * 
+	 * 
+	 */
 	
 	//TODO: wait for result
 	public static ArrayList<Movie> searchForMovie(String name, Context context) {
@@ -36,7 +57,7 @@ addApiView('search', self.search, docs = {
 		try {
 			JSONObject response = new JSONObject(APIUtilities.makeRequest(query, context));
 
-			//If it fails just return an empty list
+			//If it fails or is empty we will return an empty list.
 			if(!response.getBoolean("success")) {
 				Log.e("searchForMovie", "Search for " + name + " failed.");
 			}
@@ -47,9 +68,12 @@ addApiView('search', self.search, docs = {
 				
 				String title = movie.getJSONArray("titles").getString(0);
 				//String poster = movie.getJSONObject("images").getJSONArray("poster").getString(0);
+				//TODO: this throws occasional exceptions - find out why
 				String year = movie.getString("year");
+				
+				String imdbId = movie.getString("imdb");
 
-				Movie result = new Movie(title, year);
+				Movie result = new Movie(title, year, imdbId);
 				searchResults.add(result);
 			}
 		} catch(JSONException e) {
@@ -108,7 +132,6 @@ addApiView('search', self.search, docs = {
 	//Status: active = true = on Wanted list
 	//					false = on Manage list
 	//Returns a SparseArray of Movie's built from the list (which can be empty)
-	//TODO: is there a way to do this without having to pass a context?
 	public static SparseArray<Movie> parseMovieList(boolean isWanted, Context context) {
 		//Construct the right query for the type of movie we're looking for
 		String query = "movie.list?status=";
@@ -170,7 +193,7 @@ addApiView('search', self.search, docs = {
 				String ipPref = sharedPref.getString("pref_key_ip", "IP_FIND_FAIL");
 				String apiPref = sharedPref.getString("pref_key_api", "API_FIND_FAIL");
 				String portPref = sharedPref.getString("pref_key_port", "PORT_FIND_FAIL");
-					//TODO: this would rely on home connections' upload speed - grab from internet instead?
+				//TODO: this would rely on home connections' upload speed - grab from internet instead?
 				StringBuilder posterUri = new StringBuilder();
 				posterUri = posterUri.append("http://").append(ipPref).append(":").append(portPref).append("/api/")
 						.append(apiPref).append("/file.cache/").append(posterFileName);

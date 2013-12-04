@@ -4,7 +4,6 @@ package no.dega.couchpotatoer;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.inputmethod.EditorInfo;
@@ -30,11 +29,13 @@ public class AddMovieActivity extends Activity {
 					//Start fragment
 					FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 					SearchResultsFragment fragment = new SearchResultsFragment();
-					//TODO: fix this
-					//fragmentTransaction.add(R.id.movie_to_add, fragment);
+					
+					Bundle args = new Bundle();
+					args.putString("NameToSearch", v.getText().toString());
+					fragment.setArguments(args);
+					
 					fragmentTransaction.replace(R.id.searchlist_placeholder, fragment);
 					fragmentTransaction.commit();
-//					getFragmentManager().executePendingTransactions();
 
 					handled = true;
 				}
