@@ -8,6 +8,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AddMovie" >
 
-
+	<EditText
+	    android:id="@+id/movie_to_add"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:inputType="text"
+	    android:imeOptions="actionSearch"
+	    />
+	
+	<RelativeLayout 
+		android:id="@+id/searchlist_placeholder"
+   		 android:layout_width="match_parent"
+   		 android:layout_height="wrap_content"
+   		 android:layout_below="@id/movie_to_add"
+    
+    tools:context=".AddMovie"
+    ></RelativeLayout>
+	    
 
 </RelativeLayout>

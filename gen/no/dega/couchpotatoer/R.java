@@ -30,20 +30,22 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_addmovie=0x7f0a000d;
-        public static final int action_settings=0x7f0a000c;
-        public static final int adapter_poster=0x7f0a0006;
-        public static final int adapter_title=0x7f0a0007;
-        public static final int adapter_year=0x7f0a0008;
-        public static final int movieview_plot=0x7f0a0005;
-        public static final int movieview_poster=0x7f0a0002;
-        public static final int movieview_tagline=0x7f0a0003;
-        public static final int movieview_title=0x7f0a0001;
-        public static final int movieview_year=0x7f0a0004;
-        public static final int pager=0x7f0a0000;
-        public static final int searchadapter_title=0x7f0a0009;
-        public static final int searchadapter_year=0x7f0a000a;
-        public static final int section_label=0x7f0a000b;
+        public static final int action_addmovie=0x7f0a000f;
+        public static final int action_settings=0x7f0a000e;
+        public static final int adapter_poster=0x7f0a0008;
+        public static final int adapter_title=0x7f0a0009;
+        public static final int adapter_year=0x7f0a000a;
+        public static final int movie_to_add=0x7f0a0000;
+        public static final int movieview_plot=0x7f0a0007;
+        public static final int movieview_poster=0x7f0a0004;
+        public static final int movieview_tagline=0x7f0a0005;
+        public static final int movieview_title=0x7f0a0003;
+        public static final int movieview_year=0x7f0a0006;
+        public static final int pager=0x7f0a0002;
+        public static final int searchadapter_title=0x7f0a000b;
+        public static final int searchadapter_year=0x7f0a000c;
+        public static final int searchlist_placeholder=0x7f0a0001;
+        public static final int section_label=0x7f0a000d;
     }
     public static final class layout {
         public static final int activity_add_movie=0x7f030000;

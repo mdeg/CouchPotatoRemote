@@ -28,7 +28,7 @@ public class SearchResultsAdapter<T> extends ArrayAdapter<Movie> {
 	    View v = convertView;
 	    if(v == null) {
 	        LayoutInflater inflater = LayoutInflater.from(getContext());
-	        v = inflater.inflate(R.layout.adapter_movielist, null);
+	        v = inflater.inflate(R.layout.adapter_searchresults, null);
 	    }
 
 	    Movie movie = this.movies.get(position);
@@ -38,7 +38,7 @@ public class SearchResultsAdapter<T> extends ArrayAdapter<Movie> {
 	        TextView year = (TextView) v.findViewById(R.id.searchadapter_year);
 	        
 	        title.setText(movie.getTitle());
-            year.setText(String.valueOf(movie.getYear()));
+            year.setText(movie.getYear());
 	    }
 	    return v;
 	}

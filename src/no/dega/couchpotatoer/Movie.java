@@ -36,7 +36,11 @@ public class Movie implements Parcelable {
 	//Constructor for search results
 	public Movie(String title, String year) {
 		this.title = title;
-		this.year = year;
+		if(year == null) {
+			this.year = "No Year";
+		} else {
+			this.year = year;
+		}
 	}
 	
 	
