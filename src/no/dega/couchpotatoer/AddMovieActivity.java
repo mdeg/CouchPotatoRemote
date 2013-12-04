@@ -17,7 +17,8 @@ public class AddMovieActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_movie);
-		
+	    getActionBar().setDisplayHomeAsUpEnabled(true);
+
 		//Listener for when user hits search
 		//TODO: add a button to the right of the search bar
 		EditText editText = (EditText) findViewById(R.id.movie_to_add);

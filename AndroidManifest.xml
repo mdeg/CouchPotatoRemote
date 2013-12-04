@@ -35,7 +35,8 @@
         </activity>
         <activity
             android:name="no.dega.couchpotatoer.MovieViewActivity"
-            android:label="@string/movie_view" >
+            android:label="@string/movie_view"
+            android:parentActivityName="no.dega.couchpotatoer.MainActivity" >
         </activity>
         <activity
             android:name="no.dega.couchpotatoer.SettingsActivity"
@@ -43,7 +44,14 @@
         </activity>
         <activity
             android:name="no.dega.couchpotatoer.AddMovieActivity"
-            android:label="@string/title_activity_add_movie" >
+            android:label="@string/title_activity_add_movie" 
+            android:parentActivityName="no.dega.couchpotatoer.MainActivity"
+            >
+            <!-- Compatibility support -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="no.dega.couchpotatoer.MainActivity"
+                />
         </activity>
     </application>
 

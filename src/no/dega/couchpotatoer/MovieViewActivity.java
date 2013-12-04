@@ -19,6 +19,9 @@ public class MovieViewActivity extends Activity {
 
 		setContentView(R.layout.activity_movie_view);
 
+	    getActionBar().setDisplayHomeAsUpEnabled(true);
+
+		
 		Bundle bun = getIntent().getExtras();
 		TextView movieTitle = (TextView) findViewById(R.id.movieview_title);
 		TextView moviePlot = (TextView) findViewById(R.id.movieview_plot);
