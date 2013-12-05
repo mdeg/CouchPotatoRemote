@@ -14,6 +14,7 @@
 	    android:layout_height="wrap_content"
 	    android:inputType="text"
 	    android:imeOptions="actionSearch"
+        android:windowSoftInputMode="stateVisible"
 	    />
 	
 	<RelativeLayout 

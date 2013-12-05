@@ -1,4 +1,5 @@
-package no.dega.couchpotatoer;
+package no.dega.couchpotatoremote;
+
 
 import junit.framework.TestCase;
 

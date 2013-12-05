@@ -1,4 +1,4 @@
-package no.dega.couchpotatoer;
+package no.dega.couchpotatoremote;
 
 import java.util.ArrayList;
 

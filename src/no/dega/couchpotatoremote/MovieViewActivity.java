@@ -1,4 +1,4 @@
-package no.dega.couchpotatoer;
+package no.dega.couchpotatoremote;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -30,19 +30,23 @@ public class MovieViewActivity extends Activity {
 		ImageView poster = (ImageView) findViewById(R.id.movieview_poster);
 		
 		if(bun != null) {
-			//TODO: change me when project name changes
-			Movie movie = bun.getParcelable("no.dega.couchpotatoer.Movie");
-			Log.d("AfterParcel", movie.toString());
-			
-			this.setTitle(movie.getTitle());
+			Movie movie = bun.getParcelable("no.dega.couchpotatoremote.Movie");
 
-			movieTitle.setText(movie.getTitle());
-			moviePlot.setText(movie.getPlot());
-			movieTagline.setText(movie.getTagline());
-			movieYear.setText(String.valueOf(movie.getYear()));
-			//Grab from cache, or network if not cached
-			ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
-			
+            if(movie == null) {
+                Log.e("MovieViewActivity", "Movie passed to MovieView is null (parcelling may have failed)");
+            } else {
+
+                Log.d("AfterParcel", movie.toString());
+
+                this.setTitle(movie.getTitle());
+
+                movieTitle.setText(movie.getTitle());
+                moviePlot.setText(movie.getPlot());
+                movieTagline.setText(movie.getTagline());
+                movieYear.setText(String.valueOf(movie.getYear()));
+                //Grab from cache, or network if not cached
+                ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
+            }
 		} else {
 			Log.e("MovieViewActivity", "Null bundle passed to movieview");
 		}

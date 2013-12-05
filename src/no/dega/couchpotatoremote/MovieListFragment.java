@@ -1,4 +1,4 @@
-package no.dega.couchpotatoer;
+package no.dega.couchpotatoremote;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,12 @@ public class MovieListFragment extends ListFragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
 		this.isWanted = getArguments().getBoolean("isWanted");
-		this.movies = APIUtilities.parseMovieList(this.isWanted, getActivity());
+        //TODO: this will crash when not connected to network, should replace with default when movies = null
+        if((movies = APIUtilities.parseMovieList(this.isWanted, getActivity())) != null) {
+            this.movies = movies;
+        } else {
+            this.movies = new SparseArray<Movie>();
+        }
 		return rootView;
 	}
 	//If a user clicks on a movie, take them to the appropriate movie display
@@ -54,8 +59,7 @@ public class MovieListFragment extends ListFragment {
 		Log.d("toString:", movie.toString());
 		
 		Intent intent = new Intent(getActivity(), MovieViewActivity.class);
-		//TODO: change me when project name changes
-		intent.putExtra("no.dega.couchpotatoer.Movie", movie);
+		intent.putExtra("no.dega.couchpotatoremote.Movie", movie);
 		startActivity(intent);
 	}
 }

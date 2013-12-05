@@ -1,4 +1,4 @@
-package no.dega.couchpotatoer;
+package no.dega.couchpotatoremote;
 
 //import android.graphics.drawable.Drawable;
 import android.os.Parcel;
@@ -24,7 +24,7 @@ public class Movie implements Parcelable {
 		this.libraryId = libraryId;
 		this.title = title;
 		this.tagline = tagline;
-		this.year = year;
+        this.year = year;
 		this.plot = plot;
 		this.actors = actors;
 		this.directors = directors;
@@ -34,7 +34,7 @@ public class Movie implements Parcelable {
 	public Movie(String title, String year, String imdbId) {
 		this.imdbId = imdbId;
 		this.title = title;
-		this.year = year;
+        this.year = year;
 	}
 	
 	//Reconstitute from parcel

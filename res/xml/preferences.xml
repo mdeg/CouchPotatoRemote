@@ -3,7 +3,7 @@
 	<EditTextPreference 
 	    android:key="pref_key_api"
         android:title="@string/api_key_pref"    
-        android:defaultValue="79fc9813360d4f288305346b54baa7da"
+        android:defaultValue="CHANGEME"
         />
 	<EditTextPreference
 	    android:key="pref_key_ip"

@@ -1,4 +1,4 @@
-package no.dega.couchpotatoer;
+package no.dega.couchpotatoremote;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

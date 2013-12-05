@@ -1,4 +1,4 @@
-package no.dega.couchpotatoer;
+package no.dega.couchpotatoremote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -68,9 +68,13 @@ public class APIUtilities {
 				
 				String title = movie.getJSONArray("titles").getString(0);
 				//String poster = movie.getJSONObject("images").getJSONArray("poster").getString(0);
-				//TODO: this throws occasional exceptions - find out why
-				String year = movie.getString("year");
-				
+                //Year might be null if CouchPotato has no year for it in its database.
+                String year;
+                if(!movie.isNull("year")) {
+                    year = movie.getString("year");
+                } else {
+                    year = "";
+                }
 				String imdbId = movie.getString("imdb");
 
 				Movie result = new Movie(title, year, imdbId);
@@ -85,8 +89,10 @@ public class APIUtilities {
 
 	
 	
-	//Make a request to the API
-	//Returns String of result (which will probably be a JSON string)
+	/*
+	*   Make a request to the API
+	*   Returns String of result (which will probably be a JSON string)
+    */
 	public static String makeRequest(String request, Context context) {
 		if((request == null) || (request.length() <= 0)) {
 			Log.e("APIUtilities.makeRequest", "Invalid string passed to makeRequest.");
@@ -128,10 +134,11 @@ public class APIUtilities {
 		} 
 		return builder.toString();
 	}
-
-	//Status: active = true = on Wanted list
-	//					false = on Manage list
-	//Returns a SparseArray of Movie's built from the list (which can be empty)
+    /*
+	*   Status: active = true = on Wanted list
+	*   					false = on Manage list
+	*   Returns a SparseArray of Movie's built from the list (which can be empty if there are no movies)
+    */
 	public static SparseArray<Movie> parseMovieList(boolean isWanted, Context context) {
 		//Construct the right query for the type of movie we're looking for
 		String query = "movie.list?status=";
@@ -168,19 +175,29 @@ public class APIUtilities {
 			for(int i = 0; i < jsonMoviesList.length(); i++) {
 				
 				int libraryId = jsonMoviesList.getJSONObject(i).getInt("library_id");
-				JSONObject info = jsonMoviesList.getJSONObject(i).getJSONObject("library").getJSONObject("info");
+				JSONObject info = jsonMoviesList.getJSONObject(i).getJSONObject("library").
+                        getJSONObject("info");
 			//	Log.d(this.toString(), "Movie JSON String: " + info.toString());					
 				
 				String title = info.getJSONArray("titles").getString(0);
 				String tagline = info.getString("tagline");
 				String plot = info.getString("plot");
-				String year = info.getString("year");
-				String fullPath = jsonMoviesList.getJSONObject(i).getJSONObject("library").getJSONArray("files").getJSONObject(0).getString("path");
+
+                String year;
+                if(!info.isNull("year")) {
+                    year = info.getString("year");
+                } else {
+                    year = "";
+                }
+
+				String fullPath = jsonMoviesList.getJSONObject(i).getJSONObject("library").
+                        getJSONArray("files").getJSONObject(0).getString("path");
 				String posterFileName = "";
 
 				//Grab the file name from the string
 				for(int k = fullPath.length() - 1; k > 0; k--) {
-					if(fullPath.charAt(k) == '\\' ) {
+                    // Need to handle both / and \ as separators (Windows/Unix)
+					if((fullPath.charAt(k) == '\\') || (fullPath.charAt(k) == '/') ) {
 						posterFileName = fullPath.substring(k + 1, fullPath.length());
 						break;
 					}
@@ -195,8 +212,8 @@ public class APIUtilities {
 				String portPref = sharedPref.getString("pref_key_port", "PORT_FIND_FAIL");
 				//TODO: this would rely on home connections' upload speed - grab from internet instead?
 				StringBuilder posterUri = new StringBuilder();
-				posterUri = posterUri.append("http://").append(ipPref).append(":").append(portPref).append("/api/")
-						.append(apiPref).append("/file.cache/").append(posterFileName);
+				posterUri = posterUri.append("http://").append(ipPref).append(":").append(portPref)
+                        .append("/api/").append(apiPref).append("/file.cache/").append(posterFileName);
 				
 				JSONArray jsonActors = info.getJSONArray("actors");
 				String[] actors = new String[jsonActors.length()];
