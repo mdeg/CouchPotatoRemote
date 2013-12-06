@@ -42,6 +42,7 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 	        
 	        title.setText(movie.getTitle());
             year.setText(String.valueOf(movie.getYear()));
+
             ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
 	    }
 	    return v;

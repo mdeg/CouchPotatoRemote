@@ -1,2 +1,2 @@
-CouchPotatoer
+CouchPotato Remote
 =============

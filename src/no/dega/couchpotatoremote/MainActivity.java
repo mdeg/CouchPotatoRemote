@@ -41,13 +41,7 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		//Temporarily allow networking on main thread
-		//TODO: remove this and work out threading
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().
-				permitAll().build();
-		StrictMode.setThreadPolicy(policy);
-		
+
 		//TODO: add showImageOnFail, showImageOnLoading
 		//Create settings for and initialise nostra13's ImageLoader
 		//See: https://github.com/nostra13/Android-Universal-Image-Loader

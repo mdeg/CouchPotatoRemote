@@ -45,6 +45,7 @@ public class MovieViewActivity extends Activity {
                 movieTagline.setText(movie.getTagline());
                 movieYear.setText(String.valueOf(movie.getYear()));
                 //Grab from cache, or network if not cached
+
                 ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
             }
 		} else {
