@@ -16,15 +16,22 @@
 	    android:imeOptions="actionSearch"
         android:windowSoftInputMode="stateVisible"
 	    />
-	
+	<!-- Placeholder ViewGroup that we replace when we get search results -->
 	<RelativeLayout 
 		android:id="@+id/searchlist_placeholder"
    		 android:layout_width="match_parent"
    		 android:layout_height="wrap_content"
    		 android:layout_below="@id/movie_to_add"
-    
-    tools:context=".AddMovie"
-    ></RelativeLayout>
+        tools:context=".AddMovie"
+        android:paddingTop="10dp">
+        <TextView
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:text="@string/prompt_do_search"
+            android:gravity="center"
+            android:textSize="20dp" />
+
+    </RelativeLayout>
 	    
 
 </RelativeLayout>

@@ -2,7 +2,6 @@ package no.dega.couchpotatoremote;
 
 import java.util.ArrayList;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.util.Log;
@@ -10,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +46,7 @@ public class SearchResultsFragment extends ListFragment {
         String request = APIUtilities.formatRequest(uri.toString(), getActivity());
         new AddMovieTask().execute(request);
 
+        Toast.makeText(getActivity(), movie.getTitle(), Toast.LENGTH_LONG).show();
 	}
 
     private ArrayList<Movie> parseMovieSearch(String resp) {
@@ -67,18 +68,31 @@ public class SearchResultsFragment extends ListFragment {
             for(int i = 0; i < movies.length(); i++) {
                 JSONObject movie = movies.getJSONObject(i);
 
-                String title = movie.getJSONArray("titles").getString(0);
-                //String poster = movie.getJSONObject("images").getJSONArray("poster").getString(0);
-                //Year might be null if CouchPotato has no year for it in its database.
+                String title;
+                if(!movie.isNull("titles")) {
+                    title = movie.getJSONArray("titles").getString(0);
+                } else {
+                    title = "";
+                }
+
                 String year;
                 if(!movie.isNull("year")) {
                     year = movie.getString("year");
                 } else {
                     year = "";
                 }
-                String imdbId = movie.getString("imdb");
 
-                Movie result = new Movie(title, year, imdbId);
+                String dbId;
+                if(movie.has("imdb") && !movie.isNull("imdb")) {
+                    dbId = movie.getString("imdb");
+                } else if (movie.has("tmdb_id") && !movie.isNull("tmdb_id")) {
+                    dbId = movie.getString("tmdb_id");
+                } else {
+                    Log.e("parseMovieSearch", "Movie returned from the search with no database ID.");
+                    dbId = "";
+                }
+
+                Movie result = new Movie(title, year, dbId);
                 searchResults.add(result);
             }
         } catch(JSONException e) {
@@ -88,6 +102,10 @@ public class SearchResultsFragment extends ListFragment {
     }
 
     private boolean parseAddMovieResponse(String resp) {
+        if((resp == null) || (resp.length() <= 0)) {
+            Log.e("SearchResultsFragment:parseAddMovieResponse", "Invalid response from addMovie");
+            return false;
+        }
         try {
             JSONObject response = new JSONObject(resp);
             if(!response.getBoolean("success")) {

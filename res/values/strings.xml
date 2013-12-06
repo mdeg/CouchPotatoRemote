@@ -13,6 +13,6 @@
     <string name="title_manage">Manage</string>
     <string name="add_movie_button">Add Movie</string>
     <string name="title_activity_add_movie">Add Movie</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="prompt_do_search">Search for a movie in the field above.</string>
 
 </resources>

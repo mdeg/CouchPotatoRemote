@@ -11,17 +11,13 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="DEBUG" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2f28f6e4-9194-4b90-b314-5694612d7ee2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIRequestAsyncTask.java" afterPath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIRequestAsyncTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIUtilities.java" afterPath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIUtilities.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/AddMovieActivity.java" afterPath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/AddMovieActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MainActivity.java" afterPath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListFragment.java" afterPath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/SearchResultsFragment.java" afterPath="$PROJECT_DIR$/src/no/dega/couchpotatoremote/SearchResultsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/fragment_movie_list.xml" afterPath="$PROJECT_DIR$/res/layout/fragment_movie_list.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/activity_add_movie.xml" afterPath="$PROJECT_DIR$/res/layout/activity_add_movie.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gradle.iws" />
@@ -80,7 +76,23 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIRequestAsyncTask.java" line="30" class="no.dega.couchpotatoremote.APIRequestAsyncTask" package="no.dega.couchpotatoremote">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -92,7 +104,7 @@
             <file leaf-file-name="APIRequestAsyncTask.java" pinned="false" current="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIRequestAsyncTask.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="55" column="0" selection-start="1929" selection-end="1929" vertical-scroll-proportion="0.45404512" vertical-offset="0" max-vertical-offset="1817">
+                  <state line="30" column="0" selection-start="872" selection-end="872" vertical-scroll-proportion="0.24766098" vertical-offset="0" max-vertical-offset="1817">
                     <folding>
                       <element signature="imports" expanded="true" />
                     </folding>
@@ -113,19 +125,6 @@
     <splitter split-orientation="horizontal" split-proportion="0.5070856">
       <split-first>
         <leaf>
-          <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MainActivity.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="64" column="45" selection-start="2398" selection-end="2398" vertical-scroll-proportion="0.0" vertical-offset="661" max-vertical-offset="2820">
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#2768#2941#0" expanded="true" />
-                    <element signature="e#2934#2935#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="MovieViewActivity.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieViewActivity.java">
               <provider selected="true" editor-type-id="text-editor">
@@ -138,18 +137,37 @@
           <file leaf-file-name="APIUtilities.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIUtilities.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="27" column="30" selection-start="1160" selection-end="1160" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="780">
-                  <folding>
-                    <marker date="1386330254086" expanded="true" signature="1821:1871" placeholder="//..." />
-                  </folding>
+                <state line="32" column="99" selection-start="1354" selection-end="1354" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="780">
+                  <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="AddMovieActivity.java" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="Object.class" pinned="false" current="false" current-in-tab="true">
+            <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/java/lang/Object.class">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="29" column="29" selection-start="900" selection-end="988" vertical-scroll-proportion="0.6511628" vertical-offset="0" max-vertical-offset="645">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="fragment_search_results.xml" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/res/layout/fragment_search_results.xml">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="11" column="0" selection-start="452" selection-end="452" vertical-scroll-proportion="-6.3461537" vertical-offset="0" max-vertical-offset="390">
+                  <folding />
+                </state>
+              </provider>
+              <provider editor-type-id="android-designer">
+                <state />
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="AddMovieActivity.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/AddMovieActivity.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="34" column="31" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.30906388" vertical-offset="152" max-vertical-offset="825">
+                <state line="45" column="5" selection-start="1351" selection-end="1351" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="825">
                   <folding />
                 </state>
               </provider>
@@ -162,7 +180,7 @@
           <file leaf-file-name="Movie.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/Movie.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="91" column="0" selection-start="2277" selection-end="2277" vertical-scroll-proportion="0.0" vertical-offset="1080" max-vertical-offset="2130">
+                <state line="107" column="0" selection-start="2546" selection-end="2546" vertical-scroll-proportion="0.0" vertical-offset="1381" max-vertical-offset="2130">
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#2255#2256#0" expanded="true" />
@@ -175,7 +193,6 @@
                     <element signature="e#2456#2457#0" expanded="true" />
                     <element signature="e#2493#2494#0" expanded="true" />
                     <element signature="e#2516#2517#0" expanded="true" />
-                    <element signature="e#2544#2545#0" expanded="true" />
                     <element signature="e#2563#2564#0" expanded="true" />
                     <element signature="e#2601#2602#0" expanded="true" />
                     <element signature="e#2626#2627#0" expanded="true" />
@@ -200,33 +217,23 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="MovieListAdapter.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListAdapter.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="48" column="5" selection-start="1521" selection-end="1521" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="690">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="SearchResultsFragment.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/SearchResultsFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="49" column="0" selection-start="1480" selection-end="1480" vertical-scroll-proportion="0.0" vertical-offset="332" max-vertical-offset="1425">
+                <state line="142" column="9" selection-start="4951" selection-end="4951" vertical-scroll-proportion="0.0" vertical-offset="1605" max-vertical-offset="2250">
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="method#parseMovieSearch#0;class#SearchResultsFragment#0" expanded="false" />
-                    <element signature="e#1597#1604#0" expanded="true" />
-                    <element signature="e#3716#3723#0" expanded="true" />
+                    <element signature="e#1680#1687#0" expanded="true" />
+                    <element signature="e#4346#4353#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="MovieListFragment.java" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="MovieListFragment.java" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="159" column="38" selection-start="5851" selection-end="5851" vertical-scroll-proportion="2.4545455" vertical-offset="765" max-vertical-offset="2730">
+                <state line="173" column="36" selection-start="6525" selection-end="6525" vertical-scroll-proportion="0.81395346" vertical-offset="2070" max-vertical-offset="2730">
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#2128#2135#0" expanded="true" />
@@ -284,9 +291,7 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/menu/main.xml" />
         <option value="$PROJECT_DIR$/res/layout/fragment_search_results.xml" />
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/AsyncResponse.java" />
         <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MakeRequestTask.java" />
         <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListAdapter.java" />
@@ -296,18 +301,20 @@
         <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieViewActivity.java" />
         <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIRequestAsyncTask.java" />
         <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MainActivity.java" />
-        <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/SearchResultsFragment.java" />
         <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIUtilities.java" />
-        <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListFragment.java" />
         <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/AddMovieActivity.java" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/res/layout/activity_add_movie.xml" />
+        <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/SearchResultsFragment.java" />
+        <option value="$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListFragment.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1080" />
+    <option name="x" value="1079" />
     <option name="y" value="503" />
-    <option name="width" value="1920" />
-    <option name="height" value="1175" />
+    <option name="width" value="1922" />
+    <option name="height" value="1176" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -399,7 +406,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
+              <option name="myItemId" value="values" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -620,8 +627,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1080" y="503" width="1920" height="1175" extended-state="0" />
-    <editor active="true" />
+    <frame x="1079" y="503" width="1922" height="1176" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -631,19 +638,19 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919848" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33206108" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33206108" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3310547" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32844576" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15758547" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34351146" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919848" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32844576" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15380605" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15741728" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919848" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="combo" />
@@ -664,42 +671,30 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+    <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieViewActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="62" selection-start="1152" selection-end="1152" vertical-scroll-proportion="0.0" vertical-offset="87" max-vertical-offset="690">
-          <folding>
-            <element signature="e#1042#1060#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/fragment_search_results.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="734" selection-end="734" vertical-scroll-proportion="0.51993066" vertical-offset="0" max-vertical-offset="577">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="54" selection-start="669" selection-end="669" vertical-scroll-proportion="0.3233831" vertical-offset="0" max-vertical-offset="603">
+        <state line="21" column="23" selection-start="491" selection-end="491" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIUtilitiesTest.java">
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/os/AsyncTask.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="2" selection-start="72" selection-end="72" vertical-scroll-proportion="0.058765914" vertical-offset="0" max-vertical-offset="1021">
+        <state line="34" column="62" selection-start="1458" selection-end="1458" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/app/Fragment.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="38" selection-start="1467" selection-end="1467" vertical-scroll-proportion="0.0" vertical-offset="290" max-vertical-offset="2625">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/Movie.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="0" selection-start="2277" selection-end="2277" vertical-scroll-proportion="0.0" vertical-offset="1080" max-vertical-offset="2130">
+        <state line="107" column="0" selection-start="2546" selection-end="2546" vertical-scroll-proportion="0.0" vertical-offset="1381" max-vertical-offset="2130">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2255#2256#0" expanded="true" />
@@ -712,7 +707,6 @@
             <element signature="e#2456#2457#0" expanded="true" />
             <element signature="e#2493#2494#0" expanded="true" />
             <element signature="e#2516#2517#0" expanded="true" />
-            <element signature="e#2544#2545#0" expanded="true" />
             <element signature="e#2563#2564#0" expanded="true" />
             <element signature="e#2601#2602#0" expanded="true" />
             <element signature="e#2626#2627#0" expanded="true" />
@@ -736,14 +730,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/fragment_movie_list.xml">
-      <provider editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="420">
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/widget/Toast.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="16" selection-start="396" selection-end="396" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="750">
           <folding />
         </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListAdapter.java">
@@ -753,87 +744,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/adapter_movielist.xml">
-      <provider editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="647">
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/app/ActionBar.class">
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/os/Looper.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="25" selection-start="1953" selection-end="1953" vertical-scroll-proportion="0.33333334" vertical-offset="605" max-vertical-offset="3075">
+        <state line="25" column="16" selection-start="766" selection-end="766" vertical-scroll-proportion="0.53491825" vertical-offset="0" max-vertical-offset="673">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieViewActivity.java">
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/os/Handler.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="23" selection-start="491" selection-end="491" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
+        <state line="17" column="16" selection-start="564" selection-end="564" vertical-scroll-proportion="0.33333334" vertical-offset="20" max-vertical-offset="1245">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MainActivity.java">
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/widget/AbsListView.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="45" selection-start="2398" selection-end="2398" vertical-scroll-proportion="0.0" vertical-offset="661" max-vertical-offset="2820">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2768#2941#0" expanded="true" />
-            <element signature="e#2934#2935#0" expanded="true" />
-          </folding>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4800">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/widget/AdapterView.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="19" selection-start="1067" selection-end="1067" vertical-scroll-proportion="0.33333334" vertical-offset="95" max-vertical-offset="1935">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/app/ListFragment.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/SearchResultsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="0" selection-start="1480" selection-end="1480" vertical-scroll-proportion="0.0" vertical-offset="332" max-vertical-offset="1425">
+        <state line="142" column="9" selection-start="4951" selection-end="4951" vertical-scroll-proportion="0.0" vertical-offset="1605" max-vertical-offset="2250">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#parseMovieSearch#0;class#SearchResultsFragment#0" expanded="false" />
-            <element signature="e#1597#1604#0" expanded="true" />
-            <element signature="e#3716#3723#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIRequestAsyncTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="0" selection-start="1929" selection-end="1929" vertical-scroll-proportion="0.45404512" vertical-offset="0" max-vertical-offset="1817">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="159" column="38" selection-start="5851" selection-end="5851" vertical-scroll-proportion="2.4545455" vertical-offset="765" max-vertical-offset="2730">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2128#2135#0" expanded="true" />
-            <element signature="e#6082#6089#0" expanded="true" />
-            <element signature="e#6405#6412#0" expanded="true" />
+            <element signature="e#1680#1687#0" expanded="true" />
+            <element signature="e#4346#4353#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIUtilities.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="30" selection-start="1160" selection-end="1160" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="780">
+        <state line="32" column="99" selection-start="1354" selection-end="1354" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="780">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/APIRequestAsyncTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="0" selection-start="872" selection-end="872" vertical-scroll-proportion="0.24766098" vertical-offset="0" max-vertical-offset="1817">
           <folding>
-            <marker date="1386330254086" expanded="true" signature="1821:1871" placeholder="//..." />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/AddMovieActivity.java">
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/java/lang/Object.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="31" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.30906388" vertical-offset="152" max-vertical-offset="825">
+        <state line="29" column="29" selection-start="900" selection-end="988" vertical-scroll-proportion="0.6511628" vertical-offset="0" max-vertical-offset="645">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/no/dega/couchpotatoremote/MovieListFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="173" column="36" selection-start="6525" selection-end="6525" vertical-scroll-proportion="0.81395346" vertical-offset="2070" max-vertical-offset="2730">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2128#2135#0" expanded="true" />
+            <element signature="e#6082#6089#0" expanded="true" />
+            <element signature="e#6405#6412#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
