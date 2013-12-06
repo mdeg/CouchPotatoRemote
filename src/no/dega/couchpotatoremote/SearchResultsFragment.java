@@ -2,7 +2,6 @@ package no.dega.couchpotatoremote;
 
 import java.util.ArrayList;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListFragment;
@@ -50,7 +49,6 @@ public class SearchResultsFragment extends ListFragment {
 
 	}
 
-    //TODO: wait for result
     private ArrayList<Movie> parseMovieSearch(String resp) {
 
         ArrayList<Movie> searchResults = new ArrayList<Movie>();
@@ -102,11 +100,8 @@ public class SearchResultsFragment extends ListFragment {
         return true;
     }
 
-    private class SearchForMovieTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            return APIUtilities.sendRequest(urls[0]);
-        }
+    private class SearchForMovieTask extends APIRequestAsyncTask<String, Void, String> {
+
         @Override
         protected void onPostExecute(String result) {
             ArrayList<Movie> searchResults = parseMovieSearch(result);
@@ -122,11 +117,8 @@ public class SearchResultsFragment extends ListFragment {
     }
 
     //TODO: some kinda slide out thing for adding movies
-    private class AddMovieTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            return APIUtilities.sendRequest(urls[0]);
-        }
+    private class AddMovieTask extends APIRequestAsyncTask<String, Void, String> {
+
         @Override
         protected void onPostExecute(String result) {
             //TODO: fill this out with UI responsiveness

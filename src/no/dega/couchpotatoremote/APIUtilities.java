@@ -136,6 +136,8 @@ public class APIUtilities {
         return constructUriFromPreferences(context) + request;
     }
 
+    //TODO: can probably move all this stuff to be in a subclass of AsyncTask and extend that as needed
+    //We shouldn't be sending a sendrequest outside of an async task so this should be safe
     public static String sendRequest(String uri) {
         StringBuilder builder = new StringBuilder();
         try {

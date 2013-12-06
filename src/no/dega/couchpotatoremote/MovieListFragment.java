@@ -91,10 +91,33 @@ public class MovieListFragment extends ListFragment {
                         getJSONObject("info");
                 //	Log.d(this.toString(), "Movie JSON String: " + info.toString());
 
-                String title = info.getJSONArray("titles").getString(0);
-                String tagline = info.getString("tagline");
-                String plot = info.getString("plot");
-                String posterUri = info.getJSONObject("images").getJSONArray("poster").getString(0);
+                //All of these JSON fields can be null, so we have to make sure we check for that
+                String title;
+                if(!info.isNull("titles")) {
+                    title = info.getJSONArray("titles").getString(0);
+                } else {
+                    title = "No title";
+                }
+
+                String tagline;
+                if(!info.isNull("tagline")) {
+                    tagline = info.getString("tagline");
+                } else {
+                    tagline = "No tagline";
+                }
+
+                String plot;
+                if(!info.isNull("plot")) {
+                    plot = info.getString("plot");
+                } else {
+                    plot = "No plot";
+                }
+                String posterUri;
+                if(!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
+                    posterUri = info.getJSONObject("images").getJSONArray("poster").getString(0);
+                } else {
+                    posterUri = "";
+                }
 
                 String year;
                 if(!info.isNull("year")) {
@@ -103,20 +126,28 @@ public class MovieListFragment extends ListFragment {
                     year = "";
                 }
 
-                JSONArray jsonActors = info.getJSONArray("actors");
-                String[] actors = new String[jsonActors.length()];
-                if(jsonActors != null) {
+                String[] actors;
+                if(!info.isNull("actors")) {
+                    JSONArray jsonActors = info.getJSONArray("actors");
+                    actors = new String[jsonActors.length()];
                     for(int j = 0; j < jsonActors.length(); j++) {
                         actors[j] = jsonActors.get(j).toString();
                     }
+                } else {
+                    actors = new String[0];
                 }
 
-                JSONArray jsonDirectors = info.getJSONArray("directors");
-                String[] directors = new String[jsonDirectors.length()];
-                if(jsonDirectors != null) {
-                    for(int j = 0; j < jsonDirectors.length(); j++) {
-                        directors[j] = jsonDirectors.get(j).toString();
+                String[] directors;
+                if(!info.isNull("directors")) {
+                    JSONArray jsonDirectors = info.getJSONArray("directors");
+                    directors = new String[jsonDirectors.length()];
+                    if(jsonDirectors != null) {
+                        for(int j = 0; j < jsonDirectors.length(); j++) {
+                            directors[j] = jsonDirectors.get(j).toString();
+                        }
                     }
+                } else {
+                    directors = new String[0];
                 }
 
                 Movie newMovie = new Movie(libraryId, title, tagline, posterUri, plot, year, actors,
@@ -130,11 +161,8 @@ public class MovieListFragment extends ListFragment {
     }
 
 
-    private class DownloadMovieListTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            return APIUtilities.sendRequest(urls[0]);
-        }
+    private class DownloadMovieListTask extends APIRequestAsyncTask<String, Void, String> {
+
 
         @Override
         protected void onPostExecute(String result) {
