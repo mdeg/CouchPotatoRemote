@@ -40,9 +40,8 @@ public class SearchResultsFragment extends ListFragment {
 
 		Movie movie = (Movie) getListAdapter().getItem(position);
 
-        StringBuilder uri = new StringBuilder("movie.add");
-        uri = uri.append("?title=").append(movie.getTitle()).append("&identifier=").
-                append(movie.getImdbId());
+        StringBuilder uri = new StringBuilder("movie.add?title=");
+        uri = uri.append(movie.getTitle()).append("&identifier=").append(movie.getImdbId());
 
         String request = APIUtilities.formatRequest(uri.toString(), getActivity());
         new AddMovieTask().execute(request);

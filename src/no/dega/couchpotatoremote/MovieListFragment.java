@@ -18,10 +18,6 @@ import org.json.JSONObject;
 
 //Displays a list of Movies
 public class MovieListFragment extends ListFragment {
-	//Indexed by CouchPotato's own libraryId
-	SparseArray<Movie> movies;
-	//True if this is the Wanted list; false if it's the Manage list
-	boolean isWanted;
 
 	public MovieListFragment() {
 
@@ -35,14 +31,12 @@ public class MovieListFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
+	    View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
         String query = "movie.list?status=";
-        if(getArguments().getBoolean("isWanted")) {
-            query = query + "active";
-        } else {
-            query = query + "done";
-        }
+
+        query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
+
         String request = APIUtilities.formatRequest(query, getActivity());
         new DownloadMovieListTask().execute(request);
 
@@ -51,9 +45,8 @@ public class MovieListFragment extends ListFragment {
 	//If a user clicks on a movie, take them to the appropriate movie display
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Log.d("List Position", ""+position);
 		Movie movie = (Movie) getListAdapter().getItem(position);
-		Log.d("toString:", movie.toString());
+		Log.d("MovieListFragment:onListItemClick", movie.toString());
 		
 		Intent intent = new Intent(getActivity(), MovieViewActivity.class);
 		intent.putExtra("no.dega.couchpotatoremote.Movie", movie);
@@ -162,11 +155,9 @@ public class MovieListFragment extends ListFragment {
 
 
     private class DownloadMovieListTask extends APIRequestAsyncTask<String, Void, String> {
-
-
         @Override
         protected void onPostExecute(String result) {
-
+            SparseArray<Movie> movies;
             //TODO: put them in alphabetical order
             if((movies = parseMovieList(result)) == null) {
                 movies = new SparseArray<Movie>();

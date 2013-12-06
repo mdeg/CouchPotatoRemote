@@ -6,7 +6,6 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -150,7 +149,7 @@ public class MainActivity extends FragmentActivity implements
 		//Instantiate fragment for the given page
 		@Override
 		public Fragment getItem(int position) {
-			Fragment fragment = (Fragment) new MovieListFragment();
+			Fragment fragment = new MovieListFragment();
 			Bundle args = new Bundle();
 			//Pos 0 = wanted. Pos 1 = manage
 			if(position == 0) {

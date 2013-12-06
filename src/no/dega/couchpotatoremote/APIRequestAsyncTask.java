@@ -12,8 +12,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by root on 12/6/13.
+/*
+*   Wrapper for AsyncTask
+    Clients should construct a full URI using APIUtilities.formatQuery() and pass it to this
+    Override onPreExecute/onPostExecute to do whatever is necessary
  */
 public class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String, Void, String> {
 
@@ -37,16 +39,17 @@ public class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask
                     builder.append(line);
                 }
             } else {
-                Log.e("APICommon.makeRequest", "Status code not 200, is: " + statusCode);
+                Log.e("APIRequestAsyncTask", "Status code not 200, is: " + statusCode);
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
-            Log.e("makeRequest", "HTTP protocol error.");
+            Log.e("APIRequestAsyncTask", "HTTP protocol error.");
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("makeRequest", "Could not connect to resource: API key may be missing or network not connected.");
+            Log.e("APIRequestAsyncTask", "Could not connect to resource: API key may be missing or network not connected.");
+            return null;
         }
         return builder.toString();
     }
-
 }

@@ -28,15 +28,7 @@ public class AddMovieActivity extends Activity {
 				boolean handled = false;
 				if(actionId == EditorInfo.IME_ACTION_SEARCH) {
 					//Start fragment
-					FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-					SearchResultsFragment fragment = new SearchResultsFragment();
-					
-					Bundle args = new Bundle();
-					args.putString("NameToSearch", v.getText().toString());
-					fragment.setArguments(args);
-					
-					fragmentTransaction.replace(R.id.searchlist_placeholder, fragment);
-					fragmentTransaction.commit();
+                    doSearch(v.getText().toString());
 
 					handled = true;
 				}
@@ -52,5 +44,17 @@ public class AddMovieActivity extends Activity {
 		getMenuInflater().inflate(R.menu.add_movie, menu);
 		return true;
 	}
+
+    protected void doSearch(String nameToSearch) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        SearchResultsFragment fragment = new SearchResultsFragment();
+
+        Bundle args = new Bundle();
+        args.putString("NameToSearch", nameToSearch);
+        fragment.setArguments(args);
+
+        fragmentTransaction.replace(R.id.searchlist_placeholder, fragment);
+        fragmentTransaction.commit();
+    }
 
 }
