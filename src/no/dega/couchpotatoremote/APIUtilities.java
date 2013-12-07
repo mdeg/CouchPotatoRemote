@@ -25,9 +25,7 @@ public class APIUtilities {
     }
 
     /*
-    Construct a full URI for the clients' request based on the users' settings.
-    This would make more sense attached to APIRequestAsyncTask, but passing context to an AsyncTask
-    is dangerous (memory leak when user rotates screen while an AsyncTask is running)
+    Construct a full and valid URI for the clients' request based on the users' settings.
     Example input: String="movie.list"
 	Example output: String="http://192.168.1.1:5050/api/somekey/movie.list"
      */

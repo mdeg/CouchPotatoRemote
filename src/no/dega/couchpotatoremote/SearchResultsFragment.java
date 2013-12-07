@@ -3,6 +3,7 @@ package no.dega.couchpotatoremote;
 import java.util.ArrayList;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.util.Log;
@@ -18,7 +19,7 @@ import org.json.JSONObject;
 
 public class SearchResultsFragment extends ListFragment {
 
-	ProgressDialog progressDialog;
+	protected ProgressDialog progressDialog;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -30,13 +31,17 @@ public class SearchResultsFragment extends ListFragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
 
+        //TODO: hide the default textview here, unhide it on postexecute
+
+        //"Searching..." spinner wheel
         this.progressDialog = new ProgressDialog(getActivity());
         this.progressDialog.setIndeterminate(true);
         this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         this.progressDialog.setMessage("Searching...");
+        this.progressDialog.setCancelable(true);
+        //There's a listener for cancelling this dialog (and the search task with it) in SearchForMovieTask
 
         String query = "movie.search?q=" + getArguments().getString("NameToSearch");
-
 		String request = APIUtilities.formatRequest(query, getActivity());
         new SearchForMovieTask().execute(request);
 
@@ -118,8 +123,16 @@ public class SearchResultsFragment extends ListFragment {
     private class SearchForMovieTask extends APIRequestAsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
+            //Set up a listener to cancel this task if the user presses back while the dialog is up
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    SearchForMovieTask.this.cancel(true);
+                }
+            });
             progressDialog.show();
         }
+        //Build and display the list of search results and get rid of the spinner wheel
         @Override
         protected void onPostExecute(String result) {
             ArrayList<Movie> searchResults = parseMovieSearch(result);
