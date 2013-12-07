@@ -55,15 +55,12 @@ public class MovieListFragment extends ListFragment {
      *   Status: active = true = on Wanted list
      *   					false = on Manage list
      *   Returns a SparseArray of Movie's built from the list (which can be empty if there are no movies)
+     *   or null if it was given an invalid or broken JSON string
      */
-    //TODO: what if movie list is empty
     private SparseArray<Movie> parseMovieList(String resp) {
         if((resp == null) || (resp.length() <= 0)) {
-            return new SparseArray<Movie>();
+            return null;
         }
-        //TODO: init this based on number of objects in movie list?
-        SparseArray<Movie> movies = new SparseArray<Movie>();
-
         try {
             JSONObject response = new JSONObject(resp);
             //	Log.d(this.toString(), "String Contents: " + response.toString());
@@ -71,10 +68,14 @@ public class MovieListFragment extends ListFragment {
             if(!response.getBoolean("success")) {
                 return null;
             }
+            //If it's empty we just want to return an empty list
             if(response.getBoolean("empty")) {
-                return movies;
+                return new SparseArray<Movie>();
             }
             JSONArray jsonMoviesList = response.getJSONArray("movies");
+
+            SparseArray<Movie> movies = new SparseArray<Movie>(jsonMoviesList.length());
+
             //Create a movie object from every movie in the list
             for(int i = 0; i < jsonMoviesList.length(); i++) {
 
@@ -84,46 +85,18 @@ public class MovieListFragment extends ListFragment {
                 //	Log.d(this.toString(), "Movie JSON String: " + info.toString());
 
                 //All of these JSON fields can be null, so we have to make sure we check for that
-    /*            String title;
-                if(!info.isNull("titles")) {
-                    title = info.getJSONArray("titles").getString(0);
-                } else {
-                    title = "No title";
-                }*/
                 String title = !info.isNull("titles") ? info.getJSONArray("titles").getString(0)
                         : "No title";
                 String tagline = !info.isNull("tagline") ? info.getString("tagline") : "No tagline";
                 String year = !info.isNull("year") ? info.getString("year") : "";
                 String plot = !info.isNull("plot") ? info.getString("plot") : "No plot";
-/*
-                String tagline;
-                if(!info.isNull("tagline")) {
-                    tagline = info.getString("tagline");
-                } else {
-                    tagline = "No tagline";
-                }
-*/
 
-                /*
-                String plot;
-                if(!info.isNull("plot")) {
-                    plot = info.getString("plot");
-                } else {
-                    plot = "No plot";
-                }*/
                 String posterUri;
                 if(!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
                     posterUri = info.getJSONObject("images").getJSONArray("poster").getString(0);
                 } else {
                     posterUri = "";
                 }
-                /*
-                String year;
-                if(!info.isNull("year")) {
-                    year = info.getString("year");
-                } else {
-                    year = "";
-                }*/
 
                 String[] actors;
                 if(!info.isNull("actors")) {
@@ -157,7 +130,7 @@ public class MovieListFragment extends ListFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new SparseArray<Movie>();
+        return null;
     }
 
 

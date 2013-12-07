@@ -24,8 +24,9 @@ public class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask
     }
 
     private String sendRequest(String uri) {
-        StringBuilder builder = new StringBuilder();
         InputStream content = null;
+        StringBuilder builder = new StringBuilder();
+
         try {
             URL url = new URL(uri);
 
@@ -41,6 +42,7 @@ public class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask
                 }
             } else {
                 Log.e("APIRequestAsyncTask", "Status code not 200, is: " + statusCode);
+                return null;
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
@@ -60,6 +62,6 @@ public class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask
                 }
             }
         }
-        return builder.toString();
+    return builder.toString();
     }
 }
