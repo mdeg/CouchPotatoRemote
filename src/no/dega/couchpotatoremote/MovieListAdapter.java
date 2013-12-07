@@ -16,10 +16,6 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 
 	private List<Movie> movies;
 	
-	public MovieListAdapter(Context context, int textViewResourceId) {
-		super(context, textViewResourceId);
-	}
-	
 	public MovieListAdapter(Context context, int resource, List<Movie> movies) {
 		super(context, resource, movies);
 		this.movies = movies;

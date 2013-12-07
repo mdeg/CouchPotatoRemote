@@ -2,6 +2,7 @@ package no.dega.couchpotatoremote;
 
 import java.util.ArrayList;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.util.Log;
@@ -16,8 +17,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SearchResultsFragment extends ListFragment {
-	ArrayList<Movie> searchResults;
-	
+
+	ProgressDialog progressDialog;
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -27,6 +29,11 @@ public class SearchResultsFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
+
+        this.progressDialog = new ProgressDialog(getActivity());
+        this.progressDialog.setIndeterminate(true);
+        this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        this.progressDialog.setMessage("Searching...");
 
         String query = "movie.search?q=" + getArguments().getString("NameToSearch");
 
@@ -46,7 +53,8 @@ public class SearchResultsFragment extends ListFragment {
         String request = APIUtilities.formatRequest(uri.toString(), getActivity());
         new AddMovieTask().execute(request);
 
-        Toast.makeText(getActivity(), movie.getTitle(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), movie.getTitle() + " added to your Wanted list.",
+                Toast.LENGTH_LONG).show();
 	}
 
     private ArrayList<Movie> parseMovieSearch(String resp) {
@@ -108,7 +116,10 @@ public class SearchResultsFragment extends ListFragment {
     }
 
     private class SearchForMovieTask extends APIRequestAsyncTask<String, Void, String> {
-
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
         @Override
         protected void onPostExecute(String result) {
             ArrayList<Movie> searchResults = parseMovieSearch(result);
@@ -116,6 +127,7 @@ public class SearchResultsFragment extends ListFragment {
                 final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(
                         getActivity(), R.layout.adapter_movielist, searchResults);
                 setListAdapter(adapter);
+                progressDialog.dismiss();
             } else {
                 Log.e("SearchResultsFragment", "Could not create list: searchResults is null.");
             }
