@@ -45,7 +45,7 @@ public class AddMovieActivity extends Activity {
 		return true;
 	}
 
-    protected void doSearch(String nameToSearch) {
+    private void doSearch(String nameToSearch) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         SearchResultsFragment fragment = new SearchResultsFragment();
 

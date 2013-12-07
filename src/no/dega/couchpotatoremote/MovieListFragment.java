@@ -3,7 +3,6 @@ package no.dega.couchpotatoremote;
 import java.util.ArrayList;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -60,7 +59,7 @@ public class MovieListFragment extends ListFragment {
     //TODO: what if movie list is empty
     private SparseArray<Movie> parseMovieList(String resp) {
         if((resp == null) || (resp.length() <= 0)) {
-            return null;
+            return new SparseArray<Movie>();
         }
         //TODO: init this based on number of objects in movie list?
         SparseArray<Movie> movies = new SparseArray<Movie>();
@@ -85,39 +84,46 @@ public class MovieListFragment extends ListFragment {
                 //	Log.d(this.toString(), "Movie JSON String: " + info.toString());
 
                 //All of these JSON fields can be null, so we have to make sure we check for that
-                String title;
+    /*            String title;
                 if(!info.isNull("titles")) {
                     title = info.getJSONArray("titles").getString(0);
                 } else {
                     title = "No title";
-                }
-
+                }*/
+                String title = !info.isNull("titles") ? info.getJSONArray("titles").getString(0)
+                        : "No title";
+                String tagline = !info.isNull("tagline") ? info.getString("tagline") : "No tagline";
+                String year = !info.isNull("year") ? info.getString("year") : "";
+                String plot = !info.isNull("plot") ? info.getString("plot") : "No plot";
+/*
                 String tagline;
                 if(!info.isNull("tagline")) {
                     tagline = info.getString("tagline");
                 } else {
                     tagline = "No tagline";
                 }
+*/
 
+                /*
                 String plot;
                 if(!info.isNull("plot")) {
                     plot = info.getString("plot");
                 } else {
                     plot = "No plot";
-                }
+                }*/
                 String posterUri;
                 if(!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
                     posterUri = info.getJSONObject("images").getJSONArray("poster").getString(0);
                 } else {
                     posterUri = "";
                 }
-
+                /*
                 String year;
                 if(!info.isNull("year")) {
                     year = info.getString("year");
                 } else {
                     year = "";
-                }
+                }*/
 
                 String[] actors;
                 if(!info.isNull("actors")) {
@@ -147,10 +153,11 @@ public class MovieListFragment extends ListFragment {
                         directors);
                 movies.put(libraryId, newMovie);
             }
+            return movies;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return movies;
+        return new SparseArray<Movie>();
     }
 
 

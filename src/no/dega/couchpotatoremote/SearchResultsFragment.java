@@ -68,20 +68,26 @@ public class SearchResultsFragment extends ListFragment {
             for(int i = 0; i < movies.length(); i++) {
                 JSONObject movie = movies.getJSONObject(i);
 
-                String title;
+          //      String title;
+                /*
                 if(!movie.isNull("titles")) {
                     title = movie.getJSONArray("titles").getString(0);
                 } else {
                     title = "";
-                }
+                }*/
+             /*   !movie.isNull("titles") ? title = movie.getJSONArray("titles").getString(0):
+                        title = "";
+*/
+                String title = !movie.isNull("titles")? movie.getJSONArray("titles").getString(0) : "";
 
-                String year;
+                String year = !movie.isNull("year")? movie.getString("year") : "";
+     /*           String year;
                 if(!movie.isNull("year")) {
                     year = movie.getString("year");
                 } else {
                     year = "";
                 }
-
+*/
                 String dbId;
                 if(movie.has("imdb") && !movie.isNull("imdb")) {
                     dbId = movie.getString("imdb");

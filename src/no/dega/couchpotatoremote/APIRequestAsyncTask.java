@@ -25,11 +25,12 @@ public class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask
 
     private String sendRequest(String uri) {
         StringBuilder builder = new StringBuilder();
+        InputStream content = null;
         try {
             URL url = new URL(uri);
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream content = urlConnection.getInputStream();
+            content = urlConnection.getInputStream();
 
             int statusCode = urlConnection.getResponseCode();
             if(statusCode == 200) {
@@ -49,6 +50,15 @@ public class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask
             e.printStackTrace();
             Log.e("APIRequestAsyncTask", "Could not connect to resource: API key may be missing or network not connected.");
             return null;
+        } finally {
+            if(content != null) {
+                try {
+                    content.close();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                    Log.e("APIRequestAsyncTask", "Error trying to close the connection");
+                }
+            }
         }
         return builder.toString();
     }
