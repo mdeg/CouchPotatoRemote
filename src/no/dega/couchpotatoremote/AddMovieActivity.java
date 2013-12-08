@@ -49,6 +49,11 @@ public class AddMovieActivity extends Activity {
 		return true;
 	}
 
+    public void searchButtonPressed(View view) {
+        EditText editText = (EditText) findViewById(R.id.movie_to_add);
+        doSearch(editText.getText().toString());
+    }
+
     private void doSearch(String nameToSearch) {
         //Hide the onscreen keyboard
         InputMethodManager inputManager = (InputMethodManager)

@@ -8,14 +8,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AddMovie" >
 
+    <Button
+        android:id="@+id/do_search_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Search"
+        android:onClick="searchButtonPressed" />
 	<EditText
 	    android:id="@+id/movie_to_add"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
 	    android:inputType="text"
 	    android:imeOptions="actionSearch"
         android:windowSoftInputMode="stateVisible"
-	    />
+        android:layout_toLeftOf="@id/do_search_button"
+        />
+
 	<!-- Placeholder ViewGroup that we replace when we get search results -->
 	<RelativeLayout 
 		android:id="@+id/searchlist_placeholder"
