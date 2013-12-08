@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -43,12 +44,7 @@ public class APIUtilities {
             return null;
         }
    //     boolean connectedToInternet = ni.isConnected();
-        //Replace any spaces that might be in the string with %20's
-        for(int i = 0; i < request.length(); i++) {
-            if(request.charAt(i) == ' ') {
-                request = request.substring(0, i) + "%20" + request.substring(i + 1, request.length());
-            }
-        }
+
 
         //Construct URI based on user settings and append the request
         return constructUriFromPreferences(context) + request;

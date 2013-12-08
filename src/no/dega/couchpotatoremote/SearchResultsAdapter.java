@@ -14,10 +14,6 @@ public class SearchResultsAdapter<T> extends ArrayAdapter<Movie> {
 
 	private List<Movie> movies;
 	
-	public SearchResultsAdapter(Context context, int textViewResourceId) {
-		super(context, textViewResourceId);
-	}
-	
 	public SearchResultsAdapter(Context context, int resource, List<Movie> movies) {
 		super(context, resource, movies);
 		this.movies = movies;
@@ -31,7 +27,7 @@ public class SearchResultsAdapter<T> extends ArrayAdapter<Movie> {
 	        v = inflater.inflate(R.layout.adapter_searchresults, null);
 	    }
 
-	    Movie movie = this.movies.get(position);
+	    Movie movie = movies.get(position);
 
 	    if(movie != null) {
 	        TextView title = (TextView) v.findViewById(R.id.searchadapter_title);

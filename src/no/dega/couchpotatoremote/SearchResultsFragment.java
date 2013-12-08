@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.util.Log;
@@ -31,7 +32,7 @@ public class SearchResultsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Construct and submit our query
-        String query = "movie.search?q=" + getArguments().getString("NameToSearch");
+        String query = "movie.search?q=" + Uri.encode(getArguments().getString("NameToSearch"));
         request = APIUtilities.formatRequest(query, getActivity());
         task = new SearchForMovieTask();
     }
@@ -91,14 +92,17 @@ public class SearchResultsFragment extends ListFragment {
         progressDialog.dismiss();
     }
     //Clicking on a list item should add the movie to CouchPotato
+    //TODO: make selections a different colour on long presses
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Movie movie = (Movie) getListAdapter().getItem(position);
 
         StringBuilder uri = new StringBuilder("movie.add?title=");
-        uri = uri.append(movie.getTitle()).append("&identifier=").append(movie.getImdbId());
+        //Make sure we encode the title in a URL-recognisable format
+        uri = uri.append(Uri.encode(movie.getTitle())).append("&identifier=").append(movie.getImdbId());
 
         String request = APIUtilities.formatRequest(uri.toString(), getActivity());
+
         new AddMovieTask().execute(request);
 
         Toast.makeText(getActivity(), movie.getTitle() + " added to your Wanted list.",
@@ -167,6 +171,8 @@ public class SearchResultsFragment extends ListFragment {
         //Build and display the list of search results and get rid of the spinner wheel
         @Override
         protected void onPostExecute(String result) {
+            isCompleted = true;
+
             ArrayList<Movie> searchResults = parseMovieSearch(result);
 
             if(searchResults != null) {
@@ -181,7 +187,6 @@ public class SearchResultsFragment extends ListFragment {
             } else {
                 Log.e("SearchResultsFragment", "Could not create list: searchResults is null.");
             }
-        isCompleted = true;
         }
     }
 

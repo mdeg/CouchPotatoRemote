@@ -19,35 +19,42 @@ import org.json.JSONObject;
 
 //Displays a list of Movies
 public class MovieListFragment extends ListFragment {
-//TODO: add this to backstack
+    //TODO: add this to backstack
     private TextView noMovies = null;
     private DownloadMovieListTask task = null;
+    private String request;
+    private boolean hasRun = false;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //Movies can be either on the Wanted list or on the Manage list
+        String query = "movie.list?status=";
+        query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
+
+        request = APIUtilities.formatRequest(query, getActivity());
+        task = new DownloadMovieListTask();
+
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 	    View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
-
+        setRetainInstance(true);
 		return rootView;
 	}
 
     @Override
     public void onStart() {
         super.onStart();
-        //Movies can be either on the Wanted list or on the Manage list
-        String query = "movie.list?status=";
-        query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
 
-        String request = APIUtilities.formatRequest(query, getActivity());
-        noMovies = (TextView) getListView().getEmptyView();
-        noMovies.setVisibility(View.GONE);
-        task = new DownloadMovieListTask();
-        task.execute(request);
-    }
-
-    public void onPause() {
-        super.onPause();
-        task.cancel(true);
+        if(!hasRun) {
+            noMovies = (TextView) getListView().getEmptyView();
+            noMovies.setVisibility(View.GONE);
+            hasRun = true;
+            task.execute(request);
+        }
     }
 
 	//If a user clicks on a movie, take them to the appropriate movie display

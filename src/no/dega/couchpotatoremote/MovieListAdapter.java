@@ -29,7 +29,7 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 	        v = inflater.inflate(R.layout.adapter_movielist, null);
 	    }
 
-	    Movie movie = this.movies.get(position);
+	    Movie movie = movies.get(position);
 
 	    if(movie != null) {
 	        TextView title = (TextView) v.findViewById(R.id.adapter_title);
