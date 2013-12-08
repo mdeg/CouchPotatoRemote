@@ -3,11 +3,13 @@ package no.dega.couchpotatoremote;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -48,6 +50,13 @@ public class AddMovieActivity extends Activity {
 	}
 
     private void doSearch(String nameToSearch) {
+        //Hide the onscreen keyboard
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+
+        //Construct and submit the fragment
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         SearchResultsFragment fragment = new SearchResultsFragment();
 

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,29 +19,29 @@ import org.json.JSONObject;
 //Displays a list of Movies
 public class MovieListFragment extends ListFragment {
 
-	public MovieListFragment() {
-
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
+    private TextView noMovies;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 	    View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
-        String query = "movie.list?status=";
+		return rootView;
+	}
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        //Movies can be either on the Wanted list or on the Manage list
+        String query = "movie.list?status=";
         query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
 
         String request = APIUtilities.formatRequest(query, getActivity());
+        this.noMovies = (TextView) getListView().getEmptyView();
+        this.noMovies.setVisibility(View.GONE);
         new DownloadMovieListTask().execute(request);
+    }
 
-		return rootView;
-	}
 	//If a user clicks on a movie, take them to the appropriate movie display
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
@@ -51,6 +52,7 @@ public class MovieListFragment extends ListFragment {
 		intent.putExtra("no.dega.couchpotatoremote.Movie", movie);
 		startActivity(intent);
 	}
+
     /*
      *   Status: active = true = on Wanted list
      *   					false = on Manage list
@@ -149,9 +151,13 @@ public class MovieListFragment extends ListFragment {
             }
 
             //Use custom movielist adapter to create the list
-            final MovieListAdapter<Movie> adapter = new MovieListAdapter<Movie>(
-                    getActivity(), R.layout.adapter_movielist, movieList);
-            setListAdapter(adapter);
+            if(movieList.size() <= 0) {
+                noMovies.setVisibility(View.VISIBLE);
+            } else {
+                final MovieListAdapter<Movie> adapter = new MovieListAdapter<Movie>(
+                        getActivity(), R.layout.adapter_movielist, movieList);
+                setListAdapter(adapter);
+            }
         }
     }
 }

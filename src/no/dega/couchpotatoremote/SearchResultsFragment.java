@@ -20,8 +20,8 @@ import org.json.JSONObject;
 
 public class SearchResultsFragment extends ListFragment {
 
-	protected ProgressDialog progressDialog;
-    protected TextView noSearchResults;
+	private ProgressDialog progressDialog;
+    private TextView noSearchResults;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class SearchResultsFragment extends ListFragment {
         this.progressDialog.setCancelable(true);
         //There's a listener for cancelling this dialog (and the search task with it) in SearchForMovieTask
 
+        //A search is being made, so get rid of 'Search for a movie above'
         TextView empty = (TextView) getActivity().findViewById(R.id.searchlist_empty);
         empty.setVisibility(View.GONE);
     }
@@ -42,6 +43,7 @@ public class SearchResultsFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
+
 		return rootView;
 	}
 
@@ -49,15 +51,14 @@ public class SearchResultsFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         this.noSearchResults = (TextView) getListView().getEmptyView();
-
+        //Construct and submit our query
         String query = "movie.search?q=" + getArguments().getString("NameToSearch");
         String request = APIUtilities.formatRequest(query, getActivity());
         new SearchForMovieTask().execute(request);
     }
-    
+    //Clicking on a list item should add the movie to CouchPotato
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-
 		Movie movie = (Movie) getListAdapter().getItem(position);
 
         StringBuilder uri = new StringBuilder("movie.add?title=");
@@ -148,10 +149,13 @@ public class SearchResultsFragment extends ListFragment {
             ArrayList<Movie> searchResults = parseMovieSearch(result);
 
             if(searchResults != null) {
-                final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(
-                        getActivity(), R.layout.adapter_movielist, searchResults);
-                setListAdapter(adapter);
-                noSearchResults.setVisibility(View.VISIBLE);
+                if(searchResults.size() <= 0) {
+                    noSearchResults.setVisibility(View.VISIBLE);
+                } else {
+                    final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(
+                            getActivity(), R.layout.adapter_movielist, searchResults);
+                    setListAdapter(adapter);
+                }
                 progressDialog.dismiss();
             } else {
                 Log.e("SearchResultsFragment", "Could not create list: searchResults is null.");
