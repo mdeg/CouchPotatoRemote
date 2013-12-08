@@ -39,7 +39,12 @@ public class AddMovieActivity extends Activity {
 		});
 		
 	}
-
+    /*
+    @Override
+    protected void onPause() {
+        super.onPause();
+        suppressOnscreenKeyboard();
+    }*/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -51,13 +56,17 @@ public class AddMovieActivity extends Activity {
         EditText editText = (EditText) findViewById(R.id.movie_to_add);
         doSearch(editText.getText().toString());
     }
-
-    private void doSearch(String nameToSearch) {
-        //Hide the onscreen keyboard
+    //Hide the onscreen keyboard
+    //TODO; fix keyboard reappearing on screen rotation
+    private void suppressOnscreenKeyboard() {
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    private void doSearch(String nameToSearch) {
+        suppressOnscreenKeyboard();
 
         //Construct and submit the fragment
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();

@@ -22,22 +22,41 @@ public class SearchResultsFragment extends ListFragment {
 
 	private ProgressDialog progressDialog;
     private TextView noSearchResults;
+    private SearchForMovieTask task;
+    private String request;
+    private boolean isRunning;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Construct and submit our query
+        String query = "movie.search?q=" + getArguments().getString("NameToSearch");
+        request = APIUtilities.formatRequest(query, getActivity());
+        task = new SearchForMovieTask();
+
+    }
+
+    //Set up the progress dialog and hide the 'Search for a movie above' text
+    //Called when created or when it's resumed
+    private void setUpUI() {
         //"Searching..." spinner wheel
-        this.progressDialog = new ProgressDialog(getActivity());
-        this.progressDialog.setIndeterminate(true);
-        this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        this.progressDialog.setMessage("Searching...");
-        this.progressDialog.setCancelable(true);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("Searching...");
+        progressDialog.setCancelable(true);
+        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                task.cancel(true);
+            }
+        });
         //There's a listener for cancelling this dialog (and the search task with it) in SearchForMovieTask
 
         //A search is being made, so get rid of 'Search for a movie above'
         TextView empty = (TextView) getActivity().findViewById(R.id.searchlist_empty);
         if(empty != null) {
-           empty.setVisibility(View.GONE);
+            empty.setVisibility(View.GONE);
         }
     }
 
@@ -45,25 +64,31 @@ public class SearchResultsFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
-
+        setRetainInstance(true);
+        setUpUI();
 		return rootView;
 	}
 
     @Override
     public void onStart() {
         super.onStart();
-        this.noSearchResults = (TextView) getListView().getEmptyView();
-        //Construct and submit our query
-        String query = "movie.search?q=" + getArguments().getString("NameToSearch");
-        String request = APIUtilities.formatRequest(query, getActivity());
-        new SearchForMovieTask().execute(request);
+        //Show the dialog and temporarily hide the no search results TV until this is done
+
+        noSearchResults = (TextView) getListView().getEmptyView();
+        noSearchResults.setVisibility(View.GONE);
+        progressDialog.show();
+        //Prevent re-running the task on config change (ie screen rotation)
+        if(!isRunning) {
+            isRunning = true;
+
+            task.execute(request);
+        }
     }
     @Override
     public void onPause() {
         super.onPause();
-        this.progressDialog.dismiss();
+        progressDialog.dismiss();
     }
-
     //Clicking on a list item should add the movie to CouchPotato
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
@@ -138,19 +163,6 @@ public class SearchResultsFragment extends ListFragment {
     }
 
     private class SearchForMovieTask extends APIRequestAsyncTask<String, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            //Set up a listener to cancel this task if the user presses back while the dialog is up
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    SearchForMovieTask.this.cancel(true);
-                }
-            });
-            //Show the dialog and temporarily hide the no search results TV until this is done
-            noSearchResults.setVisibility(View.GONE);
-            progressDialog.show();
-        }
         //Build and display the list of search results and get rid of the spinner wheel
         @Override
         protected void onPostExecute(String result) {
@@ -169,7 +181,6 @@ public class SearchResultsFragment extends ListFragment {
                 Log.e("SearchResultsFragment", "Could not create list: searchResults is null.");
             }
         }
-
     }
 
     //TODO: some kinda slide out thing for adding movies
