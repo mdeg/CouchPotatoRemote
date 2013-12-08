@@ -24,7 +24,8 @@ public class SearchResultsFragment extends ListFragment {
     private TextView noSearchResults;
     private SearchForMovieTask task;
     private String request;
-    private boolean isRunning;
+    private boolean isRunning = false;
+    private boolean isCompleted = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,6 @@ public class SearchResultsFragment extends ListFragment {
         String query = "movie.search?q=" + getArguments().getString("NameToSearch");
         request = APIUtilities.formatRequest(query, getActivity());
         task = new SearchForMovieTask();
-
     }
 
     //Set up the progress dialog and hide the 'Search for a movie above' text
@@ -76,12 +76,13 @@ public class SearchResultsFragment extends ListFragment {
 
         noSearchResults = (TextView) getListView().getEmptyView();
         noSearchResults.setVisibility(View.GONE);
-        progressDialog.show();
+        if(!isCompleted) {
+            progressDialog.show();
+        }
         //Prevent re-running the task on config change (ie screen rotation)
         if(!isRunning) {
-            isRunning = true;
-
             task.execute(request);
+            isRunning = true;
         }
     }
     @Override
@@ -180,6 +181,7 @@ public class SearchResultsFragment extends ListFragment {
             } else {
                 Log.e("SearchResultsFragment", "Could not create list: searchResults is null.");
             }
+        isCompleted = true;
         }
     }
 
