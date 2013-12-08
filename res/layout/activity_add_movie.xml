@@ -10,7 +10,7 @@
 
 	<EditText
 	    android:id="@+id/movie_to_add"
-	    android:layout_width="fill_parent"
+	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:inputType="text"
 	    android:imeOptions="actionSearch"
@@ -19,17 +19,18 @@
 	<!-- Placeholder ViewGroup that we replace when we get search results -->
 	<RelativeLayout 
 		android:id="@+id/searchlist_placeholder"
-   		 android:layout_width="match_parent"
-   		 android:layout_height="wrap_content"
-   		 android:layout_below="@id/movie_to_add"
+   		android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+   		android:layout_below="@id/movie_to_add"
         tools:context=".AddMovie"
         android:paddingTop="10dp">
         <TextView
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
+            android:id="@+id/searchlist_empty"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:text="@string/prompt_do_search"
             android:gravity="center"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
     </RelativeLayout>
 	    

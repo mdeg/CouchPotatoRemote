@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ public class AddMovieActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_movie);
 	    getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 		//Listener for when user hits search
 		//TODO: add a button to the right of the search bar

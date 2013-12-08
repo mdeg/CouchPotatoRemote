@@ -13,6 +13,7 @@
     <string name="title_manage">Manage</string>
     <string name="add_movie_button">Add Movie</string>
     <string name="title_activity_add_movie">Add Movie</string>
-    <string name="prompt_do_search">Search for a movie in the field above.</string>
+    <string name="prompt_do_search">Search for a movie above</string>
+    <string name="no_search_results">No movies found</string>
 
 </resources>

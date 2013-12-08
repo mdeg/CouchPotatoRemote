@@ -10,11 +10,12 @@
          android:background="?android:attr/colorBackground"
          android:drawSelectorOnTop="false" />
 
-     <TextView android:id="@id/android:empty"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-         android:text="No search results."
-         android:gravity="center"
-         android:textSize="40sp" />
+     <TextView
+         android:id="@id/android:empty"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:text="@string/no_search_results"
+         android:gravity="top"
+         android:textSize="20sp" />
 
 </RelativeLayout>

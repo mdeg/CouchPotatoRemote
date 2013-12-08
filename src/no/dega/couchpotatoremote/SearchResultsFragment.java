@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -20,19 +21,11 @@ import org.json.JSONObject;
 public class SearchResultsFragment extends ListFragment {
 
 	protected ProgressDialog progressDialog;
+    protected TextView noSearchResults;
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
-
-        //TODO: hide the default textview here, unhide it on postexecute
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         //"Searching..." spinner wheel
         this.progressDialog = new ProgressDialog(getActivity());
         this.progressDialog.setIndeterminate(true);
@@ -41,12 +34,27 @@ public class SearchResultsFragment extends ListFragment {
         this.progressDialog.setCancelable(true);
         //There's a listener for cancelling this dialog (and the search task with it) in SearchForMovieTask
 
-        String query = "movie.search?q=" + getArguments().getString("NameToSearch");
-		String request = APIUtilities.formatRequest(query, getActivity());
-        new SearchForMovieTask().execute(request);
+        TextView empty = (TextView) getActivity().findViewById(R.id.searchlist_empty);
+        empty.setVisibility(View.GONE);
+    }
 
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
 		return rootView;
 	}
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        this.noSearchResults = (TextView) getListView().getEmptyView();
+
+        String query = "movie.search?q=" + getArguments().getString("NameToSearch");
+        String request = APIUtilities.formatRequest(query, getActivity());
+        new SearchForMovieTask().execute(request);
+    }
+    
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
@@ -130,16 +138,20 @@ public class SearchResultsFragment extends ListFragment {
                     SearchForMovieTask.this.cancel(true);
                 }
             });
+            //Show the dialog and temporarily hide the no search results TV until this is done
+            noSearchResults.setVisibility(View.GONE);
             progressDialog.show();
         }
         //Build and display the list of search results and get rid of the spinner wheel
         @Override
         protected void onPostExecute(String result) {
             ArrayList<Movie> searchResults = parseMovieSearch(result);
+
             if(searchResults != null) {
                 final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(
                         getActivity(), R.layout.adapter_movielist, searchResults);
                 setListAdapter(adapter);
+                noSearchResults.setVisibility(View.VISIBLE);
                 progressDialog.dismiss();
             } else {
                 Log.e("SearchResultsFragment", "Could not create list: searchResults is null.");
