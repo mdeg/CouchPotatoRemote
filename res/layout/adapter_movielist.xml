@@ -32,4 +32,12 @@
         android:layout_alignParentTop="true"
         android:textSize="20sp"
         />
+    <TextView
+        android:id="@+id/adapter_plot"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/adapter_poster"
+        android:layout_below="@id/adapter_title"
+        android:singleLine="false"
+        android:ellipsize="end"/>
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package no.dega.couchpotatoremote;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 

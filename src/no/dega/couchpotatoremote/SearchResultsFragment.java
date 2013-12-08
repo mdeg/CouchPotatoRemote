@@ -36,7 +36,9 @@ public class SearchResultsFragment extends ListFragment {
 
         //A search is being made, so get rid of 'Search for a movie above'
         TextView empty = (TextView) getActivity().findViewById(R.id.searchlist_empty);
-        empty.setVisibility(View.GONE);
+        if(empty != null) {
+           empty.setVisibility(View.GONE);
+        }
     }
 
 	@Override
@@ -56,6 +58,12 @@ public class SearchResultsFragment extends ListFragment {
         String request = APIUtilities.formatRequest(query, getActivity());
         new SearchForMovieTask().execute(request);
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.progressDialog.dismiss();
+    }
+
     //Clicking on a list item should add the movie to CouchPotato
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {

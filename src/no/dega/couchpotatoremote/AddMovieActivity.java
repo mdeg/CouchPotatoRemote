@@ -22,9 +22,7 @@ public class AddMovieActivity extends Activity {
 		setContentView(R.layout.activity_add_movie);
 	    getActionBar().setDisplayHomeAsUpEnabled(true);
 
-
 		//Listener for when user hits search
-		//TODO: add a button to the right of the search bar
 		EditText editText = (EditText) findViewById(R.id.movie_to_add);
 		editText.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
@@ -48,7 +46,7 @@ public class AddMovieActivity extends Activity {
 		getMenuInflater().inflate(R.menu.add_movie, menu);
 		return true;
 	}
-
+    //Called when the search button next to the text field is pressed
     public void searchButtonPressed(View view) {
         EditText editText = (EditText) findViewById(R.id.movie_to_add);
         doSearch(editText.getText().toString());

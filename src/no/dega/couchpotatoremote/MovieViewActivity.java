@@ -9,11 +9,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MovieViewActivity extends Activity {
-	
-	public MovieViewActivity() {
-		
-	}
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 

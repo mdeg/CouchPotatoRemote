@@ -34,10 +34,12 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 	    if(movie != null) {
 	        TextView title = (TextView) v.findViewById(R.id.adapter_title);
 	        TextView year = (TextView) v.findViewById(R.id.adapter_year);
+            TextView plot = (TextView) v.findViewById(R.id.adapter_plot);
 	        ImageView poster = (ImageView) v.findViewById(R.id.adapter_poster);
 	        
 	        title.setText(movie.getTitle());
-            year.setText(String.valueOf(movie.getYear()));
+            year.setText(movie.getYear());
+            plot.setText(movie.getPlot());
 
             ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
 	    }

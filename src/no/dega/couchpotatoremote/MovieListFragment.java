@@ -2,6 +2,7 @@ package no.dega.couchpotatoremote;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -19,7 +20,8 @@ import org.json.JSONObject;
 //Displays a list of Movies
 public class MovieListFragment extends ListFragment {
 
-    private TextView noMovies;
+    private TextView noMovies = null;
+    private DownloadMovieListTask task = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,9 +39,15 @@ public class MovieListFragment extends ListFragment {
         query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
 
         String request = APIUtilities.formatRequest(query, getActivity());
-        this.noMovies = (TextView) getListView().getEmptyView();
-        this.noMovies.setVisibility(View.GONE);
-        new DownloadMovieListTask().execute(request);
+        noMovies = (TextView) getListView().getEmptyView();
+        noMovies.setVisibility(View.GONE);
+        task = new DownloadMovieListTask();
+        task.execute(request);
+    }
+
+    public void onPause() {
+        super.onPause();
+        task.cancel(true);
     }
 
 	//If a user clicks on a movie, take them to the appropriate movie display
