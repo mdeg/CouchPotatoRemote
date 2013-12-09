@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.ListFragment;
@@ -11,6 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,7 +57,6 @@ public class SearchResultsFragment extends ListFragment {
                 task.cancel(true);
             }
         });
-        //There's a listener for cancelling this dialog (and the search task with it) in SearchForMovieTask
 
         //A search is being made, so get rid of 'Search for a movie above'
         TextView empty = (TextView) getActivity().findViewById(R.id.searchlist_empty);
@@ -67,6 +71,7 @@ public class SearchResultsFragment extends ListFragment {
 		View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
         setRetainInstance(true);
         setUpUI();
+
 		return rootView;
 	}
 
@@ -107,7 +112,24 @@ public class SearchResultsFragment extends ListFragment {
 
         Toast.makeText(getActivity(), movie.getTitle() + " added to your Wanted list.",
                 Toast.LENGTH_LONG).show();
+
+        Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
+        collapseList.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                killThisFragment();
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        getListView().startAnimation(collapseList);
+
 	}
+    private void killThisFragment() {
+        getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+    }
 
     private ArrayList<Movie> parseMovieSearch(String resp) {
 
@@ -182,6 +204,14 @@ public class SearchResultsFragment extends ListFragment {
                     final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(
                             getActivity(), R.layout.adapter_movielist, searchResults);
                     setListAdapter(adapter);
+                    ListView list = (ListView) getView().findViewById(android.R.id.list);
+                    list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            view.setBackgroundColor(Color.parseColor("#222222"));
+                            return false;
+                        }
+                    });
                 }
                 progressDialog.dismiss();
             } else {
