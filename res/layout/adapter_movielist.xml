@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         />
     
-    <TextView
+    <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/adapter_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         />
-    <TextView
+    <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/adapter_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         android:textStyle="bold"
         android:textSize="20sp"
         />
-    <TextView
+    <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/adapter_plot"
         android:layout_height="match_parent"
         android:layout_width="match_parent"

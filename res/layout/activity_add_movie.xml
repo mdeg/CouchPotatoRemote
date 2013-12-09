@@ -34,7 +34,7 @@
    		android:layout_below="@id/movie_to_add"
         tools:context=".AddMovie"
         android:paddingTop="10dp">
-        <TextView
+        <no.dega.couchpotatoremote.FontedTextView
             android:id="@+id/searchlist_empty"
             android:layout_height="match_parent"
             android:layout_width="match_parent"

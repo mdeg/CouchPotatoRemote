@@ -16,6 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:theme="@style/CouchpotatoTheme"
         >
 
         <uses-library android:name="android.test.runner" />
@@ -29,7 +30,6 @@
             </intent-filter>
         </activity>
         <activity android:name="no.dega.couchpotatoremote.MovieViewActivity"
-            android:label="@string/movie_view"
             android:parentActivityName="no.dega.couchpotatoremote.MainActivity"></activity>
         <activity android:name="no.dega.couchpotatoremote.SettingsActivity"
             android:label="@string/title_activity_settings"></activity>

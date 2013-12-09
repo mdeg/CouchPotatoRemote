@@ -79,7 +79,6 @@ public class SearchResultsFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         //Show the dialog and temporarily hide the no search results TV until this is done
-
         noSearchResults = (TextView) getListView().getEmptyView();
         noSearchResults.setVisibility(View.GONE);
         if(!isCompleted) {
@@ -112,7 +111,7 @@ public class SearchResultsFragment extends ListFragment {
 
         Toast.makeText(getActivity(), movie.getTitle() + " added to your Wanted list.",
                 Toast.LENGTH_LONG).show();
-
+        //Collapsing list animation - destroys this fragment when it's finished
         Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
         collapseList.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -127,6 +126,7 @@ public class SearchResultsFragment extends ListFragment {
         getListView().startAnimation(collapseList);
 
 	}
+    //Kill this fragment
     private void killThisFragment() {
         getActivity().getFragmentManager().beginTransaction().remove(this).commit();
     }

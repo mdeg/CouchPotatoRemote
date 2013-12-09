@@ -7,15 +7,13 @@
          android:id="@android:id/list"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:background="?android:attr/colorBackground"
          android:drawSelectorOnTop="false"
          android:scrollbars="none"
          />
 
-     <TextView android:id="@id/android:empty"
+     <no.dega.couchpotatoremote.FontedTextView android:id="@id/android:empty"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
-               android:background="?android:attr/colorBackground"
                android:textSize="40sp"
                android:text="No Movies"
                android:gravity="center_vertical|center_horizontal"
