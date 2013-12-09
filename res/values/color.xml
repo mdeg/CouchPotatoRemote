@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cp_text">#FFFFFF</color>
+    <color name="cp_background_light">#4E5969</color>
+    <color name="cp_background_dark">#47515F</color>
+    <color name="cp_titlebar_background">#5C697B</color>
+</resources>

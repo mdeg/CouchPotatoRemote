@@ -1,22 +1,20 @@
 <resources>
-
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
-
     <!-- Application theme. -->
     <style name="CouchpotatoTheme" parent="AppBaseTheme">
-        <item name="android:background">#4E5969</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:background">@color/cp_background_light</item>
+        <item name="android:textColor">@color/cp_text</item>
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
+    </style>
+
+
+    <style name="CustomActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/cp_titlebar_background</item>
+        <item name="android:textColor">@color/cp_text</item>
+        </style>
+
+    <style name="ListView" parent="@android:style/Widget.ListView">
+        <item name="android:background">#FF0000</item>
     </style>
 
 </resources>
