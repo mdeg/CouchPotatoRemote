@@ -1,22 +1,19 @@
 <resources>
 
     <style name="CouchpotatoTheme" parent="@style/Theme.AppCompat">
-        <item name="android:actionBarStyle">@style/CustomActionBar</item>
-
-        <item name="android:background">@color/cp_background_light</item>
         <item name="android:textColor">@color/cp_text</item>
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
         <item name="android:actionButtonStyle">@style/CustomActionBarButton</item>
         <item name="android:actionModeBackground">@color/cp_titlebar_background</item>
     </style>
 
-
-    <style name="CustomActionBar" parent="@android:style/Widget.Holo.ActionBar">
+    <style name="CustomActionBar" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@color/cp_titlebar_background</item>
         <item name="android:textColor">@color/cp_text</item>
         <item name="android:titleTextStyle">@style/CPTitleTextStyle</item>
     </style>
 
-    <style name="CPTitleTextStyle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+    <style name="CPTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/cp_text</item>
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
@@ -25,4 +22,12 @@
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
 
+    <style name="ActivityBackground">
+        <item name="android:background">@color/cp_background_light</item>
+    </style>
+
+    <style name="CustomTab"
+        parent="Widget.AppCompat.ActionBar.TabView" >
+        <item name="android:background">#FFFF00</item>
+        </style>
 </resources>
