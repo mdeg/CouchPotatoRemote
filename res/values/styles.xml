@@ -1,20 +1,31 @@
 <resources>
     <!-- Application theme. -->
-    <style name="CouchpotatoTheme" parent="AppBaseTheme">
+    <style name="CouchpotatoTheme">
         <item name="android:background">@color/cp_background_light</item>
         <item name="android:textColor">@color/cp_text</item>
-        <item name="android:actionBarStyle">@style/CustomActionBar</item>
+        <item name="android:windowTitleStyle">@style/WindowTitleBackground</item>
+        <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitle</item>
     </style>
-
-
-    <style name="CustomActionBar"
-        parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/cp_titlebar_background</item>
-        <item name="android:textColor">@color/cp_text</item>
-        </style>
 
     <style name="ListView" parent="@android:style/Widget.ListView">
         <item name="android:background">#FF0000</item>
+        <item name="android:listSelector">#FF9999</item>
     </style>
 
+    <style name="WindowTitleBackground">
+        <item name="android:background">@color/cp_titlebar_background</item>
+    </style>
+    <style name="CustomWindowTitleText" parent="android:TextAppearance">
+        <item name="android:textColor">@color/cp_text</item>
+    </style>
+    <style name="CustomWindowTitle" parent="WindowTitle">
+        <item name="android:textAppearance">@style/CustomWindowTitleText</item>
+    </style>
+
+    <style name="WindowTitle">
+        <item name="android:singleLine">true</item>
+        <item name="android:textAppearance">@style/CustomWindowTitleText</item>
+        <item name="android:shadowColor">@color/cp_titlebar_background</item>
+        <item name="android:shadowRadius">2.75</item>
+    </style>
 </resources>

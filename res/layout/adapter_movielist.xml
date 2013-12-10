@@ -41,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_toRightOf="@id/adapter_poster"
         android:layout_below="@id/adapter_title"
+        android:layout_marginLeft="5dp"
         android:singleLine="false"
         android:ellipsize="end"/>
 </RelativeLayout>

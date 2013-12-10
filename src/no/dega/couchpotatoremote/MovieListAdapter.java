@@ -23,26 +23,36 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 	
 	//Custom view for each movie element on the list
 	public View getView(int position, View convertView, ViewGroup parent) {
-	    View v = convertView;
-	    if(v == null) {
+        ViewHolder holder;
+	    if(convertView == null) {
 	        LayoutInflater inflater = LayoutInflater.from(getContext());
-	        v = inflater.inflate(R.layout.adapter_movielist, null);
-	    }
+	        convertView = inflater.inflate(R.layout.adapter_movielist, null);
+            holder = new ViewHolder();
+            holder.title = (TextView) convertView.findViewById(R.id.adapter_title);
+            holder.year = (TextView) convertView.findViewById(R.id.adapter_year);
+            holder.plot = (TextView) convertView.findViewById(R.id.adapter_plot);
+            holder.poster = (ImageView) convertView.findViewById(R.id.adapter_poster);
+            convertView.setTag(holder);
+	    } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
 	    Movie movie = movies.get(position);
 
 	    if(movie != null) {
-	        TextView title = (TextView) v.findViewById(R.id.adapter_title);
-	        TextView year = (TextView) v.findViewById(R.id.adapter_year);
-            TextView plot = (TextView) v.findViewById(R.id.adapter_plot);
-	        ImageView poster = (ImageView) v.findViewById(R.id.adapter_poster);
-	        
-	        title.setText(movie.getTitle());
-            year.setText(movie.getYear());
-            plot.setText(movie.getPlot());
+	        holder.title.setText(movie.getTitle());
+            holder.year.setText(movie.getYear());
+            holder.plot.setText(movie.getPlot());
 
-            ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
+            ImageLoader.getInstance().displayImage(movie.getPosterUri(), holder.poster);
 	    }
-	    return v;
+	    return convertView;
 	}
+
+    private static class ViewHolder {
+        TextView title;
+        TextView year;
+        TextView plot;
+        ImageView poster;
+    }
 }

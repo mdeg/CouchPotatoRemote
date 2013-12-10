@@ -7,9 +7,9 @@
          android:id="@android:id/list"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:background="@color/cp_background_dark"
-         android:drawSelectorOnTop="false"
+         android:drawSelectorOnTop="true"
          android:scrollbars="none"
+         style="@style/ListView"
          />
 
      <no.dega.couchpotatoremote.FontedTextView android:id="@id/android:empty"
