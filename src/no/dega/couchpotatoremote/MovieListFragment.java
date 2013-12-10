@@ -74,7 +74,7 @@ public class MovieListFragment extends ListFragment {
      *   Returns a SparseArray of Movie's built from the list (which can be empty if there are no movies)
      *   or null if it was given an invalid or broken JSON string
      */
-    private SparseArray<Movie> parseMovieList(String resp) {
+    private ArrayList<Movie> parseMovieList(String resp) {
         if((resp == null) || (resp.length() <= 0)) {
             return null;
         }
@@ -87,11 +87,11 @@ public class MovieListFragment extends ListFragment {
             }
             //If it's empty we just want to return an empty list
             if(response.getBoolean("empty")) {
-                return new SparseArray<Movie>();
+                return new ArrayList<Movie>();
             }
             JSONArray jsonMoviesList = response.getJSONArray("movies");
 
-            SparseArray<Movie> movies = new SparseArray<Movie>(jsonMoviesList.length());
+            ArrayList<Movie> movies = new ArrayList<Movie>(jsonMoviesList.length());
 
             //Create a movie object from every movie in the list
             for(int i = 0; i < jsonMoviesList.length(); i++) {
@@ -141,7 +141,7 @@ public class MovieListFragment extends ListFragment {
 
                 Movie newMovie = new Movie(libraryId, title, tagline, posterUri, plot, year, actors,
                         directors);
-                movies.put(libraryId, newMovie);
+                movies.add(newMovie);
             }
             return movies;
         } catch (Exception e) {
@@ -154,17 +154,11 @@ public class MovieListFragment extends ListFragment {
     private class DownloadMovieListTask extends APIRequestAsyncTask<String, Void, String> {
         @Override
         protected void onPostExecute(String result) {
-            SparseArray<Movie> movies;
+            ArrayList<Movie> movieList;
             //TODO: put them in alphabetical order
-            if((movies = parseMovieList(result)) == null) {
-                movies = new SparseArray<Movie>();
+            if((movieList = parseMovieList(result)) == null) {
+                movieList = new ArrayList<Movie>();
             }
-            ArrayList<Movie> movieList = new ArrayList<Movie>();
-            for(int i = 0; i < movies.size(); i++) {
-                //int key = this.movies.keyAt(i);
-                movieList.add(movies.get(movies.keyAt(i)));
-            }
-
             //Use custom movielist adapter to create the list
             if(movieList.size() <= 0) {
                 noMovies.setVisibility(View.VISIBLE);
