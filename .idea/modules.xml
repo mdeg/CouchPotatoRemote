@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/libs/appcompat/appcompat.iml" filepath="$PROJECT_DIR$/libs/appcompat/appcompat.iml" />
       <module fileurl="file://$PROJECT_DIR$/couchpotatoremote.iml" filepath="$PROJECT_DIR$/couchpotatoremote.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../JakeWharton-ActionBarSherlock-5a15d92/actionbarsherlock/target/generated-sources/generated-sources.iml" filepath="$PROJECT_DIR$/../../../../JakeWharton-ActionBarSherlock-5a15d92/actionbarsherlock/target/generated-sources/generated-sources.iml" />
     </modules>
   </component>
 </project>

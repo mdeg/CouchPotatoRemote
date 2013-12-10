@@ -1,23 +1,24 @@
- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-         android:orientation="vertical"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-     <ListView
-         android:id="@android:id/list"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:drawSelectorOnTop="true"
-         android:scrollbars="none"
-         />
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
+        android:scrollbars="none"
+        android:divider="@color/cp_background_light"
+        android:dividerHeight="5dp" />
 
-     <no.dega.couchpotatoremote.FontedTextView android:id="@id/android:empty"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:textSize="40sp"
-               android:text="@string/movie_view_none"
-               android:gravity="center_vertical|center_horizontal"
-               android:paddingLeft="5dp"
-               android:paddingRight="5dp"
-         />
- </RelativeLayout>
+    <no.dega.couchpotatoremote.FontedTextView
+        android:id="@id/android:empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="40sp"
+        android:text="@string/movie_view_none"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+</RelativeLayout>

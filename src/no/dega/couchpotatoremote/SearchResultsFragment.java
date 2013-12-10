@@ -1,13 +1,11 @@
 package no.dega.couchpotatoremote;
 
-import java.util.ArrayList;
-
+import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +21,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class SearchResultsFragment extends ListFragment {
 
-	private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
     private TextView noSearchResults;
     private SearchForMovieTask task;
     private String request;
@@ -36,8 +36,7 @@ public class SearchResultsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Construct and submit our query
-        @SuppressWarnings("ConstantConditions") String query = "movie.search?q=" + Uri.encode(getArguments().getString("NameToSearch"));
-        //noinspection ConstantConditions
+        String query = "movie.search?q=" + Uri.encode(getArguments().getString("NameToSearch"));
         request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
         task = new SearchForMovieTask();
     }
@@ -46,7 +45,6 @@ public class SearchResultsFragment extends ListFragment {
     //Called when created or when it's resumed
     private void setUpUI() {
         //"Searching..." spinner wheel
-        //noinspection ConstantConditions
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -61,48 +59,48 @@ public class SearchResultsFragment extends ListFragment {
 
         //A search is being made, so get rid of 'Search for a movie above'
         TextView empty = (TextView) getActivity().findViewById(R.id.searchlist_empty);
-        if(empty != null) {
+        if (empty != null) {
             empty.setVisibility(View.GONE);
         }
     }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
         setRetainInstance(true);
         setUpUI();
 
-		return rootView;
-	}
+        return rootView;
+    }
 
     @Override
     public void onStart() {
         super.onStart();
         //Show the dialog and temporarily hide the no search results TV until this is done
-        //noinspection ConstantConditions
         noSearchResults = (TextView) getListView().getEmptyView();
-        //noinspection ConstantConditions
         noSearchResults.setVisibility(View.GONE);
-        if(!isCompleted) {
+        if (!isCompleted) {
             progressDialog.show();
         }
         //Prevent re-running the task on config change (ie screen rotation)
-        if(!isRunning) {
+        if (!isRunning) {
             task.execute(request);
             isRunning = true;
         }
     }
+
     @Override
     public void onPause() {
         super.onPause();
         progressDialog.dismiss();
     }
+
     //Clicking on a list item should add the movie to CouchPotato
     //TODO: make selections a different colour on long presses
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		@SuppressWarnings("ConstantConditions") Movie movie = (Movie) getListAdapter().getItem(position);
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        @SuppressWarnings("ConstantConditions") Movie movie = (Movie) getListAdapter().getItem(position);
 
         StringBuilder uri = new StringBuilder("movie.add?title=");
         //Make sure we encode the title in a URL-recognisable format
@@ -112,36 +110,37 @@ public class SearchResultsFragment extends ListFragment {
 
         new AddMovieTask().execute(request);
         //Have to use the application context instead of the activity context so styles aren't applied to the toast
-        //noinspection ConstantConditions
         Toast.makeText(getActivity().getApplicationContext(), movie.getTitle() + " added to your Wanted list.",
                 Toast.LENGTH_LONG).show();
         //Collapsing list animation - destroys this fragment when it's finished
         Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
-        //noinspection ConstantConditions
         collapseList.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
+
             @Override
             public void onAnimationEnd(Animation animation) {
                 killThisFragment();
             }
+
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
-        //noinspection ConstantConditions
         getListView().startAnimation(collapseList);
 
-	}
+    }
+
     //Kill this fragment
     private void killThisFragment() {
-        //noinspection ConstantConditions
         getActivity().getFragmentManager().beginTransaction().remove(this).commit();
     }
 
     private ArrayList<Movie> parseMovieSearch(String resp) {
 
         ArrayList<Movie> searchResults = new ArrayList<Movie>();
-        if((resp == null) || (resp.length() <= 0)) {
+        if ((resp == null) || (resp.length() <= 0)) {
             Log.e("APIUtilities.searchForMovie", "searchForMovie received invalid response from makeRequest");
             return null;
         }
@@ -149,20 +148,20 @@ public class SearchResultsFragment extends ListFragment {
             JSONObject response = new JSONObject(resp);
 
             //If it fails or is empty we will return an empty list.
-            if(!response.getBoolean("success")) {
+            if (!response.getBoolean("success")) {
                 Log.e("searchForMovie", "Search failed: API returns success=false");
             }
             JSONArray movies = response.getJSONArray("movies");
 
-            for(int i = 0; i < movies.length(); i++) {
+            for (int i = 0; i < movies.length(); i++) {
                 JSONObject movie = movies.getJSONObject(i);
 
-                String title = !movie.isNull("titles")? movie.getJSONArray("titles").getString(0) : "";
-                String year = !movie.isNull("year")? movie.getString("year") : "";
+                String title = !movie.isNull("titles") ? movie.getJSONArray("titles").getString(0) : "";
+                String year = !movie.isNull("year") ? movie.getString("year") : "";
 
                 //All movies should have an imdb or, failing that, tmdb ID. We need this to add it to CP.
                 String dbId;
-                if(movie.has("imdb") && !movie.isNull("imdb")) {
+                if (movie.has("imdb") && !movie.isNull("imdb")) {
                     dbId = movie.getString("imdb");
                 } else if (movie.has("tmdb_id") && !movie.isNull("tmdb_id")) {
                     dbId = movie.getString("tmdb_id");
@@ -174,20 +173,20 @@ public class SearchResultsFragment extends ListFragment {
                 Movie result = new Movie(title, year, dbId);
                 searchResults.add(result);
             }
-        } catch(JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return searchResults;
     }
 
     private boolean parseAddMovieResponse(String resp) {
-        if((resp == null) || (resp.length() <= 0)) {
+        if ((resp == null) || (resp.length() <= 0)) {
             Log.e("SearchResultsFragment:parseAddMovieResponse", "Invalid response from addMovie");
             return false;
         }
         try {
             JSONObject response = new JSONObject(resp);
-            if(!response.getBoolean("success")) {
+            if (!response.getBoolean("success")) {
                 return false;
             }
         } catch (JSONException e) {
@@ -204,8 +203,8 @@ public class SearchResultsFragment extends ListFragment {
 
             ArrayList<Movie> searchResults = parseMovieSearch(result);
 
-            if(searchResults != null) {
-                if(searchResults.size() <= 0) {
+            if (searchResults != null) {
+                if (searchResults.size() <= 0) {
                     noSearchResults.setVisibility(View.VISIBLE);
                 } else {
                     final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(

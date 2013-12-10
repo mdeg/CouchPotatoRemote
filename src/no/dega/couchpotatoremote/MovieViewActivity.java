@@ -1,35 +1,34 @@
 package no.dega.couchpotatoremote;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class MovieViewActivity extends Activity {
+public class MovieViewActivity extends ActionBarActivity {
 
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_movie_view);
+        setContentView(R.layout.activity_movie_view);
 
-        //noinspection ConstantConditions
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		
-		Bundle bun = getIntent().getExtras();
-		TextView movieTitle = (TextView) findViewById(R.id.movieview_title);
-		TextView moviePlot = (TextView) findViewById(R.id.movieview_plot);
-		TextView movieTagline = (TextView) findViewById(R.id.movieview_tagline);
-		TextView movieYear = (TextView) findViewById(R.id.movieview_year);
-		ImageView poster = (ImageView) findViewById(R.id.movieview_poster);
-		
-		if(bun != null) {
-			Movie movie = bun.getParcelable("no.dega.couchpotatoremote.Movie");
 
-            if(movie == null) {
+        Bundle bun = getIntent().getExtras();
+        TextView movieTitle = (TextView) findViewById(R.id.movieview_title);
+        TextView moviePlot = (TextView) findViewById(R.id.movieview_plot);
+        TextView movieTagline = (TextView) findViewById(R.id.movieview_tagline);
+        TextView movieYear = (TextView) findViewById(R.id.movieview_year);
+        ImageView poster = (ImageView) findViewById(R.id.movieview_poster);
+
+        if (bun != null) {
+            Movie movie = bun.getParcelable("no.dega.couchpotatoremote.Movie");
+
+            if (movie == null) {
                 Log.e("MovieViewActivity", "Movie passed to MovieView is null (parcelling may have failed)");
             } else {
 
@@ -45,8 +44,8 @@ public class MovieViewActivity extends Activity {
 
                 ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
             }
-		} else {
-			Log.e("MovieViewActivity", "Null bundle passed to movieview");
-		}
-	}
+        } else {
+            Log.e("MovieViewActivity", "Null bundle passed to movieview");
+        }
+    }
 }

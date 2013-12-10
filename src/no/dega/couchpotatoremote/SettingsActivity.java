@@ -2,6 +2,7 @@ package no.dega.couchpotatoremote;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+
 //TODO: add back button
 //TODO: pop up number-only keypad for IP/port
 //TODO: wifi/internet settings

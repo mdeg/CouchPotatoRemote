@@ -9,10 +9,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 class APIUtilities {
-	/*
-	Build a URI for the query based on the users' preferences
+    /*
+    Build a URI for the query based on the users' preferences
     Example output: String="http://192.168.1.1:5050/api/apikey/"
-	 */
+     */
     private static String constructUriFromPreferences(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String ipPref = sharedPref.getString("pref_key_ip", "IP_FIND_FAIL");
@@ -30,19 +30,19 @@ class APIUtilities {
 	Example output: String="http://192.168.1.1:5050/api/somekey/movie.list"
      */
     protected static String formatRequest(String request, Context context) {
-        if((request == null) || (request.length() <= 0)) {
+        if ((request == null) || (request.length() <= 0)) {
             Log.e("APIUtilities.formatRequest", "Invalid string passed to formatRequest.");
             return null;
         }
         //Make sure they're connected to a network
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
-        if(ni == null) {
+        if (ni == null) {
             Toast.makeText(context, "Could not connect: no network is enabled.", Toast.LENGTH_LONG).show();
             Log.d("APIUtilities.formatRequest", "No connection to any network.");
             return null;
         }
-   //     boolean connectedToInternet = ni.isConnected();
+        //     boolean connectedToInternet = ni.isConnected();
 
 
         //Construct URI based on user settings and append the request

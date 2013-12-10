@@ -1,10 +1,9 @@
 <resources>
-    <!-- Application theme. -->
-    <style name="CouchpotatoTheme">
-        <item name="android:background">@color/cp_background_light</item>
+    <!-- TODO: test me on a Gingerbread device -->
+    <style name="CouchpotatoTheme" parent="@style/Theme.AppCompat">
+        <item name="android:background">#FFFF00</item>
         <item name="android:textColor">@color/cp_text</item>
-        <item name="android:windowTitleStyle">@style/WindowTitleBackground</item>
-        <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitle</item>
+        <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>
     </style>
 
     <style name="ListViewCells">
@@ -15,17 +14,5 @@
     <style name="WindowTitleBackground">
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
-    <style name="CustomWindowTitleText" parent="android:TextAppearance">
-        <item name="android:textColor">@color/cp_text</item>
-    </style>
-    <style name="CustomWindowTitle" parent="WindowTitle">
-        <item name="android:textAppearance">@style/CustomWindowTitleText</item>
-    </style>
 
-    <style name="WindowTitle">
-        <item name="android:singleLine">true</item>
-        <item name="android:textAppearance">@style/CustomWindowTitleText</item>
-        <item name="android:shadowColor">@color/cp_titlebar_background</item>
-        <item name="android:shadowRadius">2.75</item>
-    </style>
 </resources>
