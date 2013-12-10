@@ -4,17 +4,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-public class APIUtilities {
+class APIUtilities {
 	/*
 	Build a URI for the query based on the users' preferences
     Example output: String="http://192.168.1.1:5050/api/apikey/"
 	 */
-    public static String constructUriFromPreferences(Context context) {
+    private static String constructUriFromPreferences(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String ipPref = sharedPref.getString("pref_key_ip", "IP_FIND_FAIL");
         String apiPref = sharedPref.getString("pref_key_api", "API_FIND_FAIL");
@@ -30,7 +29,7 @@ public class APIUtilities {
     Example input: String="movie.list"
 	Example output: String="http://192.168.1.1:5050/api/somekey/movie.list"
      */
-    public static String formatRequest(String request, Context context) {
+    protected static String formatRequest(String request, Context context) {
         if((request == null) || (request.length() <= 0)) {
             Log.e("APIUtilities.formatRequest", "Invalid string passed to formatRequest.");
             return null;

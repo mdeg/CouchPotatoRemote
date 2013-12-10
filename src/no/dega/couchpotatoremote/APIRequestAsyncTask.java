@@ -1,6 +1,5 @@
 package no.dega.couchpotatoremote;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,7 +17,7 @@ import java.net.URL;
     Clients should construct a full URI using APIUtilities.formatQuery() and pass it to this
     Override onPreExecute/onPostExecute to do whatever is necessary
  */
-public class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String, Void, String> {
+class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String, Void, String> {
 
     protected String doInBackground(String... urls) {
         return sendRequest(urls[0]);
@@ -32,6 +31,8 @@ public class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask
             URL url = new URL(uri);
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(30000);
+            urlConnection.setConnectTimeout(30000);
             content = urlConnection.getInputStream();
 
             int statusCode = urlConnection.getResponseCode();

@@ -8,7 +8,7 @@ import android.widget.TextView;
 /**
  * Simple custom implementation of TextView to allow the use of CouchPotato's font, Open Sans, everywhere
  */
-public class FontedTextView extends TextView {
+class FontedTextView extends TextView {
     public FontedTextView(Context context) {
         super(context);
         init(context);

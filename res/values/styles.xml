@@ -7,9 +7,9 @@
         <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitle</item>
     </style>
 
-    <style name="ListView" parent="@android:style/Widget.ListView">
-        <item name="android:background">#FF0000</item>
-        <item name="android:listSelector">#FF9999</item>
+    <style name="ListViewCells">
+        <item name="android:background">@color/cp_background_dark</item>
+        <item name="android:textColor">@color/cp_text</item>
     </style>
 
     <style name="WindowTitleBackground">

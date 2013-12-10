@@ -4,7 +4,7 @@ package no.dega.couchpotatoremote;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Movie implements Parcelable {
+class Movie implements Parcelable {
 	private int libraryId;
 	private String imdbId;
 

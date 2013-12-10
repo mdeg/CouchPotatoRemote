@@ -8,12 +8,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AddMovie" >
 
-    <Button
+    <ImageButton
         android:id="@+id/do_search_button"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="Search"
+        android:src="@drawable/ic_action_search"
         android:onClick="searchButtonPressed" />
 	<EditText
 	    android:id="@+id/movie_to_add"
@@ -33,7 +33,7 @@
    		android:layout_height="wrap_content"
    		android:layout_below="@id/movie_to_add"
         tools:context=".AddMovie"
-        android:paddingTop="10dp">
+        android:layout_marginTop="10dp">
         <no.dega.couchpotatoremote.FontedTextView
             android:id="@+id/searchlist_empty"
             android:layout_height="match_parent"

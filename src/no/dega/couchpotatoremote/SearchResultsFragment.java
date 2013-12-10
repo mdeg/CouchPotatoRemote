@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +36,9 @@ public class SearchResultsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Construct and submit our query
-        String query = "movie.search?q=" + Uri.encode(getArguments().getString("NameToSearch"));
-        request = APIUtilities.formatRequest(query, getActivity());
+        @SuppressWarnings("ConstantConditions") String query = "movie.search?q=" + Uri.encode(getArguments().getString("NameToSearch"));
+        //noinspection ConstantConditions
+        request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
         task = new SearchForMovieTask();
     }
 
@@ -46,6 +46,7 @@ public class SearchResultsFragment extends ListFragment {
     //Called when created or when it's resumed
     private void setUpUI() {
         //"Searching..." spinner wheel
+        //noinspection ConstantConditions
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -79,7 +80,9 @@ public class SearchResultsFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         //Show the dialog and temporarily hide the no search results TV until this is done
+        //noinspection ConstantConditions
         noSearchResults = (TextView) getListView().getEmptyView();
+        //noinspection ConstantConditions
         noSearchResults.setVisibility(View.GONE);
         if(!isCompleted) {
             progressDialog.show();
@@ -99,20 +102,22 @@ public class SearchResultsFragment extends ListFragment {
     //TODO: make selections a different colour on long presses
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Movie movie = (Movie) getListAdapter().getItem(position);
+		@SuppressWarnings("ConstantConditions") Movie movie = (Movie) getListAdapter().getItem(position);
 
         StringBuilder uri = new StringBuilder("movie.add?title=");
         //Make sure we encode the title in a URL-recognisable format
         uri = uri.append(Uri.encode(movie.getTitle())).append("&identifier=").append(movie.getImdbId());
 
-        String request = APIUtilities.formatRequest(uri.toString(), getActivity());
+        @SuppressWarnings("ConstantConditions") String request = APIUtilities.formatRequest(uri.toString(), getActivity().getApplicationContext());
 
         new AddMovieTask().execute(request);
-
-        Toast.makeText(getActivity(), movie.getTitle() + " added to your Wanted list.",
+        //Have to use the application context instead of the activity context so styles aren't applied to the toast
+        //noinspection ConstantConditions
+        Toast.makeText(getActivity().getApplicationContext(), movie.getTitle() + " added to your Wanted list.",
                 Toast.LENGTH_LONG).show();
         //Collapsing list animation - destroys this fragment when it's finished
         Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
+        //noinspection ConstantConditions
         collapseList.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {}
@@ -123,11 +128,13 @@ public class SearchResultsFragment extends ListFragment {
             @Override
             public void onAnimationRepeat(Animation animation) {}
         });
+        //noinspection ConstantConditions
         getListView().startAnimation(collapseList);
 
 	}
     //Kill this fragment
     private void killThisFragment() {
+        //noinspection ConstantConditions
         getActivity().getFragmentManager().beginTransaction().remove(this).commit();
     }
 
@@ -204,7 +211,7 @@ public class SearchResultsFragment extends ListFragment {
                     final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(
                             getActivity(), R.layout.adapter_movielist, searchResults);
                     setListAdapter(adapter);
-                    ListView list = (ListView) getView().findViewById(android.R.id.list);
+                    @SuppressWarnings("ConstantConditions") ListView list = (ListView) getView().findViewById(android.R.id.list);
                     list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
                         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {

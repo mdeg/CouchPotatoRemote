@@ -15,7 +15,8 @@ public class MovieViewActivity extends Activity {
 
 		setContentView(R.layout.activity_movie_view);
 
-	    getActionBar().setDisplayHomeAsUpEnabled(true);
+        //noinspection ConstantConditions
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		
 		Bundle bun = getIntent().getExtras();

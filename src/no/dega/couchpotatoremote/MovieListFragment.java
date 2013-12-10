@@ -2,17 +2,18 @@ package no.dega.couchpotatoremote;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,9 +33,8 @@ public class MovieListFragment extends ListFragment {
         String query = "movie.list?status=";
         query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
 
-        request = APIUtilities.formatRequest(query, getActivity());
+        request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
         task = new DownloadMovieListTask();
-
     }
 
 	@Override
@@ -48,9 +48,11 @@ public class MovieListFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-
+        PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(), true, true);
+        getListView().setOnScrollListener(listener);
         if(!hasRun) {
             noMovies = (TextView) getListView().getEmptyView();
+            //noinspection ConstantConditions
             noMovies.setVisibility(View.GONE);
             hasRun = true;
             task.execute(request);

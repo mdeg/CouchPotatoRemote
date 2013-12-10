@@ -14,13 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-public class AddMovieActivity extends Activity {
+class AddMovieActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_movie);
-	    getActionBar().setDisplayHomeAsUpEnabled(true);
+        //noinspection ConstantConditions
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		//Listener for when user hits search
 		EditText editText = (EditText) findViewById(R.id.movie_to_add);
@@ -30,14 +31,13 @@ public class AddMovieActivity extends Activity {
 				boolean handled = false;
 				if(actionId == EditorInfo.IME_ACTION_SEARCH) {
 					//Start fragment
+                    //noinspection ConstantConditions
                     doSearch(v.getText().toString());
-
 					handled = true;
 				}
 				return handled;
 			}	
 		});
-		
 	}
 
 	@Override
@@ -56,6 +56,7 @@ public class AddMovieActivity extends Activity {
     private void suppressOnscreenKeyboard() {
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
+        //noinspection ConstantConditions
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }

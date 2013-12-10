@@ -3,6 +3,8 @@ package no.dega.couchpotatoremote;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.MemoryCacheUtil;
 
 public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 
@@ -21,7 +24,9 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 		this.movies = movies;
 	}
 	
-	//Custom view for each movie element on the list
+	/*
+	View for movies on the movielist. Uses ViewHolder to cache views for better performance.
+	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 	    if(convertView == null) {
