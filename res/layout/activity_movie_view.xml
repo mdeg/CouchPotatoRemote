@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/ActivityBackground"
-    >
+    android:layout_height="match_parent"    >
 
-    <no.dega.couchpotatoremote.FontedTextView
-        android:id="@+id/movieview_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:textSize="25sp" />
+
 
     <ImageView
         android:id="@+id/movieview_poster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/movieview_title"
-        android:src="@drawable/ic_launcher" />
+        android:layout_alignParentTop="true"
+        android:layout_margin="1dp"
+        />
+
+    <no.dega.couchpotatoremote.FontedTextView
+        android:id="@+id/movieview_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/movieview_poster"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/movieview_tagline"
@@ -26,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/movieview_title"
         android:layout_toRightOf="@id/movieview_poster"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/movieview_year"
@@ -34,7 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/movieview_tagline"
         android:layout_alignParentRight="true"
-        android:textSize="25sp" />
+        android:layout_alignParentTop="true"
+        android:textSize="20sp" />
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/movieview_plot"

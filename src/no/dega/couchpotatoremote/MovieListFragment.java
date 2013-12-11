@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 //Displays a list of Movies
 public class MovieListFragment extends ListFragment {
-    //TODO: add this to backstack
     private TextView noMovies = null;
     private DownloadMovieListTask task = null;
     private String request;
@@ -50,6 +49,7 @@ public class MovieListFragment extends ListFragment {
         super.onStart();
         PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(), true, true);
         getListView().setOnScrollListener(listener);
+        //Don't want to restart the task if the user changes orientation
         if (!hasRun) {
             noMovies = (TextView) getListView().getEmptyView();
             noMovies.setVisibility(View.GONE);
@@ -94,9 +94,9 @@ public class MovieListFragment extends ListFragment {
 
             ArrayList<Movie> movies = new ArrayList<Movie>(jsonMoviesList.length());
 
-            //Create a movie object from every movie in the list
+            //Create a Movie object from every movie listed in the json response
             for (int i = 0; i < jsonMoviesList.length(); i++) {
-
+                //libraryId isn't useful at the moment but I'll store it just in case
                 int libraryId = jsonMoviesList.getJSONObject(i).getInt("library_id");
                 JSONObject info = jsonMoviesList.getJSONObject(i).getJSONObject("library").
                         getJSONObject("info");
@@ -108,14 +108,14 @@ public class MovieListFragment extends ListFragment {
                 String tagline = !info.isNull("tagline") ? info.getString("tagline") : "No tagline";
                 String year = !info.isNull("year") ? info.getString("year") : "";
                 String plot = !info.isNull("plot") ? info.getString("plot") : "No plot";
-
+                //Get the poster URI (this will be a web address)
                 String posterUri;
                 if (!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
                     posterUri = info.getJSONObject("images").getJSONArray("poster").getString(0);
                 } else {
                     posterUri = "";
                 }
-
+                //Copy the actor/directors JSONArrays into a regular String array
                 String[] actors;
                 if (!info.isNull("actors")) {
                     JSONArray jsonActors = info.getJSONArray("actors");
@@ -126,7 +126,6 @@ public class MovieListFragment extends ListFragment {
                 } else {
                     actors = new String[0];
                 }
-
                 String[] directors;
                 if (!info.isNull("directors")) {
                     JSONArray jsonDirectors = info.getJSONArray("directors");
