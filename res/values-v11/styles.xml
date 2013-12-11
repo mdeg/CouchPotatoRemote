@@ -5,6 +5,7 @@
         <item name="android:actionBarStyle">@style/CustomActionBar</item>
         <item name="android:actionButtonStyle">@style/CustomActionBarButton</item>
         <item name="android:actionModeBackground">@color/cp_titlebar_background</item>
+        <item name="android:actionBarTabBarStyle">@style/CustomTabBar</item>
     </style>
 
     <style name="CustomActionBar" parent="@style/Widget.AppCompat.ActionBar">
@@ -26,8 +27,12 @@
         <item name="android:background">@color/cp_background_light</item>
     </style>
 
-    <style name="CustomTab"
-        parent="Widget.AppCompat.ActionBar.TabView" >
-        <item name="android:background">#FFFF00</item>
-        </style>
+    <style name="CustomTabBar"
+        parent="@style/Widget.AppCompat.ActionBar.TabView" >
+        <item name="android:background">@color/cp_background_light</item>
+        <item name="android:divider">?android:attr/actionBarDivider</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:dividerPadding">12dip</item>
+    </style>
+
 </resources>
