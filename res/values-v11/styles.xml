@@ -26,13 +26,14 @@
     <style name="ActivityBackground">
         <item name="android:background">@color/cp_background_light</item>
     </style>
-
+<!-- TODO: fix why the buttons don't extend the whole way -->
     <style name="CustomTabBar"
         parent="@style/Widget.AppCompat.ActionBar.TabView" >
         <item name="android:background">@color/cp_background_light</item>
         <item name="android:divider">?android:attr/actionBarDivider</item>
         <item name="android:showDividers">middle</item>
         <item name="android:dividerPadding">12dip</item>
+        <item name="android:padding">0dp</item>
     </style>
 
 </resources>
