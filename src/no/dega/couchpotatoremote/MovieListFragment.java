@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,11 +29,6 @@ public class MovieListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Movies can be either on the Wanted list or on the Manage list
-        String query = "movie.list?status=";
-        query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
-
-        request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
         task = new DownloadMovieListTask();
     }
 
@@ -49,8 +45,12 @@ public class MovieListFragment extends ListFragment {
         super.onStart();
         PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(), true, true);
         getListView().setOnScrollListener(listener);
+        String query = "movie.list?status=";
+        query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
+        request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
         //Don't want to restart the task if the user changes orientation
         if (!hasRun) {
+            //Movies can be either on the Wanted list or on the Manage list
             noMovies = (TextView) getListView().getEmptyView();
             noMovies.setVisibility(View.GONE);
             hasRun = true;
@@ -67,6 +67,17 @@ public class MovieListFragment extends ListFragment {
         Intent intent = new Intent(getActivity(), MovieViewActivity.class);
         intent.putExtra("no.dega.couchpotatoremote.Movie", movie);
         startActivity(intent);
+    }
+    //User has hit the refresh button and we need to redownload the list
+    public void refresh() {
+        //Shouldn't refresh unless the list has already been populated (or tried to be)
+   //     if(hasRun) {
+            //Ensure we don't make duplicate tasks if a user presses refresh multiple times
+            if(task == null) {
+                task = new DownloadMovieListTask();
+                task.execute(request);
+            }
+  //      }
     }
 
     /*
@@ -146,8 +157,8 @@ public class MovieListFragment extends ListFragment {
             return movies;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 
@@ -155,18 +166,20 @@ public class MovieListFragment extends ListFragment {
         @Override
         protected void onPostExecute(String result) {
             ArrayList<Movie> movieList;
-            //TODO: put them in alphabetical order
+            //parseMovieList should only return null if there's been an error
             if ((movieList = parseMovieList(result)) == null) {
                 movieList = new ArrayList<Movie>();
             }
-            //Use custom movielist adapter to create the list
+            //If there's no movies, show the No Movies text
             if (movieList.size() <= 0) {
                 noMovies.setVisibility(View.VISIBLE);
             } else {
+                //We want to call this even on a refresh
                 final MovieListAdapter<Movie> adapter = new MovieListAdapter<Movie>(
                         getActivity(), R.layout.adapter_movielist, movieList);
                 setListAdapter(adapter);
             }
+            task = null;
         }
     }
 }

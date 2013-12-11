@@ -11,8 +11,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -79,9 +82,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //This is where settings appear from
-        getMenuInflater().inflate(R.menu.main, menu);
         getMenuInflater().inflate(R.menu.main_activity_actions, menu);
         return true;
     }
@@ -95,9 +95,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 startActivity(settings);
                 return true;
             //Add movie
-            case R.id.action_addmovie:
+            case R.id.action_add_movie:
                 Intent addMovie = new Intent(this, AddMovieActivity.class);
                 startActivity(addMovie);
+                return true;
+            //Refresh movie list
+            case R.id.action_refresh:
+                MovieListFragment fragment = (MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(0);
+                fragment.refresh();
+                fragment = (MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(1);
+                fragment.refresh();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -122,11 +129,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                                 FragmentTransaction fragmentTransaction) {
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>(2);
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -145,6 +149,22 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
             fragment.setArguments(args);
             return fragment;
+        }
+
+        //These three methods are needed so we can retrieve fragments based on their position
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            registeredFragments.remove(position);
+            super.destroyItem(container, position, object);
+        }
+        public Fragment getRegisteredFragment(int position) {
+            return registeredFragments.get(position);
         }
 
         @Override

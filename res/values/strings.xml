@@ -13,5 +13,6 @@
     <string name="title_activity_add_movie">Add Movie</string>
     <string name="prompt_do_search">Search for a movie above…</string>
     <string name="no_search_results">No movies found</string>
+    <string name="refresh_button">Refresh</string>
 
 </resources>

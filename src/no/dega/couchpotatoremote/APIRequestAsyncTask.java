@@ -20,6 +20,9 @@ import java.net.URL;
 class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String, Void, String> {
 
     protected String doInBackground(String... urls) {
+        if(urls[0] == null) {
+            return null;
+        }
         return sendRequest(urls[0]);
     }
 

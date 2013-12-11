@@ -20,7 +20,7 @@ public class AddMovieActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_movie);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Listener for when user hits search
         EditText editText = (EditText) findViewById(R.id.movie_to_add);
@@ -71,8 +71,7 @@ public class AddMovieActivity extends ActionBarActivity {
         args.putString("NameToSearch", nameToSearch);
         fragment.setArguments(args);
 
-        fragmentTransaction.replace(R.id.searchlist_placeholder, fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.replace(R.id.searchlist_placeholder, fragment).commit();
     }
 
 }

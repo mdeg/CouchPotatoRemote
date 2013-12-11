@@ -138,7 +138,6 @@ public class SearchResultsFragment extends ListFragment {
     }
 
     private ArrayList<Movie> parseMovieSearch(String resp) {
-
         ArrayList<Movie> searchResults = new ArrayList<Movie>();
         if ((resp == null) || (resp.length() <= 0)) {
             Log.e("APIUtilities.searchForMovie", "searchForMovie received invalid response from makeRequest");
