@@ -1,11 +1,11 @@
 package no.dega.couchpotatoremote;
 
-import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -134,7 +134,7 @@ public class SearchResultsFragment extends ListFragment {
 
     //Kill this fragment
     private void killThisFragment() {
-        getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
     private ArrayList<Movie> parseMovieSearch(String resp) {
@@ -196,7 +196,7 @@ public class SearchResultsFragment extends ListFragment {
     }
 
     private class SearchForMovieTask extends APIRequestAsyncTask<String, Void, String> {
-        //Build and display the list of search results and get rid of the spinner wheel
+        //Build and display the list of search results and get rid of the spinny wheel
         @Override
         protected void onPostExecute(String result) {
             isCompleted = true;
@@ -210,7 +210,7 @@ public class SearchResultsFragment extends ListFragment {
                     final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(
                             getActivity(), R.layout.adapter_movielist, searchResults);
                     setListAdapter(adapter);
-                    @SuppressWarnings("ConstantConditions") ListView list = (ListView) getView().findViewById(android.R.id.list);
+                    ListView list = (ListView) getView().findViewById(android.R.id.list);
                     list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
                         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {

@@ -49,16 +49,16 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 
             ImageLoader.getInstance().displayImage(movie.getPosterUri(), holder.poster);
 
-
-            int titleSize = holder.title.getLineHeight();
-            //Posters are almost always 231px high
+            //Posters are almost always 231px high (and never higher). A few are a little smaller though.
+            //Irritatingly, there are some that are smaller and have transparencies in the remainder
+            //So, matching
+            //Have to check for null and give a default height - image might not be loaded yet
             int maxHeight = 231;
-            //There are a few that are a little smaller though
             if(holder.poster.getDrawable() != null) {
                 maxHeight = holder.poster.getDrawable().getIntrinsicHeight();
             }
             //Plot size should be the height of the poster minus the height of the title
-            holder.plot.setMaxHeight(maxHeight - titleSize);
+            holder.plot.setMaxHeight(maxHeight - holder.title.getLineHeight());
         }
         return convertView;
     }
