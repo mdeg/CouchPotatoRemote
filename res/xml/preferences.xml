@@ -3,14 +3,20 @@
     <EditTextPreference
         android:key="pref_key_api"
         android:title="@string/api_key_pref"
-        android:defaultValue="CHANGEME" />
+        android:defaultValue=""/>
     <EditTextPreference
         android:key="pref_key_ip"
         android:title="@string/ip_address_pref"
-        android:defaultValue="192.168.1.10" />
+        android:defaultValue=""/>
     <EditTextPreference
         android:key="pref_key_port"
         android:title="@string/port_pref"
-        android:defaultValue="5050" />
+        android:defaultValue="5050"
+        />
+    <CheckBoxPreference
+        android:key="pref_key_https"
+        android:title="HTTPS?"
+        android:defaultValue="false"
+        />
 
 </PreferenceScreen>
