@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/ListViewCells"
+
     android:orientation="horizontal">
 
     <no.dega.couchpotatoremote.FontedTextView
@@ -12,7 +14,8 @@
         android:textSize="20sp"
         android:paddingLeft="10dp"
         android:gravity="left"
-
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:ellipsize="end"
         android:singleLine="true" />
 
@@ -24,7 +27,8 @@
         android:layout_marginLeft="5dp"
         android:paddingRight="10dp"
         android:textSize="20sp"
-
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:gravity="right"
         android:singleLine="true"
         android:ellipsize="none" />

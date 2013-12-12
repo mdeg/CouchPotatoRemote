@@ -7,7 +7,7 @@
         android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawSelectorOnTop="false" />
+        android:drawSelectorOnTop="true" />
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@id/android:empty"

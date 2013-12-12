@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        thisapp:showAsAction="ifRoom"
+        thisapp:showAsAction="never"
         android:title="@string/action_settings" />
 
     <item
@@ -18,6 +18,12 @@
         thisapp:showAsAction="always"
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/refresh_button"
+        />
+
+    <item
+        android:id="@+id/action_viewlog"
+        thisapp:showAsAction="ifRoom"
+        android:title="@string/view_log"
         />
 
 </menu>
