@@ -1,5 +1,6 @@
 package no.dega.couchpotatoremote;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -7,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,7 +30,7 @@ public class MovieListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        task = new DownloadMovieListTask();
+        task = new DownloadMovieListTask(getActivity());
     }
 
     @Override
@@ -78,7 +78,7 @@ public class MovieListFragment extends ListFragment {
         //Shouldn't refresh unless the list has already been populated (or tried to be)
         //Ensure we don't make duplicate tasks if a user presses refresh multiple times
         if(task == null) {
-            task = new DownloadMovieListTask();
+            task = new DownloadMovieListTask(getActivity());
             task.execute(request);
             }
     }
@@ -168,6 +168,10 @@ public class MovieListFragment extends ListFragment {
     }
 
     private class DownloadMovieListTask extends APIRequestAsyncTask<String, Void, String> {
+        public DownloadMovieListTask(Context context) {
+            super(context);
+        }
+
         @Override
         protected void onPostExecute(String result) {
             ArrayList<Movie> movieList;

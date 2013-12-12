@@ -1,6 +1,5 @@
 package no.dega.couchpotatoremote;
 
-
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;

@@ -1,10 +1,12 @@
 package no.dega.couchpotatoremote;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,7 +40,7 @@ public class SearchResultsFragment extends ListFragment {
         //Construct and submit our query
         String query = "movie.search?q=" + Uri.encode(getArguments().getString("NameToSearch"));
         request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
-        task = new SearchForMovieTask();
+        task = new SearchForMovieTask(getActivity());
     }
 
     //Set up the progress dialog and hide the 'Search for a movie above' text
@@ -100,15 +102,16 @@ public class SearchResultsFragment extends ListFragment {
     //TODO: make selections a different colour on long presses
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        @SuppressWarnings("ConstantConditions") Movie movie = (Movie) getListAdapter().getItem(position);
+        Movie movie = (Movie) getListAdapter().getItem(position);
 
         StringBuilder uri = new StringBuilder("movie.add?title=");
         //Make sure we encode the title in a URL-recognisable format
         uri = uri.append(Uri.encode(movie.getTitle())).append("&identifier=").append(movie.getImdbId());
 
-        @SuppressWarnings("ConstantConditions") String request = APIUtilities.formatRequest(uri.toString(), getActivity().getApplicationContext());
+        String request = APIUtilities.formatRequest(uri.toString(), getActivity().getApplicationContext());
 
-        new AddMovieTask().execute(request);
+        new AddMovieTask(getActivity()).execute(request);
+
         //Have to use the application context instead of the activity context so styles aren't applied to the toast
         Toast.makeText(getActivity().getApplicationContext(), movie.getTitle() + " added to your Wanted list.",
                 Toast.LENGTH_LONG).show();
@@ -195,6 +198,10 @@ public class SearchResultsFragment extends ListFragment {
     }
 
     private class SearchForMovieTask extends APIRequestAsyncTask<String, Void, String> {
+        public SearchForMovieTask(Context context) {
+            super(context);
+        }
+
         //Build and display the list of search results and get rid of the spinny wheel
         @Override
         protected void onPostExecute(String result) {
@@ -227,6 +234,9 @@ public class SearchResultsFragment extends ListFragment {
 
     //TODO: some kinda slide out thing for adding movies
     private class AddMovieTask extends APIRequestAsyncTask<String, Void, String> {
+        public AddMovieTask(Context context) {
+            super(context);
+        }
 
         @Override
         protected void onPostExecute(String result) {
