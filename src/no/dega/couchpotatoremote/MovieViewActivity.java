@@ -1,7 +1,6 @@
 package no.dega.couchpotatoremote;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,10 +9,9 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-//TODO: decide on whether/where to put the tagline
 public class MovieViewActivity extends ActionBarActivity {
     Movie movie = null;
-    Fragment actorExpanded = null;
+    boolean actorExpanded = false;
     boolean directorExpanded = false;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -50,20 +48,21 @@ public class MovieViewActivity extends ActionBarActivity {
     }
 
     public void onActorButtonPress(View view) {
-        if(actorExpanded == null) {
-            //Not yet expanded
-            Fragment frag = new ActorDirectorFragment();
-            Bundle args = new Bundle();
-            args.putStringArray("Names", movie.getActors());
-            frag.setArguments(args);
-            actorExpanded = frag;
-            getSupportFragmentManager().beginTransaction().
-                    replace(R.id.movieview_actors_placeholder, frag).commit();
+        //TODO: add some animation for expanding/unexpanding
+        TextView actors = (TextView) findViewById(R.id.movieview_actors_text);
+        StringBuilder display = new StringBuilder();
+        for(String str: movie.getActors()) {
+            display.append(str).append("\n");
+        }
+        actors.setText(display.toString());
+        if(!actorExpanded) {
+            actorExpanded = true;
+            actors.setVisibility(View.VISIBLE);
         } else {
             //Already expanded, and we need to close
-            getSupportFragmentManager().beginTransaction().remove(actorExpanded).commit();
-            //TODO: add some animation here
-            actorExpanded = null;
+            actorExpanded = false;
+            //TODO: this might need to be view.invisible? to preserve place in layout
+            actors.setVisibility(View.GONE);
         }
     }
 }

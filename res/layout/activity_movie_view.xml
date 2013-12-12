@@ -7,6 +7,7 @@
     <RelativeLayout
         android:id="@+id/movieview_set_titletagyear"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="6dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
         <no.dega.couchpotatoremote.FontedTextView
@@ -26,6 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
+            android:singleLine="true"
+            android:ellipsize="end"
 
             android:layout_below="@id/movieview_title"
             android:layout_alignParentLeft="true"
@@ -62,17 +65,27 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="10dp"/>
     <Button
+        android:id="@+id/movieview_actors_button"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@id/movieview_plot"
+        android:layout_toRightOf="@id/movieview_poster"
+        android:layout_below="@id/movieview_set_titletagyear"
         android:text="Actors"
         android:onClick="onActorButtonPress" />
+
+    <no.dega.couchpotatoremote.FontedTextView
+        android:id="@+id/movieview_actors_text"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/movieview_poster"
+        android:layout_below="@id/movieview_set_titletagyear"/>
     <!--Placeholder layout to be replaced with a fragment-->
+    <!--
     <RelativeLayout
         android:id="@+id/movieview_actors_placeholder"
         android:layout_marginLeft="5dp"
-        android:layout_below="@id/movieview_plot"
+        android:layout_below="@id/movieview_actors_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></RelativeLayout>
-
+-->
 </RelativeLayout>
