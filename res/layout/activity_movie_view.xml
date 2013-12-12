@@ -4,7 +4,6 @@
     android:layout_height="match_parent"    >
 
 
-
     <ImageView
         android:id="@+id/movieview_poster"
         android:layout_width="wrap_content"
@@ -56,5 +55,17 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="10dp"/>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Actors"
+        android:onClick="onActorButtonPress" />
+    <!--Placeholder layout to be replaced with a fragment-->
+    <RelativeLayout
+        android:id="@+id/movieview_actors_placeholder"
+        android:layout_below="@id/movieview_plot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></RelativeLayout>
 
 </RelativeLayout>
