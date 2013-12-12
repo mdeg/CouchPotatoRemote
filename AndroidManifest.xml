@@ -36,20 +36,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="no.dega.couchpotatoremote.MovieViewActivity"
+            android:name=".MovieViewActivity"
             android:parentActivityName="no.dega.couchpotatoremote.MainActivity"></activity>
         <activity
-            android:name="no.dega.couchpotatoremote.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
         <activity
-            android:name="no.dega.couchpotatoremote.AddMovieActivity"
+            android:name=".AddMovieActivity"
             android:label="@string/title_activity_add_movie"
             android:parentActivityName="no.dega.couchpotatoremote.MainActivity">
-            <!-- Compatibility support -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="no.dega.couchpotatoremote.MainActivity" />
+
         </activity>
+        <activity android:name=".LogActivity" />
     </application>
 
 </manifest>

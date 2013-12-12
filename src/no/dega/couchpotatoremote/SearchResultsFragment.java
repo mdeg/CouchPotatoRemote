@@ -92,11 +92,11 @@ public class SearchResultsFragment extends ListFragment {
     @Override
     public void onPause() {
         super.onPause();
+        //Clear the progress dialog (otherwise it'll leak)
         progressDialog.dismiss();
     }
 
     //Clicking on a list item should add the movie to CouchPotato
-    //TODO: make selections a different colour on long presses
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Movie movie = (Movie) getListAdapter().getItem(position);
@@ -137,62 +137,6 @@ public class SearchResultsFragment extends ListFragment {
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
-    private ArrayList<Movie> parseMovieSearch(String resp) {
-        ArrayList<Movie> searchResults = new ArrayList<Movie>();
-        if ((resp == null) || (resp.length() <= 0)) {
-            Log.e("APIUtilities.searchForMovie", "searchForMovie received invalid response from makeRequest");
-            return null;
-        }
-        try {
-            JSONObject response = new JSONObject(resp);
-
-            //If it fails or is empty we will return an empty list.
-            if (!response.getBoolean("success")) {
-                Log.e("searchForMovie", "Search failed: API returns success=false");
-            }
-            JSONArray movies = response.getJSONArray("movies");
-
-            for (int i = 0; i < movies.length(); i++) {
-                JSONObject movie = movies.getJSONObject(i);
-
-                String title = !movie.isNull("titles") ? movie.getJSONArray("titles").getString(0) : "";
-                String year = !movie.isNull("year") ? movie.getString("year") : "";
-
-                //All movies should have an imdb or, failing that, tmdb ID. We need this to add it to CP.
-                String dbId;
-                if (movie.has("imdb") && !movie.isNull("imdb")) {
-                    dbId = movie.getString("imdb");
-                } else if (movie.has("tmdb_id") && !movie.isNull("tmdb_id")) {
-                    dbId = movie.getString("tmdb_id");
-                } else {
-                    Log.e("parseMovieSearch", "Movie returned from the search with no database ID.");
-                    dbId = "";
-                }
-
-                Movie result = new Movie(title, year, dbId);
-                searchResults.add(result);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return searchResults;
-    }
-
-    private boolean parseAddMovieResponse(String resp) {
-        if ((resp == null) || (resp.length() <= 0)) {
-            Log.e("SearchResultsFragment:parseAddMovieResponse", "Invalid response from addMovie");
-            return false;
-        }
-        try {
-            JSONObject response = new JSONObject(resp);
-            if (!response.getBoolean("success")) {
-                return false;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
 
     private class SearchForMovieTask extends APIRequestAsyncTask<String, Void, String> {
         public SearchForMovieTask(Context context) {
@@ -219,9 +163,51 @@ public class SearchResultsFragment extends ListFragment {
                 Log.e("SearchResultsFragment", "Could not create list: searchResults is null.");
             }
         }
+
+        private ArrayList<Movie> parseMovieSearch(String resp) {
+            ArrayList<Movie> searchResults = new ArrayList<Movie>();
+            if ((resp == null) || (resp.length() <= 0)) {
+                Log.e("APIUtilities.searchForMovie", "searchForMovie received invalid response from makeRequest");
+                return null;
+            }
+            try {
+                JSONObject response = new JSONObject(resp);
+
+                //If it fails or is empty we will return an empty list.
+                if (!response.getBoolean("success")) {
+                    Log.e("searchForMovie", "Search failed: API returns success=false");
+                }
+                JSONArray movies = response.getJSONArray("movies");
+
+                for (int i = 0; i < movies.length(); i++) {
+                    JSONObject movie = movies.getJSONObject(i);
+
+                    String title = !movie.isNull("titles") ? movie.getJSONArray("titles").getString(0) : "";
+                    String year = !movie.isNull("year") ? movie.getString("year") : "";
+
+                    //All movies should have an imdb or, failing that, tmdb ID. We need this to add it to CP.
+                    String dbId;
+                    if (movie.has("imdb") && !movie.isNull("imdb")) {
+                        dbId = movie.getString("imdb");
+                    } else if (movie.has("tmdb_id") && !movie.isNull("tmdb_id")) {
+                        dbId = movie.getString("tmdb_id");
+                    } else {
+                        Log.e("parseMovieSearch", "Movie returned from the search with no database ID.");
+                        dbId = "";
+                    }
+
+                    Movie result = new Movie(title, year, dbId);
+                    searchResults.add(result);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return searchResults;
+        }
+
+
     }
 
-    //TODO: some kinda slide out thing for adding movies
     private class AddMovieTask extends APIRequestAsyncTask<String, Void, String> {
         public AddMovieTask(Context context) {
             super(context);
@@ -229,8 +215,26 @@ public class SearchResultsFragment extends ListFragment {
 
         @Override
         protected void onPostExecute(String result) {
-            //TODO: fill this out with UI responsiveness
-            parseAddMovieResponse(result);
+            if(parseAddMovieResponse(result)) {
+
+            }
+        }
+
+        private boolean parseAddMovieResponse(String result) {
+            if ((result == null) || (result.length() <= 0)) {
+                Log.e("SearchResultsFragment:parseAddMovieResponse", "Invalid response from addMovie");
+                return false;
+            }
+            try {
+                JSONObject response = new JSONObject(result);
+                if (!response.getBoolean("success")) {
+                    return false;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("AddMovieTask.parseAddMovieResponse", "JSONException in parseAddMovieResponse");
+            }
+            return true;
         }
     }
 }

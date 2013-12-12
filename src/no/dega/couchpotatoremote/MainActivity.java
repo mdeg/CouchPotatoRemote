@@ -89,7 +89,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) { //TODO: fix why this doesn't have a selection thingie
+        switch (item.getItemId()) {
             //Settings
             case R.id.action_settings:
                 Intent settings = new Intent(this, SettingsActivity.class);
@@ -102,7 +102,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 return true;
             //Refresh movie list
             case R.id.action_refresh:
-                //TODO: add UI responsiveness for refresh
                 MovieListFragment fragment = (MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(0);
                 fragment.refresh();
                 fragment = (MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(1);
@@ -111,6 +110,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 return true;
             //View the log
             case R.id.action_viewlog:
+                Intent log = new Intent(this, LogActivity.class);
+                startActivity(log);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
