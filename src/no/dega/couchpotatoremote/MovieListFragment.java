@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 public class MovieListFragment extends ListFragment {
     private TextView noMovies = null;
     private DownloadMovieListTask task = null;
-    private String request;
+    private String request = null;
     private boolean hasRun = false;
 
     @Override
@@ -36,6 +37,7 @@ public class MovieListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
+        //We want to keep this fragment if the user changes orientation
         setRetainInstance(true);
         return rootView;
     }
@@ -43,12 +45,15 @@ public class MovieListFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(), true, true);
+        //Pause image downloading/displaying while user is scrolling the list
+        //Causes ugly image pop-in but it's required to make scrolling feel smooth
+        PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(),
+                true, true);
         getListView().setOnScrollListener(listener);
         String query = "movie.list?status=";
         query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
         request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
-        //Don't want to restart the task if the user changes orientation
+        //Don't want to restart the download if the user changes orientation
         if (!hasRun) {
             //Movies can be either on the Wanted list or on the Manage list
             noMovies = (TextView) getListView().getEmptyView();
@@ -71,13 +76,11 @@ public class MovieListFragment extends ListFragment {
     //User has hit the refresh button and we need to redownload the list
     public void refresh() {
         //Shouldn't refresh unless the list has already been populated (or tried to be)
-   //     if(hasRun) {
-            //Ensure we don't make duplicate tasks if a user presses refresh multiple times
-            if(task == null) {
-                task = new DownloadMovieListTask();
-                task.execute(request);
+        //Ensure we don't make duplicate tasks if a user presses refresh multiple times
+        if(task == null) {
+            task = new DownloadMovieListTask();
+            task.execute(request);
             }
-  //      }
     }
 
     /*
@@ -88,12 +91,13 @@ public class MovieListFragment extends ListFragment {
      */
     private ArrayList<Movie> parseMovieList(String resp) {
         if ((resp == null) || (resp.length() <= 0)) {
+            Log.e("MovieListFragment.parseMovieList", "parseMovieList was passed an invalid string");
             return null;
         }
         try {
             JSONObject response = new JSONObject(resp);
             //	Log.d(this.toString(), "String Contents: " + response.toString());
-            //Make sure our request is okay and there's movies to process
+            //Make sure our request is okay
             if (!response.getBoolean("success")) {
                 return null;
             }
@@ -113,12 +117,13 @@ public class MovieListFragment extends ListFragment {
                         getJSONObject("info");
                 //	Log.d(this.toString(), "Movie JSON String: " + info.toString());
 
-                //All of these JSON fields can be null, so we have to make sure we check for that
+                //Grab the important information (have to watch for nulls)
                 String title = !info.isNull("titles") ? info.getJSONArray("titles").getString(0)
                         : "No title";
                 String tagline = !info.isNull("tagline") ? info.getString("tagline") : "No tagline";
                 String year = !info.isNull("year") ? info.getString("year") : "";
                 String plot = !info.isNull("plot") ? info.getString("plot") : "No plot";
+
                 //Get the poster URI (this will be a web address)
                 String posterUri;
                 if (!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
@@ -126,29 +131,14 @@ public class MovieListFragment extends ListFragment {
                 } else {
                     posterUri = "";
                 }
+
                 //Copy the actor/directors JSONArrays into a regular String array
-                String[] actors;
-                if (!info.isNull("actors")) {
-                    JSONArray jsonActors = info.getJSONArray("actors");
-                    actors = new String[jsonActors.length()];
-                    for (int j = 0; j < jsonActors.length(); j++) {
-                        actors[j] = jsonActors.get(j).toString();
-                    }
-                } else {
-                    actors = new String[0];
-                }
-                String[] directors;
-                if (!info.isNull("directors")) {
-                    JSONArray jsonDirectors = info.getJSONArray("directors");
-                    directors = new String[jsonDirectors.length()];
-                    if (jsonDirectors != null) {
-                        for (int j = 0; j < jsonDirectors.length(); j++) {
-                            directors[j] = jsonDirectors.get(j).toString();
-                        }
-                    }
-                } else {
-                    directors = new String[0];
-                }
+                String[] actors = !info.isNull("actors") ?
+                        jsonStringArrayToStringArray(info.getJSONArray("actors"))
+                        : new String[0];
+                String[] directors = !info.isNull("directors") ?
+                        jsonStringArrayToStringArray(info.getJSONArray("directors"))
+                        : new String[0];
 
                 Movie newMovie = new Movie(libraryId, title, tagline, posterUri, plot, year, actors,
                         directors);
@@ -161,6 +151,21 @@ public class MovieListFragment extends ListFragment {
         }
     }
 
+    //Copy a JSON array of strings to a regular String array.
+    private String[] jsonStringArrayToStringArray(JSONArray array) {
+        if(array == null) {
+            return null;
+        }
+        String[] newArray = new String[array.length()];
+        for(int i = 0; i < array.length(); i++) {
+            try {
+                newArray[i] = array.get(i).toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return newArray;
+    }
 
     private class DownloadMovieListTask extends APIRequestAsyncTask<String, Void, String> {
         @Override

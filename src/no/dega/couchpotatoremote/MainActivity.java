@@ -16,6 +16,7 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -88,7 +89,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        switch (item.getItemId()) { //TODO: fix why this doesn't have a selection thingie
             //Settings
             case R.id.action_settings:
                 Intent settings = new Intent(this, SettingsActivity.class);
@@ -101,10 +102,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 return true;
             //Refresh movie list
             case R.id.action_refresh:
+                //TODO: add UI responsiveness for refresh
                 MovieListFragment fragment = (MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(0);
                 fragment.refresh();
                 fragment = (MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(1);
                 fragment.refresh();
+                Toast.makeText(this, "Refreshing...", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
