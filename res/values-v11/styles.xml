@@ -3,32 +3,27 @@
     <style name="CouchpotatoTheme" parent="@style/Theme.AppCompat">
         <item name="android:textColor">@color/cp_text</item>
         <item name="android:windowBackground">@color/cp_background_light</item>
-        <item name="android:actionBarStyle">@style/CustomActionBar</item>
-        <item name="android:actionButtonStyle">@style/CustomActionBarButton</item>
+        <item name="android:actionBarStyle">@style/CPThemeActionBar</item>
         <item name="android:actionModeBackground">@color/cp_titlebar_background</item>
-        <item name="android:actionBarTabBarStyle">@style/CustomTabBar</item>
+        <item name="android:actionBarTabBarStyle">@style/CPThemeTabBar</item>
     </style>
 
-    <style name="CustomActionBar" parent="@style/Widget.AppCompat.ActionBar">
+    <style name="CPThemeActionBar" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@color/cp_titlebar_background</item>
         <item name="android:textColor">@color/cp_text</item>
-        <item name="android:titleTextStyle">@style/CPTitleTextStyle</item>
+        <item name="android:titleTextStyle">@style/CPThemeTitleTextStyle</item>
     </style>
 
-    <style name="CPTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <style name="CPThemeTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/cp_text</item>
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
 
-    <style name="CustomActionBarButton" parent="@android:style/Widget.ActionButton">
+    <style name="CPThemeActionBarButton" parent="@android:style/Widget.ActionButton">
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
 
-    <style name="ActivityBackground">
-        <item name="android:background">@color/cp_background_light</item>
-    </style>
-
-    <style name="CustomTabBar"
+    <style name="CPThemeTabBar"
         parent="@style/Widget.AppCompat.ActionBar.TabView" >
         <item name="android:background">@color/cp_background_light</item>
         <item name="android:divider">?android:attr/actionBarDivider</item>
