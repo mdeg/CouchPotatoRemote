@@ -109,6 +109,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 fragment.refresh();
                 Toast.makeText(this, "Refreshing...", Toast.LENGTH_SHORT).show();
                 return true;
+            //View the log
+            case R.id.action_viewlog:
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

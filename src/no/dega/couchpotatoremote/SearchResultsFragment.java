@@ -3,10 +3,8 @@ package no.dega.couchpotatoremote;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -216,14 +213,6 @@ public class SearchResultsFragment extends ListFragment {
                     final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(
                             getActivity(), R.layout.adapter_movielist, searchResults);
                     setListAdapter(adapter);
-                    ListView list = (ListView) getView().findViewById(android.R.id.list);
-                    list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                        @Override
-                        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            view.setBackgroundColor(Color.parseColor("#222222"));
-                            return false;
-                        }
-                    });
                 }
                 progressDialog.dismiss();
             } else {

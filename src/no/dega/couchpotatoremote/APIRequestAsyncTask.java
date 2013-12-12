@@ -63,15 +63,7 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
                 statusCode = urlConnection.getResponseCode();
             } else {
                 //HTTPS
-                /*
-                String algorithm = TrustManagerFactory.getDefaultAlgorithm();
-                TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
-                tmf.init(keyStore);
-
-                SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, tmf.getTrustManagers(), null);
-                */
-                //TODO: fix me up, this is a hack
+                //TODO: fix me up, this is a hack. Need to get the cert from the user somehow.
                 SSLContext sslContext = null;
                 try {
                     sslContext = SSLContext.getInstance("TLS");
