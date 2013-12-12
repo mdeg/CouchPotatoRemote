@@ -13,7 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 //TODO: decide on whether/where to put the tagline
 public class MovieViewActivity extends ActionBarActivity {
     Movie movie = null;
-    boolean actorExpanded = false;
+    Fragment actorExpanded = null;
     boolean directorExpanded = false;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class MovieViewActivity extends ActionBarActivity {
         Bundle bun = getIntent().getExtras();
         TextView movieTitle = (TextView) findViewById(R.id.movieview_title);
         TextView moviePlot = (TextView) findViewById(R.id.movieview_plot);
-       // TextView movieTagline = (TextView) findViewById(R.id.movieview_tagline);
+        TextView movieTagline = (TextView) findViewById(R.id.movieview_tagline);
         TextView movieYear = (TextView) findViewById(R.id.movieview_year);
         ImageView poster = (ImageView) findViewById(R.id.movieview_poster);
 
@@ -36,7 +36,7 @@ public class MovieViewActivity extends ActionBarActivity {
 
                 movieTitle.setText(movie.getTitle());
                 moviePlot.setText("Plot: " + movie.getPlot());
-              //  movieTagline.setText(movie.getTagline());
+                movieTagline.setText(movie.getTagline());
                 movieYear.setText(movie.getYear());
 
                 //Grab from cache, or network if not cached
@@ -50,11 +50,20 @@ public class MovieViewActivity extends ActionBarActivity {
     }
 
     public void onActorButtonPress(View view) {
-        Fragment frag = new ActorDirectorFragment();
-        Bundle args = new Bundle();
-        args.putStringArray("Names", movie.getActors());
-        frag.setArguments(args);
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.movieview_actors_placeholder, frag).commit();
+        if(actorExpanded == null) {
+            //Not yet expanded
+            Fragment frag = new ActorDirectorFragment();
+            Bundle args = new Bundle();
+            args.putStringArray("Names", movie.getActors());
+            frag.setArguments(args);
+            actorExpanded = frag;
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.movieview_actors_placeholder, frag).commit();
+        } else {
+            //Already expanded, and we need to close
+            getSupportFragmentManager().beginTransaction().remove(actorExpanded).commit();
+            //TODO: add some animation here
+            actorExpanded = null;
+        }
     }
 }
