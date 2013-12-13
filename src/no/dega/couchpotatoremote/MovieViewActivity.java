@@ -19,8 +19,8 @@ public class MovieViewActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_movie_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         Bundle bun = getIntent().getExtras();
+
         TextView movieTitle = (TextView) findViewById(R.id.movieview_title);
         TextView moviePlot = (TextView) findViewById(R.id.movieview_plot);
         TextView movieTagline = (TextView) findViewById(R.id.movieview_tagline);
@@ -50,13 +50,20 @@ public class MovieViewActivity extends ActionBarActivity {
     public void onActorButtonPress(View view) {
         //TODO: add some animation for expanding/unexpanding
         TextView actors = (TextView) findViewById(R.id.movieview_actors_text);
-        StringBuilder display = new StringBuilder();
-        for(String str: movie.getActors()) {
-            display.append(str).append("\n");
-        }
-        actors.setText(display.toString());
+
         if(!actorExpanded) {
             actorExpanded = true;
+
+            StringBuilder display = new StringBuilder();
+            if(movie.getActors().length > 0) {
+                for(String str: movie.getActors()) {
+                    display.append(str).append("\n");
+                }
+            } else {
+                display.append("No actors.");
+            }
+
+            actors.setText(display.toString());
             actors.setVisibility(View.VISIBLE);
         } else {
             //Already expanded, and we need to close

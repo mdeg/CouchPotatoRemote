@@ -149,7 +149,6 @@ public class SearchResultsFragment extends ListFragment {
             isCompleted = true;
 
             ArrayList<Movie> searchResults = parseMovieSearch(result);
-
             if (searchResults != null) {
                 if (searchResults.size() <= 0) {
                     noSearchResults.setVisibility(View.VISIBLE);
@@ -177,8 +176,8 @@ public class SearchResultsFragment extends ListFragment {
                 if (!response.getBoolean("success")) {
                     Log.e("searchForMovie", "Search failed: API returns success=false");
                 }
-                JSONArray movies = response.getJSONArray("movies");
 
+                JSONArray movies = response.getJSONArray("movies");
                 for (int i = 0; i < movies.length(); i++) {
                     JSONObject movie = movies.getJSONObject(i);
 

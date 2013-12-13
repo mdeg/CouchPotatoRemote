@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,20 +30,21 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        //TODO: add showImageOnFail, showImageOnLoading
         //Create settings for and initialise nostra13's ImageLoader
         //See: https://github.com/nostra13/Android-Universal-Image-Loader
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
-                cacheInMemory(true).cacheOnDisc(true).build();
+                cacheInMemory(true).cacheOnDisc(true)
+                //.showImageOnFail(R.drawable.no_poster)
+                //.showImageForEmptyUri(R.drawable.no_poster)
+                .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .defaultDisplayImageOptions(defaultOptions).build();
         ImageLoader.getInstance().init(config);
 
-        setContentView(R.layout.activity_main);
-
+        //Build preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -57,9 +57,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        // When swiping between different sections, select the corresponding
-        // tab. We can also use ActionBar.Tab#select() to do this if we have
-        // a reference to the Tab.
+        //Add listener for swiping between sections
         mViewPager
                 .setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                     @Override
@@ -68,13 +66,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     }
                 });
 
-        // For each of the sections in the app, add a tab to the action bar.
+        //For each section, create + add a tab to the action bar.
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by
-            // the adapter. Also specify this Activity object, which implements
-            // the TabListener interface, as the callback (listener) for when
-            // this tab is selected.
-
             actionBar.addTab(actionBar.newTab()
                     .setText(mSectionsPagerAdapter.getPageTitle(i))
                     .setTabListener(this));
@@ -118,11 +111,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
+    //When selected, switch to appropriate view
     @Override
     public void onTabSelected(Tab tab,
                               FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
     }
 
@@ -130,13 +122,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public void onTabUnselected(Tab tab,
                                 FragmentTransaction fragmentTransaction) {
     }
-
     @Override
     public void onTabReselected(Tab tab,
                                 FragmentTransaction fragmentTransaction) {
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        //Fragments are registered so we can retrieve them based on their position
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>(2);
 
         public SectionsPagerAdapter(FragmentManager fm) {
