@@ -14,6 +14,9 @@ import java.util.regex.Pattern;
 
 public class LogActivity extends ActionBarActivity {
     private boolean hasRun;
+    private String log = null;
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -22,14 +25,17 @@ public class LogActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         if(!hasRun) {
-            //TODO: persist
+            //Create and execute the log retrieval task
             hasRun = true;
             GetLogTask task = new GetLogTask(this);
             String request = APIUtilities.formatRequest("logging.partial?type=info", this);
             task.execute(request);
+        } else {
+            //This is a recreation and we can just use the recovered log text from the bundle
+            ((TextView) findViewById(R.id.log_text)).setText(log);
         }
     }
 
@@ -38,11 +44,13 @@ public class LogActivity extends ActionBarActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putBoolean("hasRun", hasRun);
+        savedInstanceState.putString("log", log);
     }
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         hasRun = savedInstanceState.getBoolean("hasRun");
+        log = savedInstanceState.getString("log");
     }
 
     private class GetLogTask extends APIRequestAsyncTask<String, Void, String> {
@@ -52,8 +60,8 @@ public class LogActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            TextView log = (TextView) findViewById(R.id.log_text);
-            log.setText(parseLog(result));
+            log = parseLog(result);
+            ((TextView) findViewById(R.id.log_text)).setText(log);
         }
 
         private String parseLog(String result) {
