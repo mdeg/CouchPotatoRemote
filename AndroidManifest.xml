@@ -47,7 +47,8 @@
             android:parentActivityName="no.dega.couchpotatoremote.MainActivity">
 
         </activity>
-        <activity android:name=".LogActivity" />
+        <activity android:name=".LogActivity"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>
