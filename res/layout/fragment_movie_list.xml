@@ -1,7 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/cp_background_dark"
+    >
 
     <ListView
         android:id="@android:id/list"
@@ -14,7 +16,6 @@
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@id/android:empty"
-        style="@style/ListViewCells"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textSize="40sp"

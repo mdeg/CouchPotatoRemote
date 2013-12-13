@@ -73,6 +73,7 @@ public class MovieListFragment extends ListFragment {
         intent.putExtra("no.dega.couchpotatoremote.Movie", movie);
         startActivity(intent);
     }
+
     //User has hit the refresh button and we need to redownload the list
     public void refresh() {
         //Shouldn't refresh unless the list has already been populated (or tried to be)
@@ -125,11 +126,13 @@ public class MovieListFragment extends ListFragment {
                 String plot = !info.isNull("plot") ? info.getString("plot") : "No plot";
 
                 //Get the poster URI (this will be a web address)
-                String posterUri;
+                String posterUri = "";
                 if (!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
-                    posterUri = info.getJSONObject("images").getJSONArray("poster").getString(0);
-                } else {
-                    posterUri = "";
+                    JSONArray posters = info.getJSONObject("images").getJSONArray("poster");
+                    //Some movies don't have posters
+                    if(posters.length() >= 1) {
+                        posterUri = posters.getString(0);
+                    }
                 }
 
                 //Copy the actor/directors JSONArrays into a regular String array
@@ -145,10 +148,10 @@ public class MovieListFragment extends ListFragment {
                 movies.add(newMovie);
             }
             return movies;
-        } catch (Exception e) {
+        } catch (JSONException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     //Copy a JSON array of strings to a regular String array.
@@ -171,6 +174,11 @@ public class MovieListFragment extends ListFragment {
         public DownloadMovieListTask(Context context) {
             super(context);
         }
+        @Override
+        protected void onPreExecute() {
+            getListView().setVisibility(View.INVISIBLE);
+        }
+
 
         @Override
         protected void onPostExecute(String result) {
@@ -187,6 +195,7 @@ public class MovieListFragment extends ListFragment {
                 final MovieListAdapter<Movie> adapter = new MovieListAdapter<Movie>(
                         getActivity(), R.layout.adapter_movielist, movieList);
                 setListAdapter(adapter);
+                getListView().setVisibility(View.VISIBLE);
             }
             task = null;
         }

@@ -71,6 +71,7 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
                     e.printStackTrace();
                 }
                 try {
+                    //WRONG WRONG WRONG
                     sslContext.init(null, new TrustManager[]{
                             new X509TrustManager() {
                                 @Override
