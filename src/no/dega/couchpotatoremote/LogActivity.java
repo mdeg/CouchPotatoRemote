@@ -63,7 +63,7 @@ public class LogActivity extends ActionBarActivity {
             log = parseLog(result);
             ((TextView) findViewById(R.id.log_text)).setText(log);
         }
-
+        //Parse the log returned, strip out dud characters and format it a little bit
         private String parseLog(String result) {
             if(result == null) {
                  Log.e("GetLogTask.parseLog()", "Null result passed to GetLogTask.");
@@ -82,9 +82,11 @@ public class LogActivity extends ActionBarActivity {
                 Matcher matcher = pattern.matcher(log);
                 int prevStart = 0;
                 while(matcher.find()) {
-                    //The string from the previous start to the start of the regex match
+                    //The log chunk from the previous start to the start of the regex match
                     builder.append(log.substring(prevStart, matcher.start()));
                     prevStart = matcher.end();
+                    //Also throw in a 2nd newline character to make it come out nice on the other end
+                    builder.append("\n");
                 }
                 //The remainder after the last matching
                 builder.append(log.substring(prevStart, log.length() - 1));

@@ -51,7 +51,6 @@ public class AddMovieActivity extends ActionBarActivity {
     }
 
     //Hide the onscreen keyboard
-    //TODO; fix keyboard reappearing on screen rotation
     private void suppressOnscreenKeyboard() {
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
