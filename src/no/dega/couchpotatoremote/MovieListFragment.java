@@ -47,6 +47,7 @@ public class MovieListFragment extends ListFragment {
         super.onStart();
         //Pause image downloading/displaying while user is scrolling the list
         //Causes ugly image pop-in but it's required to make scrolling feel smooth
+        //TODO: check if I can work this into an asynchronous task
         PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(),
                 true, true);
         getListView().setOnScrollListener(listener);
@@ -170,20 +171,24 @@ public class MovieListFragment extends ListFragment {
         return newArray;
     }
 
+    /*
+    Download a list of movies from the CouchPotato server
+    The fragment itself handles whether it's downloading the wanted or manage list
+    */
     private class DownloadMovieListTask extends APIRequestAsyncTask<String, Void, String> {
         public DownloadMovieListTask(Context context) {
             super(context);
         }
+        //Hide the list so the user knows it's refreshing
         @Override
         protected void onPreExecute() {
             getListView().setVisibility(View.INVISIBLE);
         }
 
-
         @Override
         protected void onPostExecute(String result) {
             ArrayList<Movie> movieList;
-            //parseMovieList should only return null if there's been an error
+            //Want to display an empty list if there's been an error
             if ((movieList = parseMovieList(result)) == null) {
                 movieList = new ArrayList<Movie>();
             }

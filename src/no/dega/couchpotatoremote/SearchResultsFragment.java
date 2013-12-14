@@ -23,7 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SearchResultsFragment extends ListFragment {
-
+    //TODO: test initialising these?
     private ProgressDialog progressDialog;
     private TextView noSearchResults;
     private SearchForMovieTask task;
@@ -38,29 +38,6 @@ public class SearchResultsFragment extends ListFragment {
         String query = "movie.search?q=" + Uri.encode(getArguments().getString("NameToSearch"));
         request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
         task = new SearchForMovieTask(getActivity());
-    }
-
-    //Set up the progress dialog and hide the 'Search for a movie above' text
-    //Called when created or when it's resumed
-    private void setUpUI() {
-        //"Searching..." spinner wheel
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setMessage("Searching...");
-        progressDialog.setCancelable(true);
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                task.cancel(true);
-            }
-        });
-
-        //A search is being made, so get rid of 'Search for a movie above'
-        TextView empty = (TextView) getActivity().findViewById(R.id.searchlist_empty);
-        if (empty != null) {
-            empty.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -108,7 +85,7 @@ public class SearchResultsFragment extends ListFragment {
         String request = APIUtilities.formatRequest(uri.toString(), getActivity().getApplicationContext());
 
         new AddMovieTask(getActivity()).execute(request);
-
+        //TODO: is this true?
         //Have to use the application context instead of the activity context so styles aren't applied to the toast
         Toast.makeText(getActivity().getApplicationContext(), movie.getTitle() + " added to your Wanted list.",
                 Toast.LENGTH_LONG).show();
@@ -116,20 +93,39 @@ public class SearchResultsFragment extends ListFragment {
         Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
         collapseList.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
+            public void onAnimationStart(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
                 killThisFragment();
             }
-
             @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
         getListView().startAnimation(collapseList);
 
+    }
+
+    //Set up the progress dialog and hide the 'Search for a movie above' text
+    //Called when created or when it's resumed
+    private void setUpUI() {
+        //"Searching..." progress dialog
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("Searching...");
+        progressDialog.setCancelable(true);
+        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                task.cancel(true);
+            }
+        });
+
+        //A search is being made, so get rid of 'Search for a movie above'
+        TextView empty = (TextView) getActivity().findViewById(R.id.searchlist_empty);
+        if (empty != null) {
+            empty.setVisibility(View.GONE);
+        }
     }
 
     //Kill this fragment
@@ -137,7 +133,8 @@ public class SearchResultsFragment extends ListFragment {
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
-
+    //Asynchronously query the API for results for the users' search
+    //We will then populate the list based on those results
     private class SearchForMovieTask extends APIRequestAsyncTask<String, Void, String> {
         public SearchForMovieTask(Context context) {
             super(context);
@@ -151,6 +148,7 @@ public class SearchResultsFragment extends ListFragment {
             ArrayList<Movie> searchResults = parseMovieSearch(result);
             if (searchResults != null) {
                 if (searchResults.size() <= 0) {
+                    //No results for the users' search
                     noSearchResults.setVisibility(View.VISIBLE);
                 } else {
                     final SearchResultsAdapter<Movie> adapter = new SearchResultsAdapter<Movie>(
@@ -163,6 +161,7 @@ public class SearchResultsFragment extends ListFragment {
             }
         }
 
+        //Parse the response from the search
         private ArrayList<Movie> parseMovieSearch(String resp) {
             ArrayList<Movie> searchResults = new ArrayList<Movie>();
             if ((resp == null) || (resp.length() <= 0)) {
@@ -178,6 +177,7 @@ public class SearchResultsFragment extends ListFragment {
                 }
 
                 JSONArray movies = response.getJSONArray("movies");
+                //TODO: change this to foreach loop?
                 for (int i = 0; i < movies.length(); i++) {
                     JSONObject movie = movies.getJSONObject(i);
 
@@ -203,10 +203,10 @@ public class SearchResultsFragment extends ListFragment {
             }
             return searchResults;
         }
-
-
     }
 
+    //Asynchronously ask the CP server to add the specified movie
+    //If this breaks, it's probably because the movie metadata is invalid (especially imdbId)
     private class AddMovieTask extends APIRequestAsyncTask<String, Void, String> {
         public AddMovieTask(Context context) {
             super(context);
@@ -215,10 +215,10 @@ public class SearchResultsFragment extends ListFragment {
         @Override
         protected void onPostExecute(String result) {
             if(parseAddMovieResponse(result)) {
-
+                //TODO: fill me out with UI responsiveness
             }
         }
-
+        //The CP server will respond with a string {success:true} if successful
         private boolean parseAddMovieResponse(String result) {
             if ((result == null) || (result.length() <= 0)) {
                 Log.e("SearchResultsFragment:parseAddMovieResponse", "Invalid response from addMovie");

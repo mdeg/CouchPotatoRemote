@@ -50,18 +50,11 @@ public class AddMovieActivity extends ActionBarActivity {
         doSearch(editText.getText().toString());
     }
 
-    //Hide the onscreen keyboard
-    private void suppressOnscreenKeyboard() {
-        InputMethodManager inputManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
-    }
 
+    //Send the users' search query to the search fragment, which handles the searching/adding from there
     private void doSearch(String nameToSearch) {
         suppressOnscreenKeyboard();
 
-        //Construct and submit the fragment
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         SearchResultsFragment fragment = new SearchResultsFragment();
 
@@ -72,4 +65,11 @@ public class AddMovieActivity extends ActionBarActivity {
         fragmentTransaction.replace(R.id.searchlist_placeholder, fragment).commit();
     }
 
+    //Hide the onscreen keyboard
+    private void suppressOnscreenKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 }

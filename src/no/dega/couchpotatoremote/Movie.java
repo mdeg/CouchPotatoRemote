@@ -1,7 +1,5 @@
 package no.dega.couchpotatoremote;
 
-//import android.graphics.drawable.Drawable;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -19,10 +17,9 @@ class Movie implements Parcelable {
     private String[] actors;
     private String[] directors;
 
-    //Full constructor used when parsing from JSON
-    public Movie(int libraryId, String title, String tagline, String posterUri,
+    //Full constructor used when parsing the movie lists
+    public Movie(String title, String tagline, String posterUri,
                  String plot, String year, String[] actors, String[] directors) {
-        this.libraryId = libraryId;
         this.title = title;
         this.tagline = tagline;
         this.year = year;
@@ -56,19 +53,19 @@ class Movie implements Parcelable {
             };
 
     public String toString() {
-        return this.title + " " + this.tagline + " (" + this.year + ")";
+        return this.title + " (" + this.year + ")";
     }
 
     //Need to read these back in the same order we write them
     private void readFromParcel(Parcel par) {
-        this.libraryId = par.readInt();
-        this.title = par.readString();
-        this.tagline = par.readString();
-        this.plot = par.readString();
-        this.posterUri = par.readString();
-        this.year = par.readString();
-        this.actors = par.createStringArray();
-        this.directors = par.createStringArray();
+        libraryId = par.readInt();
+        title = par.readString();
+        tagline = par.readString();
+        plot = par.readString();
+        posterUri = par.readString();
+        year = par.readString();
+        actors = par.createStringArray();
+        directors = par.createStringArray();
     }
 
     @Override

@@ -12,6 +12,10 @@ import org.json.JSONObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+    Get the log from CouchPotato, format it a little then display it.
+*/
+    //TODO: add error log to this
 public class LogActivity extends ActionBarActivity {
     private boolean hasRun;
     private String log = null;
@@ -28,7 +32,7 @@ public class LogActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
         if(!hasRun) {
-            //Create and execute the log retrieval task
+            //Retrieve the log
             hasRun = true;
             GetLogTask task = new GetLogTask(this);
             String request = APIUtilities.formatRequest("logging.partial?type=info", this);
@@ -39,7 +43,7 @@ public class LogActivity extends ActionBarActivity {
         }
     }
 
-    //Save hasRun to prevent a re-running of the getLog activity on orientation change
+    //Save our variables so we don't re-request on activity recreation
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -53,6 +57,7 @@ public class LogActivity extends ActionBarActivity {
         log = savedInstanceState.getString("log");
     }
 
+    //Asynchronously request the log from the CouchPotato server
     private class GetLogTask extends APIRequestAsyncTask<String, Void, String> {
         public GetLogTask(Context context) {
             super(context);
@@ -77,7 +82,7 @@ public class LogActivity extends ActionBarActivity {
                 String log = !response.isNull("log")
                         ? response.getString("log") : "";
                 StringBuilder builder = new StringBuilder();
-                //Get rid of the unicode bolding the log prints out with a handy spot of regex
+                //Get rid of the unicode junk the log prints out with a handy spot of regex
                 Pattern pattern = Pattern.compile(Pattern.quote("\u001b[0m"));
                 Matcher matcher = pattern.matcher(log);
                 int prevStart = 0;

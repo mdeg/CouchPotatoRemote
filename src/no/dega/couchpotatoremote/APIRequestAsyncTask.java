@@ -45,7 +45,12 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
         }
         return sendRequest(urls[0]);
     }
-
+    /*
+    Send a HTTP or HTTPS request to the CouchPotato server
+    This will always be an API request, and the return from the server
+    will always be a JSON string.
+    Return the content returned by the CouchPotato server as a string
+    */
     private String sendRequest(String uri) {
         StringBuilder builder = new StringBuilder();
         InputStream content = null;
@@ -91,7 +96,7 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
                 }
 
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
-                //Need to keep this hostname verifier to all - hosts may be on any IP
+                //Need to keep this hostname verifier to all - servers may be on any IP/domain
                 urlConnection.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
                 urlConnection.setSSLSocketFactory(sslContext.getSocketFactory());
                 urlConnection.setReadTimeout(30000);
@@ -100,26 +105,25 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
 
                 statusCode = urlConnection.getResponseCode();
             }
-
+            //If HTTP returns a success
             if (statusCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     builder.append(line);
                 }
+                return builder.toString();
             } else {
                 Log.e("APIRequestAsyncTask", "Status code not 200, is: " + statusCode);
-                return null;
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
             Log.e("APIRequestAsyncTask", "HTTP protocol error.");
-            return null;
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("APIRequestAsyncTask", "Could not connect to resource: API key may be missing or network not connected.");
-            return null;
         } finally {
+            //Clean up and close the connections
             if (content != null) {
                 try {
                     content.close();
@@ -129,6 +133,6 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
                 }
             }
         }
-        return builder.toString();
+        return null;
     }
 }

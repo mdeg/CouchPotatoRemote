@@ -9,11 +9,17 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+/*
+    When a user clicks on a movie in the list, take them to this view activity
+    User can see poster, title, tagline, year, plot and actors/directors
+*/
+    //TODO: add sideways scrolling
 public class MovieViewActivity extends ActionBarActivity {
     Movie movie = null;
-    boolean actorExpanded = false;
-    boolean directorExpanded = false;
+    boolean actorsExpanded = false;
+    boolean directorsExpanded = false;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -45,14 +51,14 @@ public class MovieViewActivity extends ActionBarActivity {
         } else {
             Log.e("MovieViewActivity", "Null bundle passed to movieview");
         }
-    }
-
+    }  
+    //Called when user presses 'Actors' button. Expands list of actors.
     public void onActorButtonPress(View view) {
         //TODO: add some animation for expanding/unexpanding
         TextView actors = (TextView) findViewById(R.id.movieview_actors_text);
 
-        if(!actorExpanded) {
-            actorExpanded = true;
+        if(!actorsExpanded) {
+            actorsExpanded = true;
 
             StringBuilder display = new StringBuilder();
             if(movie.getActors().length > 0) {
@@ -67,7 +73,34 @@ public class MovieViewActivity extends ActionBarActivity {
             actors.setVisibility(View.VISIBLE);
         } else {
             //Already expanded, and we need to close
-            actorExpanded = false;
+            actorsExpanded = false;
+            //TODO: this might need to be view.invisible? to preserve place in layout
+            actors.setVisibility(View.GONE);
+        }
+    }
+
+    //Called when user presses 'Directors' button. Expands list of directors.
+    public void onActorButtonPress(View view) {
+        //TODO: add some animation for expanding/unexpanding
+        TextView directors = (TextView) findViewById(R.id.movieview_directors_text);
+
+        if(!directorsExpanded) {
+            directorsExpanded = true;
+
+            StringBuilder display = new StringBuilder();
+            if(movie.getDirectors().length > 0) {
+                for(String str: movie.getDirectors()) {
+                    display.append(str).append("\n");
+                }
+            } else {
+                display.append("No directors.");
+            }
+
+            directors.setText(display.toString());
+            directors.setVisibility(View.VISIBLE);
+        } else {
+            //Already expanded, and we need to close
+            directorsExpanded = false;
             //TODO: this might need to be view.invisible? to preserve place in layout
             actors.setVisibility(View.GONE);
         }
