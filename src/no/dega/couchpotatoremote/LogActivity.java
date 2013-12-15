@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 /*
     Get the log from CouchPotato, format it a little then display it.
 */
-    //TODO: add error log to this
 public class LogActivity extends ActionBarActivity {
     private String log = null;
     private GetLogTask task = null;
@@ -29,10 +28,7 @@ public class LogActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_log);
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
+
         Spinner spinner = (Spinner) findViewById(R.id.log_select_type);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.log_types, android.R.layout.simple_spinner_item);
@@ -71,6 +67,11 @@ public class LogActivity extends ActionBarActivity {
             }
         });
         spinner.setAdapter(adapter);
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 
     @Override
@@ -131,24 +132,6 @@ public class LogActivity extends ActionBarActivity {
             }
         return null;
         }
-/*
-        private String eliminateUnicodeCruft(String toRemove) {
-            StringBuilder builder = new StringBuilder();
-            //Get rid of the unicode junk the log prints out with a handy spot of regex
-            Pattern pattern = Pattern.compile(Pattern.quote("\u001b[0m"));
-            Matcher matcher = pattern.matcher(log);
-            int prevStart = 0;
-            while(matcher.find()) {
-                //The log chunk from the previous start to the start of the regex match
-                builder.append(log.substring(prevStart, matcher.start()));
-                prevStart = matcher.end();
-                //Also throw in a 2nd newline character to make it come out nice on the other end
-                builder.append("\n");
-            }
-            //The remainder after the last matching
-            builder.append(log.substring(prevStart, log.length() - 1));
-            return builder.toString();
-        }*/
     }
 }
 
