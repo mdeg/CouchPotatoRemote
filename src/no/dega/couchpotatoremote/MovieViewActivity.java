@@ -1,13 +1,18 @@
 package no.dega.couchpotatoremote;
 
 import android.os.Bundle;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
 
 /*
     When a user clicks on a movie in the list, take them to this view activity
@@ -15,9 +20,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 */
     //TODO: add sideways scrolling
 public class MovieViewActivity extends ActionBarActivity {
-    Movie movie = null;
+    ArrayList<Movie> movies = null;
+    Movie current = null;
+    int currentPos = 0;
     boolean actorsExpanded = false;
     boolean directorsExpanded = false;
+    GestureDetector gestureDetector = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,7 +33,55 @@ public class MovieViewActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_movie_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Create the fling listener
+        GestureDetector.SimpleOnGestureListener listener =
+                new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                int pos;
+                if(e1.getAxisValue(MotionEvent.AXIS_X) > e2.getAxisValue(MotionEvent.AXIS_X)) {
+                    //Left fling\
+                    pos = currentPos + 1;
+                } else { //Right fling
+                    pos = currentPos - 1;
+                }
+                //Wraparound
+                if(pos < 0) {
+                    pos = movies.size() - 1;
+                }
+                if(pos > movies.size() - 1) {
+                    pos = 0;
+                }
+
+                displayMovie(pos);
+                //TODO: take velocity and use it to set the time of the animation
+                return true;
+            }
+        };
+        gestureDetector = new GestureDetector(this, listener);
+
         Bundle bun = getIntent().getExtras();
+        if (bun != null) {
+            //movie = bun.getParcelable("no.dega.couchpotatoremote.Movie");
+            movies = bun.getParcelableArrayList("movies");
+            currentPos = bun.getInt("position");
+            //This will also initialise current
+            displayMovie(currentPos);
+        } else {
+            Log.e("MovieViewActivity", "Null bundle passed to movieview");
+        }
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    public void displayMovie(int pos) {
+        currentPos = pos;
+        current = movies.get(currentPos);
+
+        this.setTitle(current.getTitle());
 
         TextView movieTitle = (TextView) findViewById(R.id.movieview_title);
         TextView moviePlot = (TextView) findViewById(R.id.movieview_plot);
@@ -33,25 +89,21 @@ public class MovieViewActivity extends ActionBarActivity {
         TextView movieYear = (TextView) findViewById(R.id.movieview_year);
         ImageView poster = (ImageView) findViewById(R.id.movieview_poster);
 
-        if (bun != null) {
-            movie = bun.getParcelable("no.dega.couchpotatoremote.Movie");
-            if (movie != null) {
-                this.setTitle(movie.getTitle());
-
-                movieTitle.setText(movie.getTitle());
-                moviePlot.setText("Plot: " + movie.getPlot());
-                movieTagline.setText(movie.getTagline());
-                movieYear.setText(movie.getYear());
-
-                //Grab from cache, or network if not cached
-                ImageLoader.getInstance().displayImage(movie.getPosterUri(), poster);
-            } else {
-                Log.e("MovieViewActivity", "Movie passed to MovieView is null (parcelling may have failed)");
-            }
+        movieTitle.setText(current.getTitle());
+        moviePlot.setText("Plot: " + current.getPlot());
+        //We want to hide the tagline if there isn't one, helps compact the view
+        if(current.getTagline().length() > 0) {
+            movieTagline.setText(current.getTagline());
         } else {
-            Log.e("MovieViewActivity", "Null bundle passed to movieview");
+            movieTagline.setVisibility(View.GONE);
         }
-    }  
+        movieYear.setText(current.getYear());
+
+        //Grab from cache, or network if not cached
+        ImageLoader.getInstance().displayImage(current.getPosterUri(), poster);
+    }
+
+
     //Called when user presses 'Actors' button. Expands list of actors.
     public void onActorButtonPress(View view) {
         //TODO: add some animation for expanding/unexpanding
@@ -61,8 +113,8 @@ public class MovieViewActivity extends ActionBarActivity {
             actorsExpanded = true;
 
             StringBuilder display = new StringBuilder();
-            if(movie.getActors().length > 0) {
-                for(String str: movie.getActors()) {
+            if(current.getActors().length > 0) {
+                for(String str: current.getActors()) {
                     display.append(str).append("\n");
                 }
             } else {
@@ -88,8 +140,8 @@ public class MovieViewActivity extends ActionBarActivity {
             directorsExpanded = true;
 
             StringBuilder display = new StringBuilder();
-            if(movie.getDirectors().length > 0) {
-                for(String str: movie.getDirectors()) {
+            if(current.getDirectors().length > 0) {
+                for(String str: current.getDirectors()) {
                     display.append(str).append("\n");
                 }
             } else {

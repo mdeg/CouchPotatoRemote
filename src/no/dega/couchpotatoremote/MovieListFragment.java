@@ -26,6 +26,7 @@ public class MovieListFragment extends ListFragment {
     private DownloadMovieListTask task = null;
     private String request = null;
     private boolean hasRun = false;
+    ArrayList<Movie> movies = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,12 +67,13 @@ public class MovieListFragment extends ListFragment {
 
     //If a user clicks on a movie, take them to the appropriate movie display
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Movie movie = (Movie) getListAdapter().getItem(position);
-        Log.d("MovieListFragment:onListItemClick", movie.toString());
+    public void onListItemClick(ListView l, View v, int pos, long id) {
+      //  Movie movie = (Movie) getListAdapter().getItem(pos);
+       // Log.d("MovieListFragment:onListItemClick", movie.toString());
 
         Intent intent = new Intent(getActivity(), MovieViewActivity.class);
-        intent.putExtra("no.dega.couchpotatoremote.Movie", movie);
+        intent.putExtra("movies", movies);
+        intent.putExtra("position", pos);
         startActivity(intent);
     }
 
@@ -186,18 +188,17 @@ public class MovieListFragment extends ListFragment {
 
         @Override
         protected void onPostExecute(String result) {
-            ArrayList<Movie> movieList;
             //Want to display an empty list if there's been an error
-            if ((movieList = parseMovieList(result)) == null) {
-                movieList = new ArrayList<Movie>();
+            if ((movies = parseMovieList(result)) == null) {
+                movies = new ArrayList<Movie>();
             }
             //If there's no movies, show the No Movies text
-            if (movieList.size() <= 0) {
+            if (movies.size() <= 0) {
                 noMovies.setVisibility(View.VISIBLE);
             } else {
                 //We want to call this even on a refresh
                 final MovieListAdapter<Movie> adapter = new MovieListAdapter<Movie>(
-                        getActivity(), R.layout.adapter_movielist, movieList);
+                        getActivity(), R.layout.adapter_movielist, movies);
                 setListAdapter(adapter);
                 getListView().setVisibility(View.VISIBLE);
             }
