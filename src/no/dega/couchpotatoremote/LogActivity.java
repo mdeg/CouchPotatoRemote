@@ -4,6 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -17,28 +21,63 @@ import java.util.regex.Pattern;
 */
     //TODO: add error log to this
 public class LogActivity extends ActionBarActivity {
-    private boolean hasRun;
     private String log = null;
+    private GetLogTask task = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_log);
-        hasRun = false;
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Spinner spinner = (Spinner) findViewById(R.id.log_select_type);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.log_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                log = null;
+                if(task != null) {
+                    task.cancel(true);
+                }
+                task = new GetLogTask(adapterView.getContext());
+                String type;
+                switch(pos) {
+                    case 0:
+                        type = "all";
+                        break;
+                    case 1:
+                        type = "error";
+                        break;
+                    case 2:
+                        type = "info";
+                        break;
+                    case 3:
+                        type = "debug";
+                        break;
+                    default:
+                        type = "all";
+                }
+                String request = APIUtilities.formatRequest("logging.partial?type=" + type,
+                        adapterView.getContext());
+                task.execute(request);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+        spinner.setAdapter(adapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(!hasRun) {
-            //Retrieve the log
-            hasRun = true;
-            GetLogTask task = new GetLogTask(this);
-            String request = APIUtilities.formatRequest("logging.partial?type=info", this);
-            task.execute(request);
-        } else {
-            //This is a recreation and we can just use the recovered log text from the bundle
+        //If this is a recreation
+        if(log != null) {
             ((TextView) findViewById(R.id.log_text)).setText(log);
         }
     }
@@ -47,13 +86,11 @@ public class LogActivity extends ActionBarActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putBoolean("hasRun", hasRun);
         savedInstanceState.putString("log", log);
     }
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        hasRun = savedInstanceState.getBoolean("hasRun");
         log = savedInstanceState.getString("log");
     }
 
@@ -67,6 +104,7 @@ public class LogActivity extends ActionBarActivity {
         protected void onPostExecute(String result) {
             log = parseLog(result);
             ((TextView) findViewById(R.id.log_text)).setText(log);
+            task = null;
         }
         //Parse the log returned, strip out dud characters and format it a little bit
         private String parseLog(String result) {
@@ -81,27 +119,36 @@ public class LogActivity extends ActionBarActivity {
                 JSONObject response = new JSONObject(result);
                 String log = !response.isNull("log")
                         ? response.getString("log") : "";
-                StringBuilder builder = new StringBuilder();
-                //Get rid of the unicode junk the log prints out with a handy spot of regex
-                Pattern pattern = Pattern.compile(Pattern.quote("\u001b[0m"));
-                Matcher matcher = pattern.matcher(log);
-                int prevStart = 0;
-                while(matcher.find()) {
-                    //The log chunk from the previous start to the start of the regex match
-                    builder.append(log.substring(prevStart, matcher.start()));
-                    prevStart = matcher.end();
-                    //Also throw in a 2nd newline character to make it come out nice on the other end
-                    builder.append("\n");
-                }
-                //The remainder after the last matching
-                builder.append(log.substring(prevStart, log.length() - 1));
-                return builder.toString();
+                //Remove the unicode formatting junk the log prints out
+                log = log.replaceAll(Pattern.quote("\u001b[0m"), "\n");
+                log = log.replaceAll(Pattern.quote("\u001b[31m"), "\n");
+                log = log.replaceAll(Pattern.quote("\u001B[36m"), "\n");
+                return log;
+
             } catch (JSONException e) {
                 Log.e("LogActivity.parseLog()", "Exception parsing log JSON");
                 e.printStackTrace();
             }
         return null;
         }
+/*
+        private String eliminateUnicodeCruft(String toRemove) {
+            StringBuilder builder = new StringBuilder();
+            //Get rid of the unicode junk the log prints out with a handy spot of regex
+            Pattern pattern = Pattern.compile(Pattern.quote("\u001b[0m"));
+            Matcher matcher = pattern.matcher(log);
+            int prevStart = 0;
+            while(matcher.find()) {
+                //The log chunk from the previous start to the start of the regex match
+                builder.append(log.substring(prevStart, matcher.start()));
+                prevStart = matcher.end();
+                //Also throw in a 2nd newline character to make it come out nice on the other end
+                builder.append("\n");
+            }
+            //The remainder after the last matching
+            builder.append(log.substring(prevStart, log.length() - 1));
+            return builder.toString();
+        }*/
     }
 }
 

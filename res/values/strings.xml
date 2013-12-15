@@ -15,5 +15,12 @@
     <string name="no_search_results">No movies found</string>
     <string name="refresh_button">Refresh</string>
     <string name="view_log">View Log</string>
+    
+    <string-array name="log_types">
+        <item>All</item>
+        <item>Error</item>
+        <item>Info</item>
+        <item>Debug</item>
+    </string-array>
 
 </resources>
