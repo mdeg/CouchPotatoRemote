@@ -79,6 +79,23 @@
         android:layout_width="wrap_content"
         android:layout_toRightOf="@id/movieview_poster"
         android:layout_below="@id/movieview_actors_button"/>
+
+    <Button
+        android:id="@+id/movieview_directors_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/movieview_poster"
+        android:layout_below="@id/movieview_set_titletagyear"
+        android:text="Directors"
+        android:onClick="onDirectorButtonPress" />
+
+    <no.dega.couchpotatoremote.FontedTextView
+        android:id="@+id/movieview_directors_text"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/movieview_poster"
+        android:layout_below="@id/movieview_directors_button"/>
+
     <!--Placeholder layout to be replaced with a fragment-->
     <!--
     <RelativeLayout

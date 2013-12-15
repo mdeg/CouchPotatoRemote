@@ -80,7 +80,7 @@ public class MovieViewActivity extends ActionBarActivity {
     }
 
     //Called when user presses 'Directors' button. Expands list of directors.
-    public void onActorButtonPress(View view) {
+    public void onDirectorButtonPress(View view) {
         //TODO: add some animation for expanding/unexpanding
         TextView directors = (TextView) findViewById(R.id.movieview_directors_text);
 
@@ -102,7 +102,7 @@ public class MovieViewActivity extends ActionBarActivity {
             //Already expanded, and we need to close
             directorsExpanded = false;
             //TODO: this might need to be view.invisible? to preserve place in layout
-            actors.setVisibility(View.GONE);
+            directors.setVisibility(View.GONE);
         }
     }
 }
