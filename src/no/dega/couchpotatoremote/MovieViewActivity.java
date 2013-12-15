@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,12 +41,19 @@ public class MovieViewActivity extends ActionBarActivity {
                 new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                View layout = findViewById(R.id.movie_view_layout);
+                Animation slideoutMovie;
                 int pos;
+
                 if(e1.getAxisValue(MotionEvent.AXIS_X) > e2.getAxisValue(MotionEvent.AXIS_X)) {
-                    //Left fling\
+                    //Left fling
                     pos = currentPos + 1;
+                    slideoutMovie = AnimationUtils.loadAnimation(layout.getContext(),
+                            R.anim.movieview_slideout_left);
                 } else { //Right fling
                     pos = currentPos - 1;
+                    slideoutMovie = AnimationUtils.loadAnimation(layout.getContext(),
+                            R.anim.movieview_slideout_right);
                 }
                 //Wraparound
                 if(pos < 0) {
@@ -53,7 +63,19 @@ public class MovieViewActivity extends ActionBarActivity {
                     pos = 0;
                 }
 
-                displayMovie(pos);
+                final int finalPos = pos;
+                slideoutMovie.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        displayMovie(finalPos);
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+                layout.startAnimation(slideoutMovie);
+
                 //TODO: take velocity and use it to set the time of the animation
                 return true;
             }
@@ -126,7 +148,6 @@ public class MovieViewActivity extends ActionBarActivity {
         } else {
             //Already expanded, and we need to close
             actorsExpanded = false;
-            //TODO: this might need to be view.invisible? to preserve place in layout
             actors.setVisibility(View.GONE);
         }
     }
@@ -153,7 +174,6 @@ public class MovieViewActivity extends ActionBarActivity {
         } else {
             //Already expanded, and we need to close
             directorsExpanded = false;
-            //TODO: this might need to be view.invisible? to preserve place in layout
             directors.setVisibility(View.GONE);
         }
     }
