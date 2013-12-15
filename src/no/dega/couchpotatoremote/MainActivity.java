@@ -35,10 +35,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         //Create settings for and initialise nostra13's ImageLoader
         //See: https://github.com/nostra13/Android-Universal-Image-Loader
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
-                cacheInMemory(true).cacheOnDisc(true)
-                //.showImageOnFail(R.drawable.no_poster)
-                //.showImageForEmptyUri(R.drawable.no_poster)
-                .build();
+                cacheInMemory(true).cacheOnDisc(true).build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .defaultDisplayImageOptions(defaultOptions).build();
         ImageLoader.getInstance().init(config);

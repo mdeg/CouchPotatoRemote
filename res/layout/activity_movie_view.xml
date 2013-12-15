@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/movie_view_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"    >
 
@@ -84,16 +85,15 @@
         android:id="@+id/movieview_directors_button"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_toRightOf="@id/movieview_poster"
-        android:layout_below="@id/movieview_set_titletagyear"
+        android:layout_below="@id/movieview_plot"
         android:text="Directors"
-        android:onClick="onDirectorButtonPress" />
+        android:onClick="onDirectorButtonPress"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/movieview_directors_text"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_toRightOf="@id/movieview_poster"
         android:layout_below="@id/movieview_directors_button"/>
 
     <!--Placeholder layout to be replaced with a fragment-->

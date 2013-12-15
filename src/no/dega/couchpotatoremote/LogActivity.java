@@ -29,6 +29,7 @@ public class LogActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_log);
 
+        //Create the dialog to allow users to select what type of log they want
         Spinner spinner = (Spinner) findViewById(R.id.log_select_type);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.log_types, android.R.layout.simple_spinner_item);
@@ -67,11 +68,6 @@ public class LogActivity extends ActionBarActivity {
             }
         });
         spinner.setAdapter(adapter);
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-
     }
 
     @Override
