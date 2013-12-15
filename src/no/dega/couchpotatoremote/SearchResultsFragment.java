@@ -23,11 +23,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SearchResultsFragment extends ListFragment {
-    //TODO: test initialising these?
-    private ProgressDialog progressDialog;
-    private TextView noSearchResults;
-    private SearchForMovieTask task;
-    private String request;
+    private ProgressDialog progressDialog = null;
+    private TextView noSearchResults = null;
+    private SearchForMovieTask task = null;
+    private String request = null;
     private boolean isRunning = false;
     private boolean isCompleted = false;
 
@@ -85,10 +84,10 @@ public class SearchResultsFragment extends ListFragment {
         String request = APIUtilities.formatRequest(uri.toString(), getActivity().getApplicationContext());
 
         new AddMovieTask(getActivity()).execute(request);
-        //TODO: is this true?
-        //Have to use the application context instead of the activity context so styles aren't applied to the toast
-        Toast.makeText(getActivity().getApplicationContext(), movie.getTitle() + " added to your Wanted list.",
+
+        Toast.makeText(getActivity(), movie.getTitle() + " added to your Wanted list.",
                 Toast.LENGTH_LONG).show();
+
         //Collapsing list animation - destroys this fragment when it's finished
         Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
         collapseList.setAnimationListener(new Animation.AnimationListener() {
@@ -177,7 +176,6 @@ public class SearchResultsFragment extends ListFragment {
                 }
 
                 JSONArray movies = response.getJSONArray("movies");
-                //TODO: change this to foreach loop?
                 for (int i = 0; i < movies.length(); i++) {
                     JSONObject movie = movies.getJSONObject(i);
 
@@ -216,6 +214,7 @@ public class SearchResultsFragment extends ListFragment {
         protected void onPostExecute(String result) {
             if(parseAddMovieResponse(result)) {
                 //TODO: fill me out with UI responsiveness
+
             }
         }
         //The CP server will respond with a string {success:true} if successful

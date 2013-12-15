@@ -44,6 +44,12 @@ public class AddMovieActivity extends ActionBarActivity {
         return true;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        suppressOnscreenKeyboard();
+    }
+
     //Called when the search button next to the text field is pressed
     public void searchButtonPressed(View view) {
         EditText editText = (EditText) findViewById(R.id.movie_to_add);

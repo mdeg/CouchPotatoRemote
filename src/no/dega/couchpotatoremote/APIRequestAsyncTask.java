@@ -41,7 +41,7 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
     @Override
     protected String doInBackground(String... urls) {
         if(urls[0] == null) {
-            return null;
+            throw new IllegalArgumentException("No URL passed to doInBackground.");
         }
         return sendRequest(urls[0]);
     }

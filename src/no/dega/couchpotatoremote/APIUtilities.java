@@ -7,8 +7,34 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-//TODO: can I move this to asynctask? PROBABLY!
+
+//Small utilities class for constructing valid URIs
 class APIUtilities {
+    /*
+    Construct a full and valid URI for the clients' request based on the users' settings.
+    Example input: String="movie.list"
+	Example output: String="http://192.168.1.1:5050/api/somekey/movie.list"
+     */
+    protected static String formatRequest(String request, Context context) throws IllegalArgumentException {
+        if ((request == null) || (request.length() <= 0)) {
+            Log.e("APIUtilities.formatRequest", "Invalid string passed to formatRequest.");
+            return null;
+        }
+        //Make sure they're connected to a network
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            //No networks are enabled
+            Toast.makeText(context, "Could not connect: no network is enabled.",
+                    Toast.LENGTH_LONG).show();
+            Log.d("APIUtilities.formatRequest", "No connection to any network.");
+            return null;
+        }
+        //Construct URI based on user settings and append the request
+        return constructUriFromPreferences(context) + request;
+    }
+
     /*
     Build a URI for the query based on the users' preferences
     Example output: String="http://192.168.1.1:5050/api/apikey/"
@@ -25,31 +51,5 @@ class APIUtilities {
         uri = uri.append(protocol).append("://").append(ipPref).append(":").append(portPref).
                 append("/api/").append(apiPref).append("/");
         return uri.toString();
-    }
-
-    /*
-    Construct a full and valid URI for the clients' request based on the users' settings.
-    Example input: String="movie.list"
-	Example output: String="http://192.168.1.1:5050/api/somekey/movie.list"
-     */
-    protected static String formatRequest(String request, Context context) {
-        if ((request == null) || (request.length() <= 0)) {
-            Log.e("APIUtilities.formatRequest", "Invalid string passed to formatRequest.");
-            //TODO: throw an exception here
-            return null;
-        }
-        //Make sure they're connected to a network
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
-                Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni == null) {
-            //No networks are enabled
-            Toast.makeText(context, "Could not connect: no network is enabled.",
-                    Toast.LENGTH_LONG).show();
-            Log.d("APIUtilities.formatRequest", "No connection to any network.");
-            return null;
-        }
-        //Construct URI based on user settings and append the request
-        return constructUriFromPreferences(context) + request;
     }
 }
