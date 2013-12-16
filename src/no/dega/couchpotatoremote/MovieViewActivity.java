@@ -29,6 +29,7 @@ public class MovieViewActivity extends ActionBarActivity {
     private int currentPos = 0;
     protected boolean actorsExpanded = false;
     protected boolean directorsExpanded = false;
+    protected boolean plotExpanded = false;
     private GestureDetector gestureDetector = null;
 
     @Override
@@ -87,7 +88,6 @@ public class MovieViewActivity extends ActionBarActivity {
 
         Bundle bun = getIntent().getExtras();
         if (bun != null) {
-            //movie = bun.getParcelable("no.dega.couchpotatoremote.Movie");
             movies = bun.getParcelableArrayList("movies");
             currentPos = bun.getInt("position");
             //This will also initialise current
@@ -109,13 +109,13 @@ public class MovieViewActivity extends ActionBarActivity {
         this.setTitle(current.getTitle());
 
         TextView movieTitle = (TextView) findViewById(R.id.movieview_title);
-        TextView moviePlot = (TextView) findViewById(R.id.movieview_plot);
+      //  TextView moviePlot = (TextView) findViewById(R.id.movieview_plot);
         TextView movieTagline = (TextView) findViewById(R.id.movieview_tagline);
         TextView movieYear = (TextView) findViewById(R.id.movieview_year);
         ImageView poster = (ImageView) findViewById(R.id.movieview_poster);
 
         movieTitle.setText(current.getTitle());
-        moviePlot.setText("Plot: " + current.getPlot());
+      //  moviePlot.setText(current.getPlot());
         //We want to hide the tagline if there isn't one, helps compact the view
         if(current.getTagline().length() > 0) {
             movieTagline.setText(current.getTagline());
@@ -132,6 +132,29 @@ public class MovieViewActivity extends ActionBarActivity {
         ConfirmMovieDeleteFragment confirmation = new ConfirmMovieDeleteFragment();
         confirmation.show(getSupportFragmentManager(), null);
     }
+
+    public void onPlotButtonPress(View view) {
+        if(!plotExpanded) {
+            showPlot();
+        } else {
+            hidePlot();
+        }
+    }
+
+    private void showPlot() {
+        TextView plot = (TextView) findViewById(R.id.movieview_plot);
+        plotExpanded = true;
+
+        plot.setText(current.getPlot());
+        plot.setVisibility(View.VISIBLE);
+    }
+
+    private void hidePlot() {
+        TextView plot = (TextView) findViewById(R.id.movieview_plot);
+        plotExpanded = false;
+        plot.setVisibility(View.GONE);
+    }
+
     //Called when user presses 'Actors' button. Expands list of actors.
     public void onActorButtonPress(View view) {
         //TODO: add some animation for expanding/unexpanding
@@ -209,7 +232,7 @@ public class MovieViewActivity extends ActionBarActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String request = APIUtilities.formatRequest(
                             "movie.delete?id=" + String.valueOf(current.getLibraryId()), getActivity());
-                        //Don't need to subclass this
+                        //Send the request. Don't need to subclass this
                         new APIRequestAsyncTask<String, Void, String>(getActivity()).execute(request);
                         movies.remove(currentPos);
                         finish();

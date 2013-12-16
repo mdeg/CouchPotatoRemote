@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 
-    private List<Movie> movies;
+    private final List<Movie> movies;
 
     public MovieListAdapter(Context context, int resource, List<Movie> movies) {
         super(context, resource, movies);

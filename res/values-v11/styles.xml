@@ -32,4 +32,9 @@
         <item name="android:padding">0dp</item>
     </style>
 
+    <style name="BorderlessButton">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
 </resources>
