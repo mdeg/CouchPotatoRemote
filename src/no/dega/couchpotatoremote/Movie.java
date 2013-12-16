@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 class Movie implements Parcelable {
     private int libraryId;
-    private String imdbId;
+    private String dbId;
 
     private String title;
 
@@ -18,8 +18,9 @@ class Movie implements Parcelable {
     private String[] directors;
 
     //Full constructor used when parsing the movie lists
-    public Movie(String title, String tagline, String posterUri,
+    public Movie(int libraryId, String title, String tagline, String posterUri,
                  String plot, String year, String[] actors, String[] directors) {
+        this.libraryId = libraryId;
         this.title = title;
         this.tagline = tagline;
         this.year = year;
@@ -30,8 +31,8 @@ class Movie implements Parcelable {
     }
 
     //Constructor for search results
-    public Movie(String title, String year, String imdbId) {
-        this.imdbId = imdbId;
+    public Movie(String title, String year, String dbId) {
+        this.dbId = dbId;
         this.title = title;
         this.year = year;
     }
@@ -86,7 +87,7 @@ class Movie implements Parcelable {
 
     //Getters and setters
     public String getImdbId() {
-        return imdbId;
+        return dbId;
     }
 
     public String getPlot() {
@@ -143,5 +144,9 @@ class Movie implements Parcelable {
 
     public void setDirectors(String[] directors) {
         this.directors = directors;
+    }
+
+    public int getLibraryId() {
+        return libraryId;
     }
 }

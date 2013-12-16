@@ -57,6 +57,14 @@
         android:layout_margin="1dp"
         />
 
+    <Button
+        android:id="@+id/delete_movie_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Delete"
+        android:onClick="onDeleteButtonPress"
+        />
+
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/movieview_plot"
         android:layout_width="wrap_content"
@@ -84,11 +92,15 @@
     <Button
         android:id="@+id/movieview_directors_button"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_below="@id/movieview_plot"
         android:text="Directors"
+        android:textSize="20sp"
+        android:gravity="left|center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
         android:onClick="onDirectorButtonPress"
-        style="?android:attr/borderlessButtonStyle"/>
+        style="@style/BorderlessButton"/>
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/movieview_directors_text"

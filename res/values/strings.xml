@@ -15,6 +15,9 @@
     <string name="no_search_results">No movies found</string>
     <string name="refresh_button">Refresh</string>
     <string name="view_log">View Log</string>
+    <string name="confirm_delete_movie">Are you sure you want to delete this movie?</string>
+    <string name="accept_delete_movie">Delete</string>
+    <string name="reject_delete_movie">Cancel</string>
     
     <string-array name="log_types">
         <item>All</item>

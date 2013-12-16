@@ -1,5 +1,9 @@
 package no.dega.couchpotatoremote;
 
+import android.app.AlertDialog;
+import android.support.v4.app.DialogFragment;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -58,8 +62,7 @@ public class MovieViewActivity extends ActionBarActivity {
                 //Wraparound
                 if(pos < 0) {
                     pos = movies.size() - 1;
-                }
-                if(pos > movies.size() - 1) {
+                } else if(pos > movies.size() - 1) {
                     pos = 0;
                 }
 
@@ -75,7 +78,7 @@ public class MovieViewActivity extends ActionBarActivity {
                     public void onAnimationRepeat(Animation animation) {}
                 });
                 layout.startAnimation(slideoutMovie);
-
+                //TODO: reset dropdown buttons here
                 //TODO: take velocity and use it to set the time of the animation
                 return true;
             }
@@ -98,7 +101,7 @@ public class MovieViewActivity extends ActionBarActivity {
         gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
-
+    //Display the movie at pos on the screen.
     public void displayMovie(int pos) {
         currentPos = pos;
         current = movies.get(currentPos);
@@ -125,7 +128,10 @@ public class MovieViewActivity extends ActionBarActivity {
         ImageLoader.getInstance().displayImage(current.getPosterUri(), poster);
     }
 
-
+    public void onDeleteButtonPress(View view) {
+        ConfirmMovieDeleteFragment confirmation = new ConfirmMovieDeleteFragment();
+        confirmation.show(getSupportFragmentManager(), null);
+    }
     //Called when user presses 'Actors' button. Expands list of actors.
     public void onActorButtonPress(View view) {
         //TODO: add some animation for expanding/unexpanding
@@ -175,6 +181,35 @@ public class MovieViewActivity extends ActionBarActivity {
             //Already expanded, and we need to close
             directorsExpanded = false;
             directors.setVisibility(View.GONE);
+        }
+    }
+    private class ConfirmMovieDeleteFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.confirm_delete_movie)
+
+                .setPositiveButton(R.string.accept_delete_movie, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String request = APIUtilities.formatRequest(
+                            "movie.delete?id=" + String.valueOf(current.getLibraryId()), getActivity());
+                        //Don't need to subclass this
+                        new APIRequestAsyncTask<String, Void, String>(getActivity()).execute(request);
+                        movies.remove(currentPos);
+                        finish();
+                    }
+                })
+
+                .setNegativeButton(R.string.reject_delete_movie, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //Do something?
+                }
+
+            }).show();
+
+        return builder.create();
         }
     }
 }

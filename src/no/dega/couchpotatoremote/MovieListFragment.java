@@ -115,6 +115,9 @@ public class MovieListFragment extends ListFragment {
 
             //Create a Movie object from every movie listed in the json response
             for (int i = 0; i < jsonMoviesList.length(); i++) {
+                //Library ID (used for deleting movies)
+                int libraryId = jsonMoviesList.getJSONObject(i).getInt("library_id");
+
                 JSONObject info = jsonMoviesList.getJSONObject(i).getJSONObject("library").
                         getJSONObject("info");
                 //	Log.d(this.toString(), "Movie JSON String: " + info.toString());
@@ -144,7 +147,7 @@ public class MovieListFragment extends ListFragment {
                         jsonStringArrayToStringArray(info.getJSONArray("directors"))
                         : new String[0];
 
-                Movie newMovie = new Movie(title, tagline, posterUri, plot, year, actors,
+                Movie newMovie = new Movie(libraryId, title, tagline, posterUri, plot, year, actors,
                         directors);
                 movies.add(newMovie);
             }
