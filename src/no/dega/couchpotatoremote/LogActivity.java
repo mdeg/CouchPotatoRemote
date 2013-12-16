@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 public class LogActivity extends ActionBarActivity {
     private String log = null;
     private GetLogTask task = null;
+    private int selectedPosition = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,14 @@ public class LogActivity extends ActionBarActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.log_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                //Prevent re-requesting the log on orientation change
+                if(pos == selectedPosition) {
+                    return;
+                }
                 log = null;
                 if(task != null) {
                     task.cancel(true);
@@ -62,6 +68,7 @@ public class LogActivity extends ActionBarActivity {
                 String request = APIUtilities.formatRequest("logging.partial?type=" + type,
                         adapterView.getContext());
                 task.execute(request);
+                selectedPosition = pos;
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -73,6 +80,7 @@ public class LogActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+
         //If this is a recreation
         if(log != null) {
             ((TextView) findViewById(R.id.log_text)).setText(log);
@@ -84,11 +92,15 @@ public class LogActivity extends ActionBarActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("log", log);
+        savedInstanceState.putInt("selectedPosition", selectedPosition);
     }
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         log = savedInstanceState.getString("log");
+        selectedPosition = savedInstanceState.getInt("selectedPosition");
+        //Set the current selection to the users' old one (for orientation changes)
+        ((Spinner) findViewById(R.id.log_select_type)).setSelection(selectedPosition);
     }
 
     //Asynchronously request the log from the CouchPotato server
@@ -123,7 +135,7 @@ public class LogActivity extends ActionBarActivity {
                 return log;
 
             } catch (JSONException e) {
-                Log.e("LogActivity.parseLog()", "Exception parsing log JSON");
+                Log.e("LogActivity.parseLog()", "Exception parsing log.");
                 e.printStackTrace();
             }
         return null;
