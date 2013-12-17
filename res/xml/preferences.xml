@@ -17,8 +17,15 @@
         />
     <CheckBoxPreference
         android:key="pref_key_https"
-        android:title="HTTPS?"
+        android:title="HTTPS"
         android:defaultValue="false"
+        />
+
+    <CheckBoxPreference
+        android:key="pref_key_trustall"
+        android:title="Trust All Certificates"
+        android:defaultValue="false"
+        android:summary="Trusts all certificates automatically. WARNING: this is insecure!"
         />
 
 </PreferenceScreen>
