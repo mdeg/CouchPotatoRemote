@@ -1,6 +1,7 @@
 package no.dega.couchpotatoremote;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -15,13 +16,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 /*
@@ -29,14 +36,17 @@ import javax.net.ssl.X509TrustManager;
     Clients should construct a full URI using APIUtilities.formatQuery() and pass it to this
  */
 class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String, Void, String> {
-    boolean isHttps = false;
+    private static final String TAG = APIRequestAsyncTask.class.getName();
 
+    boolean isHttps = false;
+    boolean trustAll = false;
     //Pass in the context to find out if it's https or not
     //Context should NEVER be stored - this causes memory leaks.
     public APIRequestAsyncTask(Context context) {
         super();
-        isHttps = PreferenceManager.getDefaultSharedPreferences(context).
-                getBoolean("pref_key_https", false);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        isHttps = pref.getBoolean("pref_key_https", false);
+        trustAll = pref.getBoolean("pref_key_trustall", false);
     }
     @Override
     protected String doInBackground(String... urls) {
@@ -45,6 +55,7 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
         }
         return sendRequest(urls[0]);
     }
+
     /*
     Send a HTTP or HTTPS request to the CouchPotato server
     This will always be an API request, and the return from the server
@@ -54,10 +65,11 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
     private String sendRequest(String uri) {
         StringBuilder builder = new StringBuilder();
         InputStream content = null;
+        int statusCode;
+
         try {
             URL url = new URL(uri);
 
-            int statusCode;
             if(!isHttps) {
                 //Regular HTTP
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -68,37 +80,38 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
                 statusCode = urlConnection.getResponseCode();
             } else {
                 //HTTPS
-                //TODO: fix me up, this is a hack. Need to get the cert from the user somehow.
-                SSLContext sslContext = null;
-                try {
-                    sslContext = SSLContext.getInstance("TLS");
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    //WRONG WRONG WRONG
-                    sslContext.init(null, new TrustManager[]{
-                            new X509TrustManager() {
-                                @Override
-                                public void checkClientTrusted(X509Certificate[] x509Certificates, String s)
-                                        throws CertificateException { }
-                                @Override
-                                public void checkServerTrusted(X509Certificate[] x509Certificates, String s)
-                                        throws CertificateException {}
-                                @Override
-                                public X509Certificate[] getAcceptedIssuers() {
-                                    return new X509Certificate[0];
-                                }
-                            }
-                    }, null);
-                } catch (KeyManagementException e) {
-                    e.printStackTrace();
-                }
-
+                //This will automatically use a user-installed certificate if there's a valid one installed & trustAll is false
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
-                //Need to keep this hostname verifier to all - servers may be on any IP/domain
+
+                //If the user has specified to trust all certificates. REALLY INSECURE!
+                if(trustAll) {
+                    try {
+                        SSLContext sslContext = SSLContext.getInstance("TLS");
+                        //Build our own trust manager that just accepts any certificate
+                        sslContext.init(null, new TrustManager[]{
+                                new X509TrustManager() {
+                                    @Override
+                                    public void checkClientTrusted(X509Certificate[] x509Certificates, String s)
+                                            throws CertificateException { }
+                                    @Override
+                                    public void checkServerTrusted(X509Certificate[] x509Certificates, String s)
+                                            throws CertificateException {}
+                                    @Override
+                                    public X509Certificate[] getAcceptedIssuers() {
+                                        return new X509Certificate[0];
+                                    }
+                                }
+                        }, null);
+                        urlConnection.setSSLSocketFactory(sslContext.getSocketFactory());
+                    } catch (KeyManagementException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //Need to accept any hostnames - servers may be on any IP/domain, including ones not specified on the cert
                 urlConnection.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-                urlConnection.setSSLSocketFactory(sslContext.getSocketFactory());
+
                 urlConnection.setReadTimeout(30000);
                 urlConnection.setConnectTimeout(30000);
                 content = urlConnection.getInputStream();
@@ -114,14 +127,14 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
                 }
                 return builder.toString();
             } else {
-                Log.e("APIRequestAsyncTask", "Status code not 200, is: " + statusCode);
+                Log.e(TAG, "Status code not 200, is: " + statusCode);
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
-            Log.e("APIRequestAsyncTask", "HTTP protocol error.");
+            Log.e(TAG, "Protocol error.");
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("APIRequestAsyncTask", "Could not connect to resource: API key may be missing or network not connected.");
+            Log.e(TAG, "Could not connect to resource: API key may be missing or network not connected.");
         } finally {
             //Clean up and close the connections
             if (content != null) {
@@ -129,7 +142,7 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
                     content.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.e("APIRequestAsyncTask", "Error trying to close the connection");
+                    Log.e(TAG, "Error trying to close the connection");
                 }
             }
         }
