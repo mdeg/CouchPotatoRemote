@@ -23,6 +23,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SearchResultsFragment extends ListFragment {
+    private static final String TAG = SearchResultsFragment.class.getName();
+
     private ProgressDialog progressDialog = null;
     private TextView noSearchResults = null;
     private SearchForMovieTask task = null;
@@ -156,7 +158,7 @@ public class SearchResultsFragment extends ListFragment {
                 }
                 progressDialog.dismiss();
             } else {
-                Log.e("SearchResultsFragment", "Could not create list: searchResults is null.");
+                Log.e(TAG, "Could not create list: searchResults is null.");
             }
         }
 
@@ -164,7 +166,7 @@ public class SearchResultsFragment extends ListFragment {
         private ArrayList<Movie> parseMovieSearch(String resp) {
             ArrayList<Movie> searchResults = new ArrayList<Movie>();
             if ((resp == null) || (resp.length() <= 0)) {
-                Log.e("APIUtilities.searchForMovie", "searchForMovie received invalid response from makeRequest");
+                Log.e(TAG, "searchForMovie received invalid response from makeRequest");
                 return null;
             }
             try {
@@ -172,7 +174,7 @@ public class SearchResultsFragment extends ListFragment {
 
                 //If it fails or is empty we will return an empty list.
                 if (!response.getBoolean("success")) {
-                    Log.e("searchForMovie", "Search failed: API returns success=false");
+                    Log.e(TAG, "Search failed: API returns success=false");
                 }
 
                 JSONArray movies = response.getJSONArray("movies");
@@ -189,7 +191,7 @@ public class SearchResultsFragment extends ListFragment {
                     } else if (movie.has("tmdb_id") && !movie.isNull("tmdb_id")) {
                         dbId = movie.getString("tmdb_id");
                     } else {
-                        Log.e("parseMovieSearch", "Movie returned from the search with no database ID.");
+                        Log.e(TAG, "Movie returned from the search with no database ID.");
                         dbId = "";
                     }
 
@@ -220,7 +222,7 @@ public class SearchResultsFragment extends ListFragment {
         //The CP server will respond with a string {success:true} if successful
         private boolean parseAddMovieResponse(String result) {
             if ((result == null) || (result.length() <= 0)) {
-                Log.e("SearchResultsFragment:parseAddMovieResponse", "Invalid response from addMovie");
+                Log.e(TAG, "Invalid response from addMovie");
                 return false;
             }
             try {
@@ -230,7 +232,7 @@ public class SearchResultsFragment extends ListFragment {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Log.e("AddMovieTask.parseAddMovieResponse", "JSONException in parseAddMovieResponse");
+                Log.e(TAG, "JSONException in parseAddMovieResponse");
             }
             return true;
         }

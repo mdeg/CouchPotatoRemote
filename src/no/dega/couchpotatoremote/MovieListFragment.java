@@ -22,6 +22,8 @@ import java.util.ArrayList;
 
 //Displays a list of Movies
 public class MovieListFragment extends ListFragment {
+    private static final String TAG = MovieListFragment.class.getName();
+
     private TextView noMovies = null;
     private DownloadMovieListTask task = null;
     private String request = null;
@@ -69,7 +71,7 @@ public class MovieListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
       //  Movie movie = (Movie) getListAdapter().getItem(pos);
-       // Log.d("MovieListFragment:onListItemClick", movie.toString());
+       // Log.d(TAG, movie.toString());
 
         Intent intent = new Intent(getActivity(), MovieViewActivity.class);
         intent.putExtra("movies", movies);
@@ -95,12 +97,12 @@ public class MovieListFragment extends ListFragment {
      */
     private ArrayList<Movie> parseMovieList(String resp) {
         if ((resp == null) || (resp.length() <= 0)) {
-            Log.e("MovieListFragment.parseMovieList", "parseMovieList was passed an invalid string");
+            Log.e(TAG, "parseMovieList was passed an invalid string");
             return null;
         }
         try {
             JSONObject response = new JSONObject(resp);
-            //	Log.d(this.toString(), "String Contents: " + response.toString());
+            //	Log.d(TAG, "String Contents: " + response.toString());
             //Make sure our request is okay
             if (!response.getBoolean("success")) {
                 return null;
@@ -120,7 +122,7 @@ public class MovieListFragment extends ListFragment {
 
                 JSONObject info = jsonMoviesList.getJSONObject(i).getJSONObject("library").
                         getJSONObject("info");
-                //	Log.d(this.toString(), "Movie JSON String: " + info.toString());
+                //	Log.d(TAG, "Movie JSON String: " + info.toString());
 
                 //Grab the important information (have to watch for nulls)
                 String title = !info.isNull("titles") ? info.getJSONArray("titles").getString(0)

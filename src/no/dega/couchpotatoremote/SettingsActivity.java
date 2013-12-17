@@ -3,11 +3,9 @@ package no.dega.couchpotatoremote;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
-//TODO: wifi/internet settings
-
 /*
 Unfortunately there's no AppCompat version of PreferenceActivity/PreferenceFragment
-This means that I can't add a back button here, or use a SettingsFragment. There's no solution for this.
+This means that I can't add the up button here, or use a SettingsFragment. There's no solution for this.
 Ignore the deprecation, nothing can be done without breaking backwards compatibility.
 Fix this up when/if AppCompat versions of PreferenceActivity come out
  */

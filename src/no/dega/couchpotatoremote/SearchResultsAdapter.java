@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SearchResultsAdapter<T> extends ArrayAdapter<Movie> {
 
-    private List<Movie> movies;
+    private final List<Movie> movies;
 
     public SearchResultsAdapter(Context context, int resource, List<Movie> movies) {
         super(context, resource, movies);

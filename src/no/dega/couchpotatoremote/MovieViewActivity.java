@@ -24,6 +24,8 @@ import java.util.ArrayList;
     User can see poster, title, tagline, year, plot and actors/directors
 */
 public class MovieViewActivity extends ActionBarActivity {
+    private static final String TAG = MovieViewActivity.class.getName();
+
     private ArrayList<Movie> movies = null;
     private Movie current = null;
     private int currentPos = 0;
@@ -93,7 +95,7 @@ public class MovieViewActivity extends ActionBarActivity {
             //This will also initialise current
             displayMovie(currentPos);
         } else {
-            Log.e("MovieViewActivity", "Null bundle passed to movieview");
+            Log.e(TAG, "Null bundle passed to movieview");
         }
     }
     @Override
