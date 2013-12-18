@@ -69,9 +69,6 @@ public class MovieListFragment extends ListFragment {
     //If a user clicks on a movie, take them to the appropriate movie display
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
-      //  Movie movie = (Movie) getListAdapter().getItem(pos);
-       // Log.d(TAG, movie.toString());
-
         Intent intent = new Intent(getActivity(), MovieViewActivity.class);
         intent.putExtra("movies", movies);
         intent.putExtra("position", pos);
