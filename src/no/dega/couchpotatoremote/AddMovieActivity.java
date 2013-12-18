@@ -65,7 +65,7 @@ public class AddMovieActivity extends ActionBarActivity {
         SearchResultsFragment fragment = new SearchResultsFragment();
 
         Bundle args = new Bundle();
-        args.putString("NameToSearch", nameToSearch);
+        args.putString("nameToSearch", nameToSearch);
         fragment.setArguments(args);
 
         fragmentTransaction.replace(R.id.searchlist_placeholder, fragment).commit();

@@ -36,7 +36,7 @@ public class SearchResultsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Construct and submit our query
-        String query = "movie.search?q=" + Uri.encode(getArguments().getString("NameToSearch"));
+        String query = "movie.search?q=" + Uri.encode(getArguments().getString("nameToSearch"));
         request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
         task = new SearchForMovieTask(getActivity());
     }
@@ -85,23 +85,13 @@ public class SearchResultsFragment extends ListFragment {
 
         String request = APIUtilities.formatRequest(uri.toString(), getActivity().getApplicationContext());
 
-        new AddMovieTask(getActivity()).execute(request);
+        new AddMovieTask(getActivity(), movie.getTitle()).execute(request);
 
         Toast.makeText(getActivity(), movie.getTitle() + " added to your Wanted list.",
                 Toast.LENGTH_LONG).show();
 
-        //Collapsing list animation - destroys this fragment when it's finished
+        //Collapsing list animation
         Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
-        collapseList.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                killThisFragment();
-            }
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
         getListView().startAnimation(collapseList);
 
     }
@@ -127,11 +117,6 @@ public class SearchResultsFragment extends ListFragment {
         if (empty != null) {
             empty.setVisibility(View.GONE);
         }
-    }
-
-    //Kill this fragment
-    private void killThisFragment() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
     //Asynchronously query the API for results for the users' search
@@ -208,15 +193,19 @@ public class SearchResultsFragment extends ListFragment {
     //Asynchronously ask the CP server to add the specified movie
     //If this breaks, it's probably because the movie metadata is invalid (especially imdbId)
     private class AddMovieTask extends APIRequestAsyncTask<String, Void, String> {
-        public AddMovieTask(Context context) {
+        private final String title;
+        public AddMovieTask(Context context, String title) {
             super(context);
+            this.title = title;
         }
 
         @Override
         protected void onPostExecute(String result) {
             if(parseAddMovieResponse(result)) {
-                //TODO: fill me out with UI responsiveness
-
+                //Inform the user it's done and kill the fragment
+                Toast.makeText(getActivity(), title + " added to your Wanted list.",
+                        Toast.LENGTH_LONG).show();
+                getActivity().getSupportFragmentManager().beginTransaction().remove(SearchResultsFragment.this).commit();
             }
         }
         //The CP server will respond with a string {success:true} if successful
