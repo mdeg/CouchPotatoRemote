@@ -1,6 +1,7 @@
 package no.dega.couchpotatoremote;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v4.app.DialogFragment;
 import android.app.Dialog;
@@ -97,7 +98,6 @@ public class MovieViewActivity extends ActionBarActivity {
                 hidePlot();
 
                 layout.startAnimation(slideoutMovie);
-                //TODO: take velocity and use it to set the time of the animation
                 return true;
             }
         };
@@ -285,10 +285,20 @@ public class MovieViewActivity extends ActionBarActivity {
         }
 
         private class GetQualitiesTask extends APIRequestAsyncTask<String, Void, String> {
+            private ProgressDialog progressDialog = null;
+
             public GetQualitiesTask(Context context) {
                 super(context);
             }
+            @Override
+            protected void onPreExecute() {
+                //"Searching..." progress dialog
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setIndeterminate(true);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setCancelable(false);
 
+            }
             @Override
             protected void onPostExecute(String result) {
                 parseQualitiesList(result);

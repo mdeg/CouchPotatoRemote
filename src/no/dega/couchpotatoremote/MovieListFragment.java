@@ -50,7 +50,6 @@ public class MovieListFragment extends ListFragment {
         super.onStart();
         //Pause image downloading/displaying while user is scrolling the list
         //Causes ugly image pop-in but it's required to make scrolling feel smooth
-        //TODO: check if I can work this into an asynchronous task
         PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(),
                 true, true);
         getListView().setOnScrollListener(listener);

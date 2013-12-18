@@ -87,9 +87,6 @@ public class SearchResultsFragment extends ListFragment {
 
         new AddMovieTask(getActivity(), movie.getTitle()).execute(request);
 
-        Toast.makeText(getActivity(), movie.getTitle() + " added to your Wanted list.",
-                Toast.LENGTH_LONG).show();
-
         //Collapsing list animation
         Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
         getListView().startAnimation(collapseList);
@@ -205,7 +202,9 @@ public class SearchResultsFragment extends ListFragment {
                 //Inform the user it's done and kill the fragment
                 Toast.makeText(getActivity(), title + " added to your Wanted list.",
                         Toast.LENGTH_LONG).show();
-                getActivity().getSupportFragmentManager().beginTransaction().remove(SearchResultsFragment.this).commit();
+            } else {
+                Toast.makeText(getActivity(), "Failed to add " + title + ".",
+                        Toast.LENGTH_LONG).show();
             }
         }
         //The CP server will respond with a string {success:true} if successful
