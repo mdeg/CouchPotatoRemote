@@ -18,6 +18,9 @@
     <string name="confirm_delete_movie">Are you sure you want to delete this movie?</string>
     <string name="accept_delete_movie">Delete</string>
     <string name="reject_delete_movie">Cancel</string>
+    <string name="accept_change_quality">Change</string>
+    <string name="reject_change_quality">Cancel</string>
+    <string name="changequality_text">Select a quality:</string>
     
     <string-array name="log_types">
         <item>All</item>

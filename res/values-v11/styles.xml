@@ -33,7 +33,7 @@
     </style>
 
     <style name="BorderlessButton">
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@color/cp_background_light</item>
     </style>
 
 

@@ -6,7 +6,7 @@
 
     <!-- Title, year and tagline -->
     <RelativeLayout
-        android:id="@+id/movieview_set_titletagyear"
+        android:id="@+id/movieview_titletagandyear"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="6dp"
         android:layout_height="wrap_content"
@@ -47,89 +47,114 @@
             android:textStyle="bold"
             />
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/movieview_poster"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/movieview_set_titletagyear"
-        android:layout_margin="1dp"
-        />
-
-    <Button
-        android:id="@+id/delete_movie_button"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Delete"
-        android:onClick="onDeleteButtonPress"
-        style="@style/BorderlessButton"
-        />
-    <Button
-        android:id="@+id/movieview_plot_button"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_below="@id/movieview_poster"
-        android:text="Plot"
-        android:textSize="20sp"
-        android:gravity="left|center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"
-        android:onClick="onPlotButtonPress"
-        style="@style/BorderlessButton"/>
-
-    <no.dega.couchpotatoremote.FontedTextView
-        android:id="@+id/movieview_plot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/movieview_plot_button"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"/>
-
-    <Button
-        android:id="@+id/movieview_actors_button"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_toRightOf="@id/movieview_poster"
-        android:layout_below="@id/movieview_set_titletagyear"
-        android:text="Actors"
-        android:onClick="onActorButtonPress"
-        style="@style/BorderlessButton"/>
-
-    <no.dega.couchpotatoremote.FontedTextView
-        android:id="@+id/movieview_actors_text"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_toRightOf="@id/movieview_poster"
-        android:layout_below="@id/movieview_actors_button"/>
-
-    <Button
-        android:id="@+id/movieview_directors_button"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_below="@id/movieview_plot"
-        android:text="Directors"
-        android:textSize="20sp"
-        android:gravity="left|center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"
-        android:onClick="onDirectorButtonPress"
-        style="@style/BorderlessButton"/>
-
-    <no.dega.couchpotatoremote.FontedTextView
-        android:id="@+id/movieview_directors_text"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_below="@id/movieview_directors_button"/>
-
-    <!--Placeholder layout to be replaced with a fragment-->
-    <!--
+    <!-- Middle of the movieview, poster and the buttons to its right -->
     <RelativeLayout
-        android:id="@+id/movieview_actors_placeholder"
-        android:layout_marginLeft="5dp"
-        android:layout_below="@id/movieview_actors_button"
+        android:id="@+id/movieview_posterandbuttons"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></RelativeLayout>
--->
+        android:layout_below="@id/movieview_titletagandyear">
+
+        <ImageView
+            android:id="@+id/movieview_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="1dp"
+            />
+
+        <Button
+            android:id="@+id/movieview_delete_movie_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/movieview_poster"
+            android:text="Delete"
+            android:onClick="onDeleteButtonPress"
+            style="@style/BorderlessButton"
+            />
+
+        <Button
+            android:id="@+id/movieview_edit_quality_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:onClick="onQualityButtonPress"
+            android:text="Edit Quality"/>
+
+    </RelativeLayout>
+
+
+    <!-- Expandable buttons (actors, directors, plot) -->
+    <RelativeLayout
+        android:id="@+id/movieview_actorsdirectorsandplot"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@id/movieview_posterandbuttons">
+        <Button
+            android:id="@+id/movieview_plot_button"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Plot"
+            android:textSize="20sp"
+            android:gravity="left|center_vertical"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:onClick="onPlotButtonPress"
+            />
+
+        <no.dega.couchpotatoremote.FontedTextView
+            android:id="@+id/movieview_plot_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movieview_plot_button"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:id="@+id/movieview_actors_button"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Actors"
+            android:textSize="20sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:onClick="onActorButtonPress"
+            android:gravity="left|center_vertical"
+
+            android:layout_below="@id/movieview_plot_text"
+            style="@style/BorderlessButton"/>
+
+        <no.dega.couchpotatoremote.FontedTextView
+            android:id="@+id/movieview_actors_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/movieview_actors_button"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:id="@+id/movieview_directors_button"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/movieview_actors_text"
+            android:text="Directors"
+            android:textSize="20sp"
+            android:gravity="left|center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:onClick="onDirectorButtonPress"
+            style="@style/BorderlessButton"/>
+
+        <no.dega.couchpotatoremote.FontedTextView
+            android:id="@+id/movieview_directors_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/movieview_directors_button"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"/>
+
+    </RelativeLayout>
+
 </RelativeLayout>
