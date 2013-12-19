@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -140,8 +141,7 @@ public class MovieViewActivity extends ActionBarActivity {
     }
 
     public void onDeleteButtonPress(View view) {
-        ConfirmMovieDeleteFragment confirmation = new ConfirmMovieDeleteFragment();
-        confirmation.show(getSupportFragmentManager(), null);
+        new ConfirmMovieDeleteFragment().show(getSupportFragmentManager(), null);
     }
 
     public void onPlotButtonPress(View view) {
@@ -240,10 +240,11 @@ public class MovieViewActivity extends ActionBarActivity {
 
     //Popup box for user to change qualities
     private class ChangeQualityFragment extends DialogFragment {
-        ArrayList<Quality> qualities = null;
-        Spinner spinner = null;
+        private ArrayList<Quality> qualities = null;
+        private Spinner spinner = null;
         private Quality selection = null;
-        private ProgressDialog progressDialog = null;
+        private AlertDialog dialog = null;
+        private TextView loading = null;
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -251,14 +252,9 @@ public class MovieViewActivity extends ActionBarActivity {
 
             View view = getActivity().getLayoutInflater().inflate(R.layout.change_quality_dialog, null);
             spinner = (Spinner) view.findViewById(R.id.changequality_selector);
+            spinner.setVisibility(View.GONE);
 
-            //Make the user wait until we've loaded the qualities
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setIndeterminate(true);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setMessage("Loading qualities list...");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
+            loading = (TextView) view.findViewById(R.id.changequality_wait);
 
             //Get a list of qualities
             new GetQualitiesTask(MovieViewActivity.this).execute(
@@ -271,6 +267,10 @@ public class MovieViewActivity extends ActionBarActivity {
                     .setPositiveButton(R.string.accept_change_quality, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            //Qualities haven't loaded yet
+                            if(selection == null) {
+                                return;
+                            }
                             StringBuilder builder = new StringBuilder();
                             builder.append("movie.edit?").append("id=").append(current.getLibraryId())
                                     .append("&profile_id=").append(selection.getId());
@@ -285,7 +285,10 @@ public class MovieViewActivity extends ActionBarActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {}
                     });
-            return builder.create();
+            dialog = builder.create();
+            dialog.show();
+            dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
+            return dialog;
         }
 
         private class GetQualitiesTask extends APIRequestAsyncTask<String, Void, String> {
@@ -293,14 +296,11 @@ public class MovieViewActivity extends ActionBarActivity {
             public GetQualitiesTask(Context context) {
                 super(context);
             }
-            @Override
-            protected void onPreExecute() {
 
-            }
             @Override
             protected void onPostExecute(String result) {
                 parseQualitiesList(result);
-
+                //Change the selected quality
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
@@ -313,9 +313,12 @@ public class MovieViewActivity extends ActionBarActivity {
                 ArrayAdapter<Quality> adapter = new ArrayAdapter<Quality>(MovieViewActivity.this,
                         R.layout.spinner_dropdown_tight, qualities);
                 spinner.setAdapter(adapter);
-                progressDialog.dismiss();
-            }
 
+                loading.setVisibility(View.GONE);
+                spinner.setVisibility(View.VISIBLE);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+            }
+            //Parse the list of qualities
             private void parseQualitiesList(String result) {
                 try {
                     JSONArray list = new JSONObject(result).getJSONArray("list");
@@ -330,6 +333,7 @@ public class MovieViewActivity extends ActionBarActivity {
                 }
             }
         }
+        //Small object that holds quality name and its profile id
         private class Quality {
             private final int id;
             private final String label;
@@ -352,6 +356,9 @@ public class MovieViewActivity extends ActionBarActivity {
 
     //Alert dialog to confirm that the user really wants to delete a movie
     private class ConfirmMovieDeleteFragment extends DialogFragment {
+        public ConfirmMovieDeleteFragment() {
+
+        }
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -374,6 +381,7 @@ public class MovieViewActivity extends ActionBarActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
                 });
+
         return builder.create();
         }
     }

@@ -2,7 +2,8 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/changequality_text"
@@ -12,6 +13,16 @@
         android:gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"/>
+
+    <no.dega.couchpotatoremote.FontedTextView
+        android:id="@+id/changequality_wait"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/changequality_wait"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        />
 
     <Spinner
         android:id="@+id/changequality_selector"

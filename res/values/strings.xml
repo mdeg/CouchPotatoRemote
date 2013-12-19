@@ -21,7 +21,7 @@
     <string name="accept_change_quality">Change</string>
     <string name="reject_change_quality">Cancel</string>
     <string name="changequality_text">Select a quality:</string>
-    
+    <string name="changequality_wait">Loading qualities…</string>
     <string-array name="log_types">
         <item>All</item>
         <item>Error</item>
