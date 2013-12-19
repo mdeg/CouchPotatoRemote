@@ -240,25 +240,35 @@ public class MovieViewActivity extends ActionBarActivity {
 
     //Popup box for user to change qualities
     private class ChangeQualityFragment extends DialogFragment {
+        //List of qualities
         private ArrayList<Quality> qualities = null;
+        //Spinner to select quality
         private Spinner spinner = null;
+        //Current selection
         private Quality selection = null;
+        //The dialog box and the 'Loading...' text
         private AlertDialog dialog = null;
         private TextView loading = null;
+        //Keep track of selected position over orientation changes
+        private int selectedPosition = 0;
+
+        //Keep the dialog up when the user changes orientation
+        @Override
+        public void onDestroyView() {
+            if(getDialog() != null && getRetainInstance()) {
+                getDialog().setDismissMessage(null);
+            }
+            super.onDestroyView();
+        }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
+
             setRetainInstance(true);
 
             View view = getActivity().getLayoutInflater().inflate(R.layout.change_quality_dialog, null);
             spinner = (Spinner) view.findViewById(R.id.changequality_selector);
-            spinner.setVisibility(View.GONE);
-
             loading = (TextView) view.findViewById(R.id.changequality_wait);
-
-            //Get a list of qualities
-            new GetQualitiesTask(MovieViewActivity.this).execute(
-                    APIUtilities.formatRequest("quality.list", MovieViewActivity.this));
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -267,28 +277,60 @@ public class MovieViewActivity extends ActionBarActivity {
                     .setPositiveButton(R.string.accept_change_quality, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            //Qualities haven't loaded yet
-                            if(selection == null) {
-                                return;
-                            }
-                            StringBuilder builder = new StringBuilder();
-                            builder.append("movie.edit?").append("id=").append(current.getLibraryId())
-                                    .append("&profile_id=").append(selection.getId());
-                            new APIRequestAsyncTask<String, Void, String>(MovieViewActivity.this)
-                                    .execute(APIUtilities.formatRequest(builder.toString(), MovieViewActivity.this));
 
-                            Toast.makeText(MovieViewActivity.this, current.getTitle() + "'s quality changed to " + selection.getLabel() + ".",
+                            StringBuilder query = new StringBuilder();
+                            query.append("movie.edit?").append("id=").append(current.getLibraryId())
+                                    .append("&profile_id=").append(selection.getId());
+                            //Put through the actual request to change quality
+                            new APIRequestAsyncTask<String, Void, String>(MovieViewActivity.this)
+                                    .execute(APIUtilities.formatRequest(query.toString(), MovieViewActivity.this));
+
+                            Toast.makeText(MovieViewActivity.this,
+                                    current.getTitle() + "'s quality changed to " + selection.getLabel() + ".",
                                     Toast.LENGTH_LONG).show();
                         }
                     })
+                    //Reject the quality change
                     .setNegativeButton(R.string.reject_change_quality, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {}
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {}
                     });
             dialog = builder.create();
             dialog.show();
-            dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
+            if(qualities == null) {
+                //No qualities - hide the spinner/accept button and get the qualities
+                dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
+                spinner.setVisibility(View.GONE);
+
+                //Get a list of qualities
+                new GetQualitiesTask(MovieViewActivity.this).execute(
+                        APIUtilities.formatRequest("quality.list", MovieViewActivity.this));
+            } else {
+                displayQualities();
+            }
             return dialog;
+        }
+        //Hide the 'Loading...' text, display+populate the spinner list
+        private void displayQualities() {
+            //Change the selected quality
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                    selectedPosition = pos;
+                    selection = qualities.get(pos);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {}
+            });
+
+            ArrayAdapter<Quality> adapter = new ArrayAdapter<Quality>(MovieViewActivity.this,
+                    R.layout.spinner_dropdown_tight, qualities);
+            spinner.setAdapter(adapter);
+            spinner.setSelection(selectedPosition);
+
+            loading.setVisibility(View.GONE);
+            spinner.setVisibility(View.VISIBLE);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
         }
 
         private class GetQualitiesTask extends APIRequestAsyncTask<String, Void, String> {
@@ -300,23 +342,7 @@ public class MovieViewActivity extends ActionBarActivity {
             @Override
             protected void onPostExecute(String result) {
                 parseQualitiesList(result);
-                //Change the selected quality
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-                            selection = qualities.get(pos);
-                        }
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {}
-                    });
-
-                ArrayAdapter<Quality> adapter = new ArrayAdapter<Quality>(MovieViewActivity.this,
-                        R.layout.spinner_dropdown_tight, qualities);
-                spinner.setAdapter(adapter);
-
-                loading.setVisibility(View.GONE);
-                spinner.setVisibility(View.VISIBLE);
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                displayQualities();
             }
             //Parse the list of qualities
             private void parseQualitiesList(String result) {
@@ -356,11 +382,10 @@ public class MovieViewActivity extends ActionBarActivity {
 
     //Alert dialog to confirm that the user really wants to delete a movie
     private class ConfirmMovieDeleteFragment extends DialogFragment {
-        public ConfirmMovieDeleteFragment() {
-
-        }
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
+            setRetainInstance(true);
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(R.string.confirm_delete_movie)
                 //Confirm delete
@@ -383,6 +408,14 @@ public class MovieViewActivity extends ActionBarActivity {
                 });
 
         return builder.create();
+        }
+        //Keep the dialog o
+        @Override
+        public void onDestroyView() {
+            if(getDialog() != null && getRetainInstance()) {
+                getDialog().setDismissMessage(null);
+            }
+            super.onDestroyView();
         }
     }
 }

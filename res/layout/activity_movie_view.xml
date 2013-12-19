@@ -77,7 +77,10 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:onClick="onQualityButtonPress"
-            android:text="Edit Quality"/>
+            android:text="Edit Quality"
+            android:layout_toRightOf="@id/movieview_poster"
+            android:layout_below="@id/movieview_delete_movie_button"
+            />
 
     </RelativeLayout>
 
