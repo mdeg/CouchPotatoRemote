@@ -96,7 +96,7 @@ public class LogActivity extends ActionBarActivity {
     }
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
         log = savedInstanceState.getString("log");
         selectedPosition = savedInstanceState.getInt("selectedPosition");
         //Set the current selection to the users' old one (for orientation changes)
