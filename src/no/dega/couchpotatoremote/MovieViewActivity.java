@@ -409,7 +409,7 @@ public class MovieViewActivity extends ActionBarActivity {
 
         return builder.create();
         }
-        //Keep the dialog o
+        //Keep the dialog up when the user changes orientation
         @Override
         public void onDestroyView() {
             if(getDialog() != null && getRetainInstance()) {

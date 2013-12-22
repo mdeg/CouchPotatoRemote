@@ -28,6 +28,7 @@ import javax.net.ssl.X509TrustManager;
 /*
 *   Custom implementation of AsyncTask for a generic API request to the CouchPotato server
     Clients should construct a full URI using APIUtilities.formatQuery() and pass it to this
+    Parsing JSON should be done in onPostExecute()
  */
 class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String, Void, String> {
     private static final String TAG = APIRequestAsyncTask.class.getName();
@@ -112,6 +113,7 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
 
                 statusCode = urlConnection.getResponseCode();
             }
+
             //If HTTP returns a success
             if (statusCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));

@@ -87,9 +87,6 @@ public class SearchResultsFragment extends ListFragment {
 
         new AddMovieTask(getActivity(), movie.getTitle()).execute(request);
 
-        Toast.makeText(getActivity(), movie.getTitle() + " added to your Wanted list.",
-                Toast.LENGTH_LONG).show();
-
         //Collapsing list animation
         Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
         getListView().startAnimation(collapseList);
@@ -209,12 +206,13 @@ public class SearchResultsFragment extends ListFragment {
                         Toast.LENGTH_LONG).show();
             }
             //Destroy the fragment
-            getActivity().getSupportFragmentManager().beginTransaction().remove(SearchResultsFragment.this).commit();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .remove(SearchResultsFragment.this).commit();
         }
         //The CP server will respond with a string {success:true} if successful
         private boolean parseAddMovieResponse(String result) {
             if ((result == null) || (result.length() <= 0)) {
-                Log.e(TAG, "Invalid response from addMovie");
+                Log.e(TAG, "Invalid response from doInBackground");
                 return false;
             }
             try {
