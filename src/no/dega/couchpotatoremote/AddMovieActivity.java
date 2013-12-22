@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -37,25 +38,11 @@ public class AddMovieActivity extends ActionBarActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.add_movie, menu);
-        return true;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        suppressOnscreenKeyboard();
-    }
-
     //Called when the search button next to the text field is pressed
     public void searchButtonPressed(View view) {
         EditText editText = (EditText) findViewById(R.id.movie_to_add);
         doSearch(editText.getText().toString());
     }
-
 
     //Send the users' search query to the search fragment, which handles the searching/adding from there
     private void doSearch(String nameToSearch) {
