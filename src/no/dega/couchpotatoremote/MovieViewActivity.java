@@ -22,7 +22,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,6 +111,17 @@ public class MovieViewActivity extends ActionBarActivity {
         } else {
             Log.e(TAG, "Null bundle passed to movieview");
         }
+        //This should only occur if the user enters the app through the MovieView activity
+        if(!ImageLoader.getInstance().isInited()) {
+            //Create settings for and initialise nostra13's ImageLoader
+            //See: https://github.com/nostra13/Android-Universal-Image-Loader
+            DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
+                    cacheInMemory(true).cacheOnDisc(true).build();
+            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                    .defaultDisplayImageOptions(defaultOptions).build();
+            ImageLoader.getInstance().init(config);
+        }
+
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -135,8 +148,6 @@ public class MovieViewActivity extends ActionBarActivity {
             movieTagline.setVisibility(View.GONE);
         }
         movieYear.setText(current.getYear());
-
-        //Grab from cache, or network if not cached
         ImageLoader.getInstance().displayImage(current.getPosterUri(), poster);
     }
 

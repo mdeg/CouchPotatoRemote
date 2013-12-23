@@ -2,4 +2,7 @@
 *.class
 gradle*
 .*
+.*/
 classes/*
+*.iml
+bin/

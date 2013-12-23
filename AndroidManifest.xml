@@ -7,8 +7,7 @@
     <!-- remove these when migrate to test project -->
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
-        android:label="APIUtilitiesTest"
-        android:targetPackage="no.dega.couchpotatoremote" />
+        android:targetPackage="no.dega.couchpotatoremote.test" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
