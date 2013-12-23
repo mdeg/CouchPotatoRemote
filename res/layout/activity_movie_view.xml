@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/movie_view_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,14 +14,15 @@
             android:layout_marginBottom="6dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
+
             <no.dega.couchpotatoremote.FontedTextView
                 android:id="@+id/movieview_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-
+                android:layout_marginRight="30dp"
                 android:textStyle="bold"
                 android:textSize="20sp"/>
 
@@ -46,10 +47,13 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
+                android:paddingLeft="5dp"
+
                 android:textSize="20sp"
                 android:textStyle="bold"
                 />
         </RelativeLayout>
+
         <!-- Middle of the movieview, poster and the buttons to its right -->
         <RelativeLayout
             android:id="@+id/movieview_posterandbuttons"
@@ -94,14 +98,14 @@
             android:layout_below="@id/movieview_posterandbuttons">
             <Button
                 android:id="@+id/movieview_plot_button"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_width="match_parent"
                 android:text="Plot"
                 android:textSize="20sp"
                 android:gravity="left|center_vertical"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
                 android:onClick="onPlotButtonPress"
                 />
 
@@ -116,12 +120,12 @@
 
             <Button
                 android:id="@+id/movieview_actors_button"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_width="match_parent"
                 android:text="Actors"
                 android:textSize="20sp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
                 android:onClick="onActorButtonPress"
                 android:gravity="left|center_vertical"
 
@@ -139,14 +143,14 @@
 
             <Button
                 android:id="@+id/movieview_directors_button"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_width="match_parent"
                 android:layout_below="@id/movieview_actors_text"
                 android:text="Directors"
                 android:textSize="20sp"
                 android:gravity="left|center_vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
                 android:onClick="onDirectorButtonPress"
                 style="@style/BorderlessButton"/>
 

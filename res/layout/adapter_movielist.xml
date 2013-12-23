@@ -12,7 +12,8 @@
         android:maxHeight="100dp"
         android:maxWidth="55dp"
         android:layout_margin="1dp"
-        android:layout_alignTop="@+id/adapter_title" />
+        android:layout_alignTop="@+id/adapter_title"
+        />
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@id/adapter_title"
@@ -27,7 +28,8 @@
         android:textStyle="bold"
         android:textSize="20sp"
         android:singleLine="true"
-        android:ellipsize="end" />
+        android:ellipsize="end"
+        />
 
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/adapter_year"
@@ -40,8 +42,9 @@
         android:layout_marginRight="5dp"
         android:paddingLeft="5dp"
         android:textStyle="bold"
-        android:textSize="20sp" />
-    <!-- TODO: is there a way to do this without hardcoding a pixel size? -->
+        android:textSize="20sp"
+        />
+
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/adapter_plot"
         style="@style/ListViewCells"
@@ -54,4 +57,5 @@
         android:singleLine="false"
         android:ellipsize="end"
         />
+
 </RelativeLayout>

@@ -6,5 +6,7 @@ gradle*
 classes/*
 *.iml
 bin/
+gen/
 local.properties
 build/
+.settings/
