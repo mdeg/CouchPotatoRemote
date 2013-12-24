@@ -12,9 +12,9 @@ Fix this up when/if AppCompat versions of PreferenceActivity come out
 public class SettingsActivity extends PreferenceActivity {
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         addPreferencesFromResource(R.xml.preferences);
 
    /*   getFragmentManager().beginTransaction()

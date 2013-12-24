@@ -19,7 +19,7 @@
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
 
-    <style name="CPThemeActionBarButton" parent="@android:style/Widget.ActionButton">
+    <style name="CPThemeActionBarButton" parent="@android:style/Widget.AppCompat.ActionButton">
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
 
