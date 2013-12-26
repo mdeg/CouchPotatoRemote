@@ -1,4 +1,5 @@
 <resources>
+
     <style name="CouchpotatoTheme" parent="@style/Theme.AppCompat">
         <item name="android:textColor">@color/cp_text</item>
         <item name="android:windowBackground">@color/cp_background_light</item>
@@ -27,7 +28,7 @@
         <item name="android:padding">0dp</item>
     </style>
 
-    <style name="CPThemeActionBarButton" parent="@android:style/Widget.AppCompat.ActionButton">
+    <style name="CPThemeActionBarButton" parent="@style/Widget.AppCompat.ActionButton">
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
 
@@ -38,10 +39,6 @@
     <style name="ListViewCells">
         <item name="android:background">@color/cp_background_dark</item>
         <item name="android:textColor">@color/cp_text</item>
-    </style>
-
-    <style name="WindowTitleBackground">
-        <item name="android:background">@color/cp_titlebar_background</item>
     </style>
 
 </resources>

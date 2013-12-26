@@ -19,10 +19,6 @@
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
 
-    <style name="CPThemeActionBarButton" parent="@android:style/Widget.AppCompat.ActionButton">
-        <item name="android:background">@color/cp_titlebar_background</item>
-    </style>
-
     <style name="CPThemeTabBar"
         parent="@style/Widget.AppCompat.ActionBar.TabView" >
         <item name="android:background">@color/cp_background_light</item>
@@ -32,9 +28,17 @@
         <item name="android:padding">0dp</item>
     </style>
 
+    <style name="CPThemeActionBarButton" parent="@style/Widget.AppCompat.ActionButton">
+        <item name="android:background">@color/cp_titlebar_background</item>
+    </style>
+
     <style name="BorderlessButton">
         <item name="android:background">@color/cp_background_light</item>
     </style>
 
+    <style name="ListViewCells">
+        <item name="android:background">@color/cp_background_dark</item>
+        <item name="android:textColor">@color/cp_text</item>
+    </style>
 
 </resources>

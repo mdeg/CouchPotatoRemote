@@ -1,5 +1,44 @@
 <resources>
 
+    <style name="CouchpotatoTheme" parent="@style/Theme.AppCompat">
+        <item name="android:textColor">@color/cp_text</item>
+        <item name="android:windowBackground">@color/cp_background_light</item>
+        <item name="android:actionBarStyle">@style/CPThemeActionBar</item>
+        <item name="android:actionModeBackground">@color/cp_titlebar_background</item>
+        <item name="android:actionBarTabBarStyle">@style/CPThemeTabBar</item>
+    </style>
 
+    <style name="CPThemeActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/cp_titlebar_background</item>
+        <item name="android:textColor">@color/cp_text</item>
+        <item name="android:titleTextStyle">@style/CPThemeTitleTextStyle</item>
+    </style>
+
+    <style name="CPThemeTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/cp_text</item>
+        <item name="android:background">@color/cp_titlebar_background</item>
+    </style>
+
+    <style name="CPThemeTabBar"
+        parent="@style/Widget.AppCompat.ActionBar.TabView" >
+        <item name="android:background">@color/cp_background_light</item>
+        <item name="android:divider">?android:attr/actionBarDivider</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:dividerPadding">12dp</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="CPThemeActionBarButton" parent="@style/Widget.AppCompat.ActionButton">
+        <item name="android:background">@color/cp_titlebar_background</item>
+    </style>
+
+    <style name="BorderlessButton">
+        <item name="android:background">@color/cp_background_light</item>
+    </style>
+
+    <style name="ListViewCells">
+        <item name="android:background">@color/cp_background_dark</item>
+        <item name="android:textColor">@color/cp_text</item>
+    </style>
 
 </resources>
