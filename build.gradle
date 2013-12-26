@@ -18,8 +18,12 @@ dependencies {
 
 android {
     compileSdkVersion 19
-
     buildToolsVersion "19.0.0"
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 19
+    }
 
     sourceSets {
         main {
@@ -28,8 +32,12 @@ android {
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
         }
+
         instrumentTest {
+
             java.srcDirs = ['tests']
+            assets.srcDirs = ['assets']
+            resources.srcDirs = ['res']
         }
     }
     lintOptions {
