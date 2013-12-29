@@ -20,10 +20,11 @@ import java.util.regex.Pattern;
     Get the log from CouchPotato, format it a little then display it.
 */
 public class LogActivity extends ActionBarActivity {
+    private static final String TAG = LogActivity.class.getName();
+
     private String log = null;
     private GetLogTask task = null;
     private int selectedPosition = -1;
-    private static final String TAG = LogActivity.class.getName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class LogActivity extends ActionBarActivity {
         ((Spinner) findViewById(R.id.log_select_type)).setSelection(selectedPosition);
     }
 
+    
     //Asynchronously request the log from the CouchPotato server
     private class GetLogTask extends APIRequestAsyncTask<String, Void, String> {
         public GetLogTask(Context context) {

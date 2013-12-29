@@ -92,10 +92,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 return true;
             //Refresh movie list
             case R.id.action_refresh:
-                MovieListFragment fragment = (MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(0);
-                fragment.refresh();
-                fragment = (MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(1);
-                fragment.refresh();
+                //Refresh the Wanted list
+                ((MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(0)).refresh();
+                //Refresh the Manage list
+                ((MovieListFragment) mSectionsPagerAdapter.getRegisteredFragment(1)).refresh();
                 Toast.makeText(this, "Refreshing...", Toast.LENGTH_SHORT).show();
                 return true;
             //View the log
@@ -126,7 +126,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         //Fragments are registered so we can retrieve them based on their position
-        SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>(2);
+        final SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>(2);
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -147,7 +147,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             return fragment;
         }
 
-        //These three methods are needed so we can retrieve fragments based on their position
+        //Registration/deregistration of fragments
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);

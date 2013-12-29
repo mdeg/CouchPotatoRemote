@@ -34,7 +34,6 @@ android {
         }
 
         instrumentTest {
-
             java.srcDirs = ['tests']
             assets.srcDirs = ['assets']
             resources.srcDirs = ['res']

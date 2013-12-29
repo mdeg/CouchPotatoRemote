@@ -5,7 +5,7 @@
         android:id="@+id/action_add_movie"
         android:icon="@drawable/ic_action_new"
         android:title="@string/add_movie_button"
-        thisapp:showAsAction="always" />
+        thisapp:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"
@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/action_refresh"
-        thisapp:showAsAction="always"
+        thisapp:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/refresh_button"
         />

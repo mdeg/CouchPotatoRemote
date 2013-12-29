@@ -23,11 +23,11 @@ class Movie implements Parcelable {
         this.libraryId = libraryId;
         this.title = title;
         this.tagline = tagline;
+        this.posterUri = posterUri;
         this.year = year;
         this.plot = plot;
         this.actors = actors;
         this.directors = directors;
-        this.posterUri = posterUri;
     }
 
     //Constructor for search results
