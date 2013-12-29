@@ -1,15 +1,25 @@
 package no.dega.couchpotatoremote;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.ActivityUnitTestCase;
 import android.test.TouchUtils;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.view.View;
 import android.widget.TextView;
 
-/**
- * Created by root on 12/26/13.
- */
+import java.util.ArrayList;
+
 public class MovieViewActivityTest extends ActivityInstrumentationTestCase2<MovieViewActivity> {
+
+    private final int TEST_LIBRARYID = 1;
+    private final String TEST_TITLE = "Test Movie";
+    private final String TEST_TAGLINE = "Test Tagline";
+    private final String TEST_YEAR = "2000";
+    private final String TEST_PLOT = "This is a generic plot for our test movie";
+    private final String[] TEST_ACTORS = {"Jane Doe", "Joe Bloggs"};
+    private final String[] TEST_DIRECTORS = {"John Citizen"};
+    private final String TEST_POSTERURI = "http://placehold.it/150x230";
+
 
     private MovieViewActivity activity;
 
@@ -20,8 +30,14 @@ public class MovieViewActivityTest extends ActivityInstrumentationTestCase2<Movi
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        setActivityInitialTouchMode(false);
         activity = getActivity();
+
+        Movie movie = new Movie(TEST_LIBRARYID, TEST_TITLE, TEST_TAGLINE, TEST_POSTERURI,
+                TEST_PLOT, TEST_YEAR, TEST_ACTORS, TEST_DIRECTORS);
+        ArrayList<Movie> moviesList = new ArrayList<Movie>();
+        moviesList.add(movie);
+        activity.setMovies(moviesList, 0);
+        activity.displayMovie(0);
     }
 
     public void testEditQuality() {
@@ -34,16 +50,19 @@ public class MovieViewActivityTest extends ActivityInstrumentationTestCase2<Movi
         TextView actorsText = (TextView) activity.findViewById(R.id.movieview_actors_text);
         TextView directorsText = (TextView) activity.findViewById(R.id.movieview_directors_text);
 
+        //Expand/contract plot button
         TouchUtils.tapView(this, activity.findViewById(R.id.movieview_plot_button));
         assertTrue(plotText.getVisibility() == View.VISIBLE);
         TouchUtils.tapView(this, activity.findViewById(R.id.movieview_plot_button));
         assertTrue(plotText.getVisibility() == View.GONE);
 
+        //Actors button
         TouchUtils.tapView(this, activity.findViewById(R.id.movieview_actors_button));
         assertTrue(actorsText.getVisibility() == View.VISIBLE);
         TouchUtils.tapView(this, activity.findViewById(R.id.movieview_actors_button));
         assertTrue(actorsText.getVisibility() == View.GONE);
 
+        //Directors button
         TouchUtils.tapView(this, activity.findViewById(R.id.movieview_directors_button));
         assertTrue(directorsText.getVisibility() == View.VISIBLE);
         TouchUtils.tapView(this, activity.findViewById(R.id.movieview_directors_button));
