@@ -27,6 +27,12 @@
     <string name="show_plot_button">Plot</string>
     <string name="show_actors_button">Actors</string>
     <string name="show_directors_button">Directors</string>
+    <string name="show_releases_button">Releases</string>
+    <string name="ignore_release_button">Ignore</string>
+    <string name="download_release_button">Download</string>
+    <string name="delete_release_button">Delete</string>
+    <string name="no_releases_available">No releases available.</string>
+
 
     <string-array name="log_types">
         <item>All</item>

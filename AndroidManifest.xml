@@ -35,7 +35,20 @@
 
         <activity
             android:name=".MovieViewActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+
+        </activity>
+
+        <activity android:name=".ReleasesActivity"
+            android:parentActivityName=".MovieViewActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MovieViewActivity" />
+            </activity>
 
         <activity
             android:name=".SettingsActivity"
@@ -45,10 +58,18 @@
             android:name=".AddMovieActivity"
             android:label="@string/title_activity_add_movie"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateUnchanged|adjustResize"/>
+            android:windowSoftInputMode="stateUnchanged|adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            </activity>
 
         <activity android:name=".LogActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            </activity>
 
     </application>
 
