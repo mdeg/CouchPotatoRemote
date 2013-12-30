@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="3dp"/>
+                android:layout_marginLeft="2dp"/>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -72,27 +72,40 @@
                     android:layout_toRightOf="@id/movieview_poster">
 
                     <Button
-                        android:id="@+id/movieview_delete_movie_button"
+                        android:id="@+id/movieview_show_releases_button"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         style="@style/CPThemeButton"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:gravity="left|center_vertical"
-                        android:onClick="onDeleteButtonPress"
-                        android:text="@string/delete_movie_button"/>
+                        android:onClick="onReleasesButtonPress"
+                        android:text="@string/show_releases_button"/>
 
                     <Button
                         android:id="@+id/movieview_edit_quality_button"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         style="@style/CPThemeButton"
-                        android:layout_below="@id/movieview_delete_movie_button"
+                        android:layout_below="@id/movieview_show_releases_button"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:gravity="left|center_vertical"
                         android:onClick="onQualityButtonPress"
                         android:text="@string/edit_quality_button"/>
+
+                    <Button
+                        android:id="@+id/movieview_delete_movie_button"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/CPThemeButton"
+                        android:layout_below="@id/movieview_edit_quality_button"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:gravity="left|center_vertical"
+                        android:onClick="onDeleteButtonPress"
+                        android:text="@string/delete_movie_button"/>
+
                 </RelativeLayout>
         </RelativeLayout>
 
@@ -103,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_below="@id/movieview_posterandbuttons"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="3dp">
+            android:layout_marginLeft="2dp">
 
             <Button
                 android:id="@+id/movieview_plot_button"

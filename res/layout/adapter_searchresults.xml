@@ -32,4 +32,5 @@
         android:gravity="right"
         android:singleLine="true"
         android:ellipsize="none" />
+
 </LinearLayout>
