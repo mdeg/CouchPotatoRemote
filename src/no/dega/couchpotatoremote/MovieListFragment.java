@@ -93,7 +93,7 @@ public class MovieListFragment extends ListFragment {
      */
     private ArrayList<Movie> parseMovieList(String resp) {
         if ((resp == null) || (resp.length() <= 0)) {
-            Log.e(TAG, "parseMovieList was passed an invalid string");
+            //Log.e(TAG, "parseMovieList was passed an invalid string");
             return null;
         }
         try {

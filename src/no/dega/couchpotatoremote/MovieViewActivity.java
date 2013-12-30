@@ -126,7 +126,7 @@ public class MovieViewActivity extends ActionBarActivity {
             //This will also initialise current
             displayMovie(currentPos);
         } else {
-            Log.e(TAG, "Null bundle passed to movieview");
+            //Log.e(TAG, "Null bundle passed to movieview");
         }
 
     }

@@ -121,7 +121,7 @@ public class LogActivity extends ActionBarActivity {
         //Parse the log returned, strip out dud characters and format it a little bit
         private String parseLog(String result) {
             if(result == null) {
-                 Log.e(TAG, "Null result passed to GetLogTask.");
+                 //Log.e(TAG, "Null result passed to GetLogTask.");
                  return null;
             }
             if(result.length() <= 0) {
@@ -138,7 +138,7 @@ public class LogActivity extends ActionBarActivity {
                 return log;
 
             } catch (JSONException e) {
-                Log.e(TAG, "Exception parsing log.");
+                //Log.e(TAG, "Exception parsing log.");
                 e.printStackTrace();
             }
         return null;

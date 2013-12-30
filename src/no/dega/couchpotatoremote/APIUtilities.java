@@ -19,7 +19,7 @@ class APIUtilities {
      */
     protected static String formatRequest(String request, Context context) throws IllegalArgumentException {
         if ((request == null) || (request.length() <= 0)) {
-            Log.e(TAG, "Invalid string passed to formatRequest.");
+            //Log.e(TAG, "Invalid string passed to formatRequest.");
             throw new IllegalArgumentException("No request passed to formatRequest.");
         }
         //Make sure they're connected to a network
@@ -30,7 +30,7 @@ class APIUtilities {
             //No networks are enabled
             Toast.makeText(context, "Could not connect: no network is enabled.",
                     Toast.LENGTH_LONG).show();
-            Log.e(TAG, "No connection to any network.");
+            //Log.e(TAG, "No connection to any network.");
             return "";
         }
         //Construct URI based on user settings and append the request

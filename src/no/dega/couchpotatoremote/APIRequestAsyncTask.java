@@ -123,14 +123,14 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
                 }
                 return builder.toString();
             } else {
-                Log.e(TAG, "Status code not 200, is: " + statusCode);
+                //Log.e(TAG, "Status code not 200, is: " + statusCode);
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
-            Log.e(TAG, "Protocol error.");
+            //Log.e(TAG, "Protocol error.");
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e(TAG, "Could not connect to resource: API key may be missing or network not connected.");
+            //Log.e(TAG, "Could not connect to resource: API key may be missing or network not connected.");
         } finally {
             //Clean up and close the connections
             if (content != null) {
@@ -138,7 +138,7 @@ class APIRequestAsyncTask<Parameters, Progress, Result> extends AsyncTask<String
                     content.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.e(TAG, "Error trying to close the connection");
+                    //Log.e(TAG, "Error trying to close the connection");
                 }
             }
         }
