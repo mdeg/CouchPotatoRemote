@@ -4,10 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,75 +48,72 @@ public class MovieViewActivity extends ActionBarActivity {
     private static final int FLING_MAX_OFF_PATH = 250;
     private static final int FLING_THRESHOLD_VELOCITY = 200;
 
-    //Pass the fling to the gesture detector
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        super.dispatchTouchEvent(ev);
-        return gestureDetector.onTouchEvent(ev);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_movie_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         //Create the fling listener
         GestureDetector.SimpleOnGestureListener listener =
                 new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if (Math.abs(e1.getY() - e2.getY()) > FLING_MAX_OFF_PATH) {
-                    return false;
-                }
-
-                View layout = findViewById(R.id.movie_view_layout);
-                Animation slideoutMovie;
-                int pos;
-
-                if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE
-                    && Math.abs(velocityX) > FLING_THRESHOLD_VELOCITY) {
-                        pos = currentPos + 1;
-                        slideoutMovie = AnimationUtils.loadAnimation(layout.getContext(),
-                                R.anim.movieview_slideout_left);
-                }
-                else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE
-                    && Math.abs(velocityX) > FLING_THRESHOLD_VELOCITY) {
-                        pos = currentPos - 1;
-                        slideoutMovie = AnimationUtils.loadAnimation(layout.getContext(),
-                                R.anim.movieview_slideout_right);
-                } else {
-                    //Not a valid fling in either direction
-                    return false;
-                }
-                //Wraparound
-                if(pos < 0) {
-                    pos = movies.size() - 1;
-                } else if(pos > movies.size() - 1) {
-                    pos = 0;
-                }
-
-                final int finalPos = pos;
-                slideoutMovie.setAnimationListener(new Animation.AnimationListener() {
                     @Override
-                    public void onAnimationStart(Animation animation) {}
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        displayMovie(finalPos);
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        if (Math.abs(e1.getY() - e2.getY()) > FLING_MAX_OFF_PATH) {
+                            return false;
+                        }
+
+                        View layout = findViewById(R.id.movie_view_layout);
+                        Animation slideoutMovie;
+                        int pos;
+
+                        if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE
+                                && Math.abs(velocityX) > FLING_THRESHOLD_VELOCITY) {
+                            pos = currentPos + 1;
+                            slideoutMovie = AnimationUtils.loadAnimation(layout.getContext(),
+                                    R.anim.movieview_slideout_left);
+                        }
+                        else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE
+                                && Math.abs(velocityX) > FLING_THRESHOLD_VELOCITY) {
+                            pos = currentPos - 1;
+                            slideoutMovie = AnimationUtils.loadAnimation(layout.getContext(),
+                                    R.anim.movieview_slideout_right);
+                        } else {
+                            //Not a valid fling in either direction
+                            return false;
+                        }
+                        //Wraparound
+                        if(pos < 0) {
+                            pos = movies.size() - 1;
+                        } else if(pos > movies.size() - 1) {
+                            pos = 0;
+                        }
+
+                        final int finalPos = pos;
+                        slideoutMovie.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {}
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                displayMovie(finalPos);
+                            }
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {}
+                        });
+                        //Collapse the dropdowns
+                        findViewById(R.id.movieview_plot_text).setVisibility(View.GONE);
+                        findViewById(R.id.movieview_actors_text).setVisibility(View.GONE);
+                        findViewById(R.id.movieview_directors_text).setVisibility(View.GONE);
+
+                        layout.startAnimation(slideoutMovie);
+                        return true;
                     }
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {}
-                });
-                //Collapse the dropdowns
-                hideActors();
-                hideDirectors();
-                hidePlot();
-
-                layout.startAnimation(slideoutMovie);
-                return true;
-            }
-        };
+                };
         gestureDetector = new GestureDetector(this, listener);
 
         Bundle bun = getIntent().getExtras();
@@ -128,7 +125,13 @@ public class MovieViewActivity extends ActionBarActivity {
         } else {
             //Log.e(TAG, "Null bundle passed to movieview");
         }
+    }
 
+    //Pass the fling to the gesture detector
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        super.dispatchTouchEvent(ev);
+        return gestureDetector.onTouchEvent(ev);
     }
 
     //Display the movie at pos on the screen.
@@ -155,104 +158,83 @@ public class MovieViewActivity extends ActionBarActivity {
         ImageLoader.getInstance().displayImage(current.getPosterUri(), poster);
     }
 
+    //Called when user presses 'Delete' button. Opens a confirmation window.
     public void onDeleteButtonPress(View view) {
         new ConfirmMovieDeleteFragment().show(getSupportFragmentManager(), null);
     }
 
+    //Called when user presses 'Releases' button. Takes user to Releases activity.
+    public void onReleasesButtonPress(View view) {
+        Intent releasesActivity = new Intent(this, ReleasesActivity.class);
+        releasesActivity.putExtra("movie", current);
+        startActivity(releasesActivity);
+    }
+
+    //Called when user presses 'Actors' button. Expands plot.
     public void onPlotButtonPress(View view) {
+        TextView plot = (TextView) findViewById(R.id.movieview_plot_text);
         if(!plotExpanded) {
-            showPlot();
+            plotExpanded = true;
+            plot.setText(current.getPlot());
+            plot.setVisibility(View.VISIBLE);
         } else {
-            hidePlot();
+            plotExpanded = false;
+            plot.setVisibility(View.GONE);
         }
-    }
-
-    private void showPlot() {
-        TextView plot = (TextView) findViewById(R.id.movieview_plot_text);
-        plotExpanded = true;
-
-        plot.setText(current.getPlot());
-        plot.setVisibility(View.VISIBLE);
-    }
-
-    private void hidePlot() {
-        TextView plot = (TextView) findViewById(R.id.movieview_plot_text);
-        plotExpanded = false;
-        plot.setVisibility(View.GONE);
     }
 
     //Called when user presses 'Actors' button. Expands list of actors.
     public void onActorButtonPress(View view) {
+        TextView actors = (TextView) findViewById(R.id.movieview_actors_text);
         if(!actorsExpanded) {
-            showActors();
-        } else {
-            hideActors();
-        }
-    }
+            actorsExpanded = true;
 
-    private void showActors() {
-        TextView actors = (TextView) findViewById(R.id.movieview_actors_text);
-        actorsExpanded = true;
-
-        StringBuilder display = new StringBuilder();
-        String[] actorsList = current.getActors();
-        if(actorsList.length > 0) {
-            for(int i = 0; i < actorsList.length - 1; i++) {
-                display.append(actorsList[i]).append("\n");
+            StringBuilder display = new StringBuilder();
+            String[] actorsList = current.getActors();
+            if(actorsList.length > 0) {
+                for(int i = 0; i < actorsList.length - 1; i++) {
+                    display.append(actorsList[i]).append("\n");
+                }
+                //Don't want a trailing \n on the last element
+                display.append(actorsList[actorsList.length - 1]);
+            } else {
+                display.append("No actors.");
             }
-            //Don't want a trailing \n on the last element
-            display.append(actorsList[actorsList.length - 1]);
+            actors.setText(display.toString());
+            actors.setVisibility(View.VISIBLE);
         } else {
-            display.append("No actors.");
+            actorsExpanded = false;
+            actors.setVisibility(View.GONE);
         }
-
-        actors.setText(display.toString());
-        actors.setVisibility(View.VISIBLE);
-    }
-
-    //Hide actors list
-    private void hideActors() {
-        TextView actors = (TextView) findViewById(R.id.movieview_actors_text);
-        actorsExpanded = false;
-        actors.setVisibility(View.GONE);
     }
 
     //Called when user presses 'Directors' button. Expands list of directors.
     public void onDirectorButtonPress(View view) {
+        TextView directors = (TextView) findViewById(R.id.movieview_directors_text);
+
         if(!directorsExpanded) {
-            showDirectors();
-        } else {
-            hideDirectors();
-        }
-    }
+            directorsExpanded = true;
 
-    private void showDirectors() {
-        TextView directors = (TextView) findViewById(R.id.movieview_directors_text);
-        directorsExpanded = true;
-
-        StringBuilder display = new StringBuilder();
-        String[] directorsList = current.getDirectors();
-        if(current.getDirectors().length > 0) {
-            for(int i = 0; i < directorsList.length - 1; i++) {
-                display.append(directorsList[i]).append("\n");
+            StringBuilder display = new StringBuilder();
+            String[] directorsList = current.getDirectors();
+            if(current.getDirectors().length > 0) {
+                for(int i = 0; i < directorsList.length - 1; i++) {
+                    display.append(directorsList[i]).append("\n");
+                }
+                //Don't want a trailing \n on the last element
+                display.append(directorsList[directorsList.length - 1]);
+            } else {
+                display.append("No directors.");
             }
-            //Don't want a trailing \n on the last element
-            display.append(directorsList[directorsList.length - 1]);
+            directors.setText(display.toString());
+            directors.setVisibility(View.VISIBLE);
         } else {
-            display.append("No directors.");
+            directorsExpanded = false;
+            directors.setVisibility(View.GONE);
         }
-
-        directors.setText(display.toString());
-        directors.setVisibility(View.VISIBLE);
     }
 
-    private void hideDirectors() {
-        TextView directors = (TextView) findViewById(R.id.movieview_directors_text);
-        //Already expanded, and we need to close
-        directorsExpanded = false;
-        directors.setVisibility(View.GONE);
-    }
-
+    //Change quality button
     public void onQualityButtonPress(View view) {
         new ChangeQualityFragment().show(getSupportFragmentManager(), null);
     }

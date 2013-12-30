@@ -32,8 +32,10 @@
         <item name="android:background">@color/cp_titlebar_background</item>
     </style>
 
-    <style name="BorderlessButton">
-        <item name="android:background">@color/cp_background_light</item>
+    <style name="CPThemeButton">
+        <item name="android:background">@drawable/button_color</item>
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_marginBottom">1dp</item>
     </style>
 
     <style name="ListViewCells">

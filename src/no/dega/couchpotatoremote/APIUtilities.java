@@ -14,6 +14,7 @@ class APIUtilities {
 
     /*
     Construct a full and valid URI for the clients' request based on the users' settings.
+    Also do a little bit of checking to make sure the request will be okay.
     Example input: String="movie.list"
 	Example output: String="http://192.168.1.1:5050/api/somekey/movie.list"
      */
