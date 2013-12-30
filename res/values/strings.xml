@@ -22,6 +22,12 @@
     <string name="reject_change_quality">Cancel</string>
     <string name="changequality_text">Select a quality:</string>
     <string name="changequality_wait">Loading qualities…</string>
+    <string name="delete_movie_button">Delete</string>
+    <string name="edit_quality_button">Edit Quality</string>
+    <string name="show_plot_button">Plot</string>
+    <string name="show_actors_button">Actors</string>
+    <string name="show_directors_button">Directors</string>
+
     <string-array name="log_types">
         <item>All</item>
         <item>Error</item>
