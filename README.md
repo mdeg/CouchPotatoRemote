@@ -4,9 +4,8 @@ CouchPotato Remote is an open-source remote control app for your CouchPotato ser
 
 You'll need <a href="https://github.com/RuudBurger">RuudBurger</a>'s <a href="https://github.com/RuudBurger/CouchPotatoServer">CouchPotatoServer</a> to be able to use this app..
 
-<h2>Features</h2>:
-<ul>
-<li>Similar visual presentation to the CouchPotato web interface.</li>
+<h2>Features</h2>
+<ul><li>Similar visual presentation to the CouchPotato web interface.</li>
 <li>View your Wanted and Manage lists.</li>
 <li>Add new movies to your Wanted list.</li>
 <li>View individual movies and their important information.</li>
