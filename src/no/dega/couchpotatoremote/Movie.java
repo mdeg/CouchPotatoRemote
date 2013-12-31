@@ -17,6 +17,17 @@ class Movie implements Parcelable {
     private String[] actors;
     private String[] directors;
 
+    public static final Parcelable.Creator<Movie> CREATOR =
+            new Parcelable.Creator<Movie>() {
+                public Movie createFromParcel(Parcel par) {
+                    return new Movie(par);
+                }
+
+                public Movie[] newArray(int size) {
+                    return new Movie[size];
+                }
+            };
+
     //Full constructor used when parsing the movie lists
     public Movie(int libraryId, String title, String tagline, String posterUri,
                  String plot, String year, String[] actors, String[] directors) {
@@ -38,27 +49,8 @@ class Movie implements Parcelable {
     }
 
     //Reconstitute from parcel
-    public Movie(Parcel par) {
-        readFromParcel(par);
-    }
-
-    public static final Parcelable.Creator<Movie> CREATOR =
-            new Parcelable.Creator<Movie>() {
-                public Movie createFromParcel(Parcel par) {
-                    return new Movie(par);
-                }
-
-                public Movie[] newArray(int size) {
-                    return new Movie[size];
-                }
-            };
-
-    public String toString() {
-        return this.title + " (" + this.year + ")";
-    }
-
     //Need to read these back in the same order we write them
-    private void readFromParcel(Parcel par) {
+    public Movie(Parcel par) {
         libraryId = par.readInt();
         title = par.readString();
         tagline = par.readString();
@@ -71,18 +63,22 @@ class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.libraryId);
-        dest.writeString(this.title);
-        dest.writeString(this.tagline);
-        dest.writeString(this.plot);
-        dest.writeString(this.posterUri);
-        dest.writeString(this.year);
-        dest.writeStringArray(this.actors);
-        dest.writeStringArray(this.directors);
+        dest.writeInt(libraryId);
+        dest.writeString(title);
+        dest.writeString(tagline);
+        dest.writeString(plot);
+        dest.writeString(posterUri);
+        dest.writeString(year);
+        dest.writeStringArray(actors);
+        dest.writeStringArray(directors);
     }
 
     public int describeContents() {
         return 0;
+    }
+
+    public String toString() {
+        return this.title + " (" + this.year + ")";
     }
 
     //Getters and setters
@@ -98,14 +94,6 @@ class Movie implements Parcelable {
         return posterUri;
     }
 
-    public void setPosterUri(String posterUri) {
-        this.posterUri = posterUri;
-    }
-
-    public void setPlot(String plot) {
-        this.plot = plot;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -118,32 +106,16 @@ class Movie implements Parcelable {
         return tagline;
     }
 
-    public void setTagline(String tagline) {
-        this.tagline = tagline;
-    }
-
     public String getYear() {
         return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
     }
 
     public String[] getActors() {
         return actors;
     }
 
-    public void setActors(String[] actors) {
-        this.actors = actors;
-    }
-
     public String[] getDirectors() {
         return directors;
-    }
-
-    public void setDirectors(String[] directors) {
-        this.directors = directors;
     }
 
     public int getLibraryId() {
