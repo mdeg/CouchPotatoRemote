@@ -86,94 +86,6 @@ public class MovieListFragment extends ListFragment {
     }
 
     /*
-     *   Status: active = true = on Wanted list
-     *   					false = on Manage list
-     *   Returns a SparseArray of Movie's built from the list (which can be empty if there are no movies)
-     *   or null if it was given an invalid or broken JSON string
-     */
-    private ArrayList<Movie> parseMovieList(String resp) {
-        if ((resp == null) || (resp.length() <= 0)) {
-            //Log.e(TAG, "parseMovieList was passed an invalid string");
-            return null;
-        }
-        try {
-            JSONObject response = new JSONObject(resp);
-            //	Log.d(TAG, "String Contents: " + response.toString());
-            //Make sure our request is okay
-            if (!response.getBoolean("success")) {
-                return null;
-            }
-            //If it's empty we just want to return an empty list
-            if (response.getBoolean("empty")) {
-                return new ArrayList<Movie>();
-            }
-            JSONArray jsonMoviesList = response.getJSONArray("movies");
-
-            ArrayList<Movie> movies = new ArrayList<Movie>(jsonMoviesList.length());
-
-            //Create a Movie object from every movie listed in the json response
-            for (int i = 0; i < jsonMoviesList.length(); i++) {
-                //Library ID (used for deleting movies)
-                int libraryId = jsonMoviesList.getJSONObject(i).getInt("library_id");
-
-                JSONObject info = jsonMoviesList.getJSONObject(i).getJSONObject("library").
-                        getJSONObject("info");
-                //	Log.d(TAG, "Movie JSON String: " + info.toString());
-
-                //Grab the important information (have to watch for nulls)
-                String title = !info.isNull("titles") ? info.getJSONArray("titles").getString(0)
-                        : "No title";
-                String tagline = !info.isNull("tagline") ? info.getString("tagline") : "No tagline";
-                String year = !info.isNull("year") ? info.getString("year") : "";
-                String plot = !info.isNull("plot") ? info.getString("plot") : "No plot";
-
-                //Get the poster URI (this will be a web address)
-                String posterUri = "";
-                if (!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
-                    JSONArray posters = info.getJSONObject("images").getJSONArray("poster");
-                    //Some movies don't have posters
-                    if(posters.length() >= 1) {
-                        posterUri = posters.getString(0);
-                    }
-                }
-
-                //Copy the actor/directors JSONArrays into a regular String array
-                String[] actors = !info.isNull("actors") ?
-                        jsonStringArrayToStringArray(info.getJSONArray("actors"))
-                        : new String[0];
-                String[] directors = !info.isNull("directors") ?
-                        jsonStringArrayToStringArray(info.getJSONArray("directors"))
-                        : new String[0];
-
-                Movie newMovie = new Movie(libraryId, title, tagline, posterUri, plot, year, actors,
-                        directors);
-                movies.add(newMovie);
-            }
-            return movies;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    //Copy a JSON array of strings to a regular String array.
-    private String[] jsonStringArrayToStringArray(JSONArray array) {
-        if(array == null) {
-            return null;
-        }
-        String[] newArray = new String[array.length()];
-        for(int i = 0; i < array.length(); i++) {
-            try {
-                newArray[i] = array.get(i).toString();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-        return newArray;
-    }
-
-    /*
     Download a list of movies from the CouchPotato server
     The fragment itself handles whether it's downloading the wanted or manage list
     */
@@ -205,5 +117,89 @@ public class MovieListFragment extends ListFragment {
             }
             task = null;
         }
+
+        //Parse the list of movies and generate Movie objects for each entry
+        private ArrayList<Movie> parseMovieList(String resp) {
+            if ((resp == null) || (resp.length() <= 0)) {
+                //Log.e(TAG, "parseMovieList was passed an invalid string");
+                return null;
+            }
+            try {
+                JSONObject response = new JSONObject(resp);
+                //	Log.d(TAG, "String Contents: " + response.toString());
+                //Make sure our request is okay
+                if (!response.getBoolean("success")) {
+                    return null;
+                }
+                //If it's empty we just want to return an empty list
+                if (response.getBoolean("empty")) {
+                    return new ArrayList<Movie>();
+                }
+                JSONArray jsonMoviesList = response.getJSONArray("movies");
+
+                ArrayList<Movie> movies = new ArrayList<Movie>(jsonMoviesList.length());
+
+                //Create a Movie object from every movie listed in the json response
+                for (int i = 0; i < jsonMoviesList.length(); i++) {
+                    //Library ID (used for deleting movies)
+                    int libraryId = jsonMoviesList.getJSONObject(i).getInt("library_id");
+
+                    JSONObject info = jsonMoviesList.getJSONObject(i).getJSONObject("library").
+                            getJSONObject("info");
+                    //	Log.d(TAG, "Movie JSON String: " + info.toString());
+
+                    //Grab the important information (have to watch for nulls)
+                    String title = !info.isNull("titles") ? info.getJSONArray("titles").getString(0)
+                            : "No title";
+                    String tagline = !info.isNull("tagline") ? info.getString("tagline") : "No tagline";
+                    String year = !info.isNull("year") ? info.getString("year") : "";
+                    String plot = !info.isNull("plot") ? info.getString("plot") : "No plot";
+
+                    //Get the poster URI (this will be a web address)
+                    String posterUri = "";
+                    if (!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
+                        JSONArray posters = info.getJSONObject("images").getJSONArray("poster");
+                        //Some movies don't have posters
+                        if(posters.length() >= 1) {
+                            posterUri = posters.getString(0);
+                        }
+                    }
+
+                    //Copy the actor/directors JSONArrays into a regular String array
+                    String[] actors = !info.isNull("actors") ?
+                            jsonStringArrayToStringArray(info.getJSONArray("actors"))
+                            : new String[0];
+                    String[] directors = !info.isNull("directors") ?
+                            jsonStringArrayToStringArray(info.getJSONArray("directors"))
+                            : new String[0];
+
+                    Movie newMovie = new Movie(libraryId, title, tagline, posterUri, plot, year, actors,
+                            directors);
+                    movies.add(newMovie);
+                }
+                return movies;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        //Copy a JSON array of strings to a regular String array.
+        private String[] jsonStringArrayToStringArray(JSONArray array) {
+            if(array == null) {
+                return null;
+            }
+            String[] newArray = new String[array.length()];
+            for(int i = 0; i < array.length(); i++) {
+                try {
+                    newArray[i] = array.get(i).toString();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+            return newArray;
+        }
+
     }
+
 }

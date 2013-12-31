@@ -29,13 +29,14 @@ public class SearchResultsFragment extends ListFragment {
     private TextView noSearchResults = null;
     private SearchForMovieTask task = null;
     private String request = null;
+
     private boolean isRunning = false;
     private boolean isCompleted = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Construct and submit our query
+        //Construct and submit the users' search query
         String query = "movie.search?q=" + Uri.encode(getArguments().getString("nameToSearch"));
         request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
         task = new SearchForMovieTask(getActivity());
@@ -79,18 +80,16 @@ public class SearchResultsFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Movie movie = (Movie) getListAdapter().getItem(position);
 
-        StringBuilder uri = new StringBuilder("movie.add?title=");
+        //Construct and submit the request to add the specified movie
         //Make sure we encode the title in a URL-recognisable format
+        StringBuilder uri = new StringBuilder("movie.add?title=");
         uri = uri.append(Uri.encode(movie.getTitle())).append("&identifier=").append(movie.getImdbId());
-
         String request = APIUtilities.formatRequest(uri.toString(), getActivity().getApplicationContext());
-
         new AddMovieTask(getActivity(), movie.getTitle()).execute(request);
 
         //Collapsing list animation
         Animation collapseList = AnimationUtils.loadAnimation(getActivity(), R.anim.collapse_search_results);
         getListView().startAnimation(collapseList);
-
     }
 
     //Set up the progress dialog and hide the 'Search for a movie above' text

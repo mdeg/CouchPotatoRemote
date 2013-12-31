@@ -3,6 +3,10 @@ package no.dega.couchpotatoremote;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//Holds all the important information about a movie. Gets passed around to various activities.
+//A list of these is the MovieListFragment.
+//MovieViewActivity uses one of these to display information about a selected movie.
+//ReleasesActivity uses this to get a list of releases for the given movie.
 class Movie implements Parcelable {
     private int libraryId;
     private String dbId;

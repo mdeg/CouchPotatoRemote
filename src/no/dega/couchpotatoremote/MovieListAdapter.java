@@ -12,6 +12,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
+//Adapter for displaying movies as a list
+//Looks like this:
+//[poster] [title] [year]
+//[      ] [    plot    ]
+//[      ] [            ]
 public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 
     private final List<Movie> movies;
@@ -21,9 +26,7 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
         this.movies = movies;
     }
 
-    /*
-    View for movies on the movielist. Uses ViewHolder to cache views for better performance.
-     */
+    //View for movies on the movielist. Uses ViewHolder to cache views for better performance.
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
@@ -51,7 +54,7 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 
             //Posters are almost always 231px high (and never higher). A few are a little smaller though.
             //Irritatingly, there are some that are smaller and have transparencies in the remainder
-            //So, matching
+            //So, matching won't be perfect, but generally it works pretty well.
             //Have to check for null and give a default height - image might not be loaded yet
             int maxHeight = 231;
             if(holder.poster.getDrawable() != null) {
@@ -62,7 +65,7 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
         }
         return convertView;
     }
-
+    //Use ViewHolder to recycle views for better performance
     private static class ViewHolder {
         TextView title;
         TextView year;

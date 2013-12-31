@@ -51,6 +51,7 @@ public class LogActivity extends ActionBarActivity {
                 }
                 task = new GetLogTask(adapterView.getContext());
                 String type;
+                //Select type of log
                 switch(pos) {
                     case 0:
                         type = "all";
@@ -67,6 +68,7 @@ public class LogActivity extends ActionBarActivity {
                     default:
                         type = "all";
                 }
+                //Request the log for the given type
                 String request = APIUtilities.formatRequest("logging.partial?type=" + type,
                         adapterView.getContext());
                 task.execute(request);
@@ -82,7 +84,6 @@ public class LogActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
-
         //If this is a recreation
         if(log != null) {
             ((TextView) findViewById(R.id.log_text)).setText(log);
@@ -96,6 +97,7 @@ public class LogActivity extends ActionBarActivity {
         outState.putString("log", log);
         outState.putInt("selectedPosition", selectedPosition);
     }
+
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -105,7 +107,6 @@ public class LogActivity extends ActionBarActivity {
         ((Spinner) findViewById(R.id.log_select_type)).setSelection(selectedPosition);
     }
 
-    
     //Asynchronously request the log from the CouchPotato server
     private class GetLogTask extends APIRequestAsyncTask<String, Void, String> {
         public GetLogTask(Context context) {

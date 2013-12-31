@@ -33,7 +33,6 @@
     <string name="delete_release_button">Delete</string>
     <string name="no_releases_available">No releases available.</string>
 
-
     <string-array name="log_types">
         <item>All</item>
         <item>Error</item>

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+//Adapter to display search results (name and year)
 public class SearchResultsAdapter<T> extends ArrayAdapter<Movie> {
 
     private final List<Movie> movies;
@@ -18,7 +19,7 @@ public class SearchResultsAdapter<T> extends ArrayAdapter<Movie> {
         this.movies = movies;
     }
 
-    //View a list of titles and years of movies
+    //Shows [title......... year] for every list element
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
@@ -33,14 +34,12 @@ public class SearchResultsAdapter<T> extends ArrayAdapter<Movie> {
         }
 
         Movie movie = movies.get(position);
+        holder.title.setText(movie.getTitle());
+        holder.year.setText(movie.getYear());
 
-        if (movie != null) {
-            holder.title.setText(movie.getTitle());
-            holder.year.setText(movie.getYear());
-        }
         return convertView;
     }
-
+    //Use ViewHolder to recycle views
     private static class ViewHolder {
         TextView title;
         TextView year;

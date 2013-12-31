@@ -39,11 +39,13 @@ public class MovieViewActivity extends ActionBarActivity {
 
     private ArrayList<Movie> movies = null;
     private Movie current = null;
+    private GestureDetector gestureDetector = null;
+
     private int currentPos = 0;
+
     protected boolean actorsExpanded = false;
     protected boolean directorsExpanded = false;
     protected boolean plotExpanded = false;
-    private GestureDetector gestureDetector = null;
 
     //Parameters for a swipe to qualify
     private static final int FLING_MIN_DISTANCE = 120;
@@ -66,6 +68,7 @@ public class MovieViewActivity extends ActionBarActivity {
                 new GestureDetector.SimpleOnGestureListener() {
                     @Override
                     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        //Too far off path?
                         if (Math.abs(e1.getY() - e2.getY()) > FLING_MAX_OFF_PATH) {
                             return false;
                         }
@@ -73,15 +76,17 @@ public class MovieViewActivity extends ActionBarActivity {
                         View layout = findViewById(R.id.movie_view_layout);
                         Animation slideoutMovie;
                         int pos;
-
+                        //Check if it's a valid fling, and whether it's left or right
                         if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE
                                 && Math.abs(velocityX) > FLING_THRESHOLD_VELOCITY) {
+                            //Left fling
                             pos = currentPos + 1;
                             slideoutMovie = AnimationUtils.loadAnimation(layout.getContext(),
                                     R.anim.movieview_slideout_left);
                         }
                         else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE
                                 && Math.abs(velocityX) > FLING_THRESHOLD_VELOCITY) {
+                            //Right fling
                             pos = currentPos - 1;
                             slideoutMovie = AnimationUtils.loadAnimation(layout.getContext(),
                                     R.anim.movieview_slideout_right);
@@ -198,19 +203,7 @@ public class MovieViewActivity extends ActionBarActivity {
         TextView actors = (TextView) findViewById(R.id.movieview_actors_text);
         if(!actorsExpanded) {
             actorsExpanded = true;
-
-            StringBuilder display = new StringBuilder();
-            String[] actorsList = current.getActors();
-            if(actorsList.length > 0) {
-                for(int i = 0; i < actorsList.length - 1; i++) {
-                    display.append(actorsList[i]).append("\n");
-                }
-                //Don't want a trailing \n on the last element
-                display.append(actorsList[actorsList.length - 1]);
-            } else {
-                display.append("No actors.");
-            }
-            actors.setText(display.toString());
+            actors.setText(stringArrayToString(current.getActors(), "No actors."));
             actors.setVisibility(View.VISIBLE);
         } else {
             actorsExpanded = false;
@@ -224,19 +217,7 @@ public class MovieViewActivity extends ActionBarActivity {
 
         if(!directorsExpanded) {
             directorsExpanded = true;
-
-            StringBuilder display = new StringBuilder();
-            String[] directorsList = current.getDirectors();
-            if(current.getDirectors().length > 0) {
-                for(int i = 0; i < directorsList.length - 1; i++) {
-                    display.append(directorsList[i]).append("\n");
-                }
-                //Don't want a trailing \n on the last element
-                display.append(directorsList[directorsList.length - 1]);
-            } else {
-                display.append("No directors.");
-            }
-            directors.setText(display.toString());
+            directors.setText(stringArrayToString(current.getDirectors(), "No directors."));
             directors.setVisibility(View.VISIBLE);
         } else {
             directorsExpanded = false;
@@ -244,7 +225,22 @@ public class MovieViewActivity extends ActionBarActivity {
         }
     }
 
-    //Change quality button
+    //Convert a string array to a string. Used to convert actors/directors to a single string.
+    private String stringArrayToString(String[] array, String emptyMessage) {
+        StringBuilder display = new StringBuilder();
+        if(array.length > 0) {
+            for(int i = 0; i < array.length - 1; i++) {
+                display.append(array[i]).append("\n");
+            }
+            //Don't want a trailing \n on the last element
+            display.append(array[array.length - 1]);
+        } else {
+            display.append(emptyMessage);
+        }
+        return display.toString();
+    }
+
+    //Launch change quality dialog
     public void onQualityButtonPress(View view) {
         new ChangeQualityFragment().show(getSupportFragmentManager(), null);
     }
@@ -366,6 +362,7 @@ public class MovieViewActivity extends ActionBarActivity {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
         }
 
+        //Get a list of qualities from the server
         private class GetQualitiesTask extends APIRequestAsyncTask<String, Void, String> {
 
             public GetQualitiesTask(Context context) {
