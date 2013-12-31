@@ -91,10 +91,10 @@ public class LogActivity extends ActionBarActivity {
 
     //Save our variables so we don't re-request on activity recreation
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("log", log);
-        savedInstanceState.putInt("selectedPosition", selectedPosition);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("log", log);
+        outState.putInt("selectedPosition", selectedPosition);
     }
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
