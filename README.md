@@ -14,6 +14,7 @@ You'll need <a href="https://github.com/RuudBurger">RuudBurger</a>'s <a href="ht
 <li>View the CouchPotato server log.</li>
 </ul>
 
-You can find it on the Google Play Marketplace: [insert link here when it's up]
-
+<a href="https://play.google.com/store/apps/details?id=no.dega.couchpotatoremote">You can download the app for free on the Google Play Marketplace.
+![https://play.google.com/store/apps/details?id=no.dega.couchpotatoremote](http://developer.android.com/images/brand/en_generic_rgb_wo_60.png)
+</a>
 
