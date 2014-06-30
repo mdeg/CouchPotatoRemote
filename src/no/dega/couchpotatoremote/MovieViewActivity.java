@@ -333,7 +333,7 @@ public class MovieViewActivity extends ActionBarActivity {
 
                 //Get a list of qualities
                 new GetQualitiesTask(MovieViewActivity.this).execute(
-                        APIUtilities.formatRequest("quality.list", MovieViewActivity.this));
+                        APIUtilities.formatRequest("profile.list", MovieViewActivity.this));
             } else {
                 displayQualities();
             }
@@ -381,7 +381,7 @@ public class MovieViewActivity extends ActionBarActivity {
                     qualities = new ArrayList<Quality>(list.length());
                     for(int i = 0; i < list.length(); i++) {
                         JSONObject quality = list.getJSONObject(i);
-                        Quality qual = new Quality(quality.getInt("id"), quality.getString("label"));
+                        Quality qual = new Quality(quality.getString("_id"), quality.getString("label"));
                         qualities.add(qual);
                     }
                 } catch (JSONException e) {
@@ -391,17 +391,17 @@ public class MovieViewActivity extends ActionBarActivity {
         }
         //Small object that holds quality name and its profile id
         private class Quality {
-            private final int id;
+            private final String id;
             private final String label;
 
-            public Quality(int id, String label) {
+            public Quality(String id, String label) {
                 this.id = id;
                 this.label = label;
             }
             public String getLabel() {
                 return label;
             }
-            public int getId() {
+            public String getId() {
                 return id;
             }
             public String toString() {
@@ -423,7 +423,7 @@ public class MovieViewActivity extends ActionBarActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String request = APIUtilities.formatRequest(
-                                "movie.delete?id=" + String.valueOf(current.getLibraryId()), getActivity());
+                                "media.delete?id=" + String.valueOf(current.getLibraryId()), getActivity());
                         //Send the request. Don't need to subclass this
                         new APIRequestAsyncTask<String, Void, String>(getActivity()).execute(request);
                         movies.remove(currentPos);

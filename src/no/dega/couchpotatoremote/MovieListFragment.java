@@ -53,7 +53,7 @@ public class MovieListFragment extends ListFragment {
         PauseOnScrollListener listener = new PauseOnScrollListener(ImageLoader.getInstance(),
                 true, true);
         getListView().setOnScrollListener(listener);
-        String query = "movie.list?status=";
+        String query = "media.list?status=";
         query = getArguments().getBoolean("isWanted") ? query + "active" : query + "done";
         request = APIUtilities.formatRequest(query, getActivity().getApplicationContext());
         //Don't want to restart the download if the user changes orientation
@@ -142,10 +142,9 @@ public class MovieListFragment extends ListFragment {
                 //Create a Movie object from every movie listed in the json response
                 for (int i = 0; i < jsonMoviesList.length(); i++) {
                     //Library ID (used for deleting movies)
-                    int libraryId = jsonMoviesList.getJSONObject(i).getInt("library_id");
+                    String libraryId = jsonMoviesList.getJSONObject(i).getString("_id");
 
-                    JSONObject info = jsonMoviesList.getJSONObject(i).getJSONObject("library").
-                            getJSONObject("info");
+                    JSONObject info = jsonMoviesList.getJSONObject(i).getJSONObject("info");
                     //	Log.d(TAG, "Movie JSON String: " + info.toString());
 
                     //Grab the important information (have to watch for nulls)
@@ -160,9 +159,17 @@ public class MovieListFragment extends ListFragment {
                     if (!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
                         JSONArray posters = info.getJSONObject("images").getJSONArray("poster");
                         //Some movies don't have posters
-                        if(posters.length() >= 1) {
-                            posterUri = posters.getString(0);
-                        }
+                        switch(posters.length()) {
+                            case 3:
+                                posterUri = posters.getString(2);
+                                break;
+                            case 2:
+                                posterUri = posters.getString(1);
+                                break;
+                            case 1:
+                                posterUri = posters.getString(0);
+                                break;
+                           }
                     }
 
                     //Copy the actor/directors JSONArrays into a regular String array

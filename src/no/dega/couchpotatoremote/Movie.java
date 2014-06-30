@@ -8,7 +8,7 @@ import android.os.Parcelable;
 //MovieViewActivity uses one of these to display information about a selected movie.
 //ReleasesActivity uses this to get a list of releases for the given movie.
 class Movie implements Parcelable {
-    private int libraryId;
+    private String libraryId;
     private String dbId;
 
     private String title;
@@ -33,7 +33,7 @@ class Movie implements Parcelable {
             };
 
     //Full constructor used when parsing the movie lists
-    public Movie(int libraryId, String title, String tagline, String posterUri,
+    public Movie(String libraryId, String title, String tagline, String posterUri,
                  String plot, String year, String[] actors, String[] directors) {
         this.libraryId = libraryId;
         this.title = title;
@@ -55,7 +55,7 @@ class Movie implements Parcelable {
     //Reconstitute from parcel
     //Need to read these back in the same order we write them
     public Movie(Parcel par) {
-        libraryId = par.readInt();
+        libraryId = par.readString();
         title = par.readString();
         tagline = par.readString();
         plot = par.readString();
@@ -67,7 +67,7 @@ class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(libraryId);
+        dest.writeString(libraryId);
         dest.writeString(title);
         dest.writeString(tagline);
         dest.writeString(plot);
@@ -122,7 +122,7 @@ class Movie implements Parcelable {
         return directors;
     }
 
-    public int getLibraryId() {
+    public String getLibraryId() {
         return libraryId;
     }
 }

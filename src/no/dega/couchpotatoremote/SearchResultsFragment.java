@@ -80,6 +80,8 @@ public class SearchResultsFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Movie movie = (Movie) getListAdapter().getItem(position);
 
+        Toast.makeText(getActivity(), "Trying to add " + movie.getTitle() + "...",
+                Toast.LENGTH_SHORT).show();
         //Construct and submit the request to add the specified movie
         //Make sure we encode the title in a URL-recognisable format
         StringBuilder uri = new StringBuilder("movie.add?title=");
