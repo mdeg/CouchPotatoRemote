@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -158,18 +158,16 @@ public class MovieListFragment extends ListFragment {
                     String posterUri = "";
                     if (!info.isNull("images") && !info.getJSONObject("images").isNull("poster")) {
                         JSONArray posters = info.getJSONObject("images").getJSONArray("poster");
-                        //Some movies don't have posters
-                        switch(posters.length()) {
-                            case 3:
-                                posterUri = posters.getString(2);
-                                break;
-                            case 2:
-                                posterUri = posters.getString(1);
-                                break;
-                            case 1:
-                                posterUri = posters.getString(0);
-                                break;
-                           }
+
+                       /* int numPosters = posters.length();
+                        if(numPosters >= 2) {
+                           posterUri = posters.getString(1);
+                        } else if (numPosters == 1) {
+                            posterUri = posters.getString(0);
+                        }*/
+                        if(posters.length() > 0) {
+                            posterUri = posters.getString(0);
+                        }
                     }
 
                     //Copy the actor/directors JSONArrays into a regular String array

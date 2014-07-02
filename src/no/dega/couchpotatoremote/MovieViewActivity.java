@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -170,7 +173,9 @@ public class MovieViewActivity extends ActionBarActivity {
                     .defaultDisplayImageOptions(defaultOptions).build();
             ImageLoader.getInstance().init(config);
         }
+
         ImageLoader.getInstance().displayImage(current.getPosterUri(), poster);
+
     }
 
     //Called when user presses 'Delete' button. Opens a confirmation window.

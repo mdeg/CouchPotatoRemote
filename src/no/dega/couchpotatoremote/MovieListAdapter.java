@@ -1,6 +1,7 @@
 package no.dega.couchpotatoremote;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.List;
+
+
 
 //Adapter for displaying movies as a list
 //Looks like this:
@@ -19,7 +24,8 @@ import java.util.List;
 //[      ] [            ]
 public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
 
-    private final List<Movie> movies;
+    private static final int MAX_HEIGHT = 170;
+    private List<Movie> movies;
 
     public MovieListAdapter(Context context, int resource, List<Movie> movies) {
         super(context, resource, movies);
@@ -38,38 +44,33 @@ public class MovieListAdapter<T> extends ArrayAdapter<Movie> {
             holder.plot = (TextView) convertView.findViewById(R.id.adapter_plot);
             holder.poster = (ImageView) convertView.findViewById(R.id.adapter_poster);
             convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
         }
 
+        holder = (ViewHolder) convertView.getTag();
         Movie movie = movies.get(position);
 
         if (movie != null) {
             holder.title.setText(movie.getTitle());
-
             holder.year.setText(movie.getYear());
             holder.plot.setText(movie.getPlot());
 
             ImageLoader.getInstance().displayImage(movie.getPosterUri(), holder.poster);
 
-            //Posters are almost always 231px high (and never higher). A few are a little smaller though.
-            //Irritatingly, there are some that are smaller and have transparencies in the remainder
-            //So, matching won't be perfect, but generally it works pretty well.
-            //Have to check for null and give a default height - image might not be loaded yet
-            int maxHeight = 231;
-            if(holder.poster.getDrawable() != null) {
-                maxHeight = holder.poster.getDrawable().getIntrinsicHeight();
+            holder.plot.setMaxHeight(holder.poster.getHeight() - holder.title.getHeight());
+
+            int a = holder.plot.getHeight();
+            if(holder.plot.getHeight() == 0) {
+                holder.plot.setMaxHeight(MAX_HEIGHT);
             }
-            //Plot size should be the height of the poster minus the height of the title
-            holder.plot.setMaxHeight(maxHeight - holder.title.getLineHeight());
         }
+
         return convertView;
     }
     //Use ViewHolder to recycle views for better performance
     private static class ViewHolder {
-        TextView title;
-        TextView year;
-        TextView plot;
-        ImageView poster;
+        public TextView title;
+        public TextView year;
+        public TextView plot;
+        public ImageView poster;
     }
 }

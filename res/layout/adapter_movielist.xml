@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/adapter_poster"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="154px"
+        android:layout_height="234px"
         android:layout_alignParentLeft="true"
         android:layout_margin="1dp"
         android:layout_alignTop="@+id/adapter_title"
@@ -46,14 +46,14 @@
     <no.dega.couchpotatoremote.FontedTextView
         android:id="@+id/adapter_plot"
         style="@style/ListViewCells"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_toRightOf="@id/adapter_poster"
         android:layout_below="@id/adapter_title"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="5dp"
-        android:singleLine="false"
         android:ellipsize="end"
+        android:singleLine="false"
         />
 
 </RelativeLayout>
